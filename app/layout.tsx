@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import "./globals.css";
+import Providers from "./providers/Providers";
 
-const ggsans = localFont({
-  src: "../public/fonts/ggsans.woff2",
+const ggSans = localFont({
+  src: "../public/fonts/gg-sans.woff2",
   display: "swap",
 });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={ggsans.className}>{children}</body>
+      <body className={ggSans.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
