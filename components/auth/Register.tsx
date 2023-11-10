@@ -115,7 +115,7 @@ export default function Register() {
                 <FormMessage />
                 <button
                   type="button"
-                  className="mt-1 mb-5 mr-auto text-sky-400 text-sm hover:underline"
+                  className="mt-1 mb-5 mr-auto text-sky-400 text-sm hover:underline font-medium"
                 >
                   Forgot your password?
                 </button>
