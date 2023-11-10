@@ -63,7 +63,7 @@ body,
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 359 87% 60%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;
@@ -78,5 +78,11 @@ body,
   }
   body {
     @apply dark bg-background text-foreground;
+  }
+
+  input,
+  button,
+  a {
+    @apply border-2 border-transparent focus-visible:border-sky-400 outline-none rounded transition-colors duration-300;
   }
 }
