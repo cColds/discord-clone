@@ -21,6 +21,7 @@ import { signIn } from "next-auth/react";
 
 export default function Register() {
   const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: { email: "", password: "", username: "" },
