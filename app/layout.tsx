@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import Providers from "./providers/Providers";
+import ServerNav from "@/components/nav/ServerNav";
 
 const ggSans = localFont({
   src: "../public/fonts/gg-sans.woff2",
@@ -22,7 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={ggSans.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="flex h-full w-full">
+            <ServerNav />
+            <main className="w-full">{children}</main>
+          </div>
+        </Providers>
       </body>
     </html>
   );
