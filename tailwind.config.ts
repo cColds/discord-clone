@@ -21,13 +21,18 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        "interactive-normal": "rgb(181, 186, 193)",
         "green-360": "rgb(35, 165, 89)",
         "background-tertiary": "#1E1F22",
         "background-secondary": "rgb(43, 45, 49)",
         "dark-700": "#313338",
         "background-modifier-accent": "#4e50587a",
+        "background-modifier-selected": "rgba(78, 80, 88, 0.6)",
         foreground: "hsl(var(--foreground))",
         "header-primary": "#f2f3f5",
+        "background-interactive-hover": "rgba(78, 80, 88, 0.3)",
+        "interactive-hover": "rgb(219, 222, 225)",
+        "channels-default": "rgb(148, 155, 164)",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -75,6 +80,11 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+
+      boxShadow: {
+        "elevation-low":
+          "rgba(2, 2, 2, 0.2) 0px 1px 0px 0px, rgba(6, 6, 7, 0.05) 0px 1.5px 0px 0px, rgba(2, 2, 2, 0.05) 0px 2px 0px 0px",
       },
     },
     backgroundImage: {

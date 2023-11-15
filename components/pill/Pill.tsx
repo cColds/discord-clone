@@ -3,8 +3,6 @@ import { cn } from "@/lib/utils";
 type PillProps = { selected: boolean };
 
 export default function Pill({ selected }: PillProps) {
-  console.log({ selected });
-
   return (
     <div
       className="absolute left-0 top-0 w-2 h-12 flex items-center"
