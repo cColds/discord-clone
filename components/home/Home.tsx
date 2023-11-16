@@ -1,9 +1,13 @@
+import UserPanel from "../panels/UserPanel";
 import PrivateChannels from "../sidebars/PrivateChannels";
 
 export default function Home() {
   return (
     <div className="flex h-full">
-      <PrivateChannels />
+      <div className="flex flex-col w-60">
+        <PrivateChannels />
+        <UserPanel />
+      </div>
     </div>
   );
 }

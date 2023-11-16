@@ -5,3 +5,6 @@ export { Nitro } from "./Nitro";
 export { Shop } from "./Shop";
 export { DMPlus } from "./DMPlus";
 export { CloseDM } from "./CloseDM";
+export { Mic } from "./Mic";
+export { Deafan } from "./Deafan";
+export { Settings } from "./Settings";

@@ -73,7 +73,7 @@ export default function PrivateChannels() {
 
   return (
     <nav
-      className="bg-background-secondary w-60 overflow-auto pb-2"
+      className="bg-background-secondary overflow-auto pb-2 grow"
       aria-label="Private channels"
     >
       <div className="flex justify-center h-12 items-center px-2.5 shadow-elevation-low">

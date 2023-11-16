@@ -30,7 +30,9 @@ module.exports = {
         "background-modifier-selected": "rgba(78, 80, 88, 0.6)",
         foreground: "hsl(var(--foreground))",
         "header-primary": "#f2f3f5",
+        "header-secondary": "rgb(181, 186, 193)",
         "background-interactive-hover": "rgba(78, 80, 88, 0.3)",
+        "background-secondary-alt": "rgb(35, 36, 40)",
         "interactive-hover": "rgb(219, 222, 225)",
         "channels-default": "rgb(148, 155, 164)",
         primary: {
