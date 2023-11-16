@@ -76,7 +76,7 @@ export default function PrivateChannels() {
       className="bg-background-secondary overflow-auto pb-2 grow"
       aria-label="Private channels"
     >
-      <div className="flex justify-center h-12 items-center px-2.5 shadow-elevation-low">
+      <div className="flex justify-center h-12 items-center px-2.5 shadow-elevation-low sticky top-0 bg-background-secondary">
         <button className="h-7 bg-background-tertiary rounded-sm text-sm px-1.5 py-[1px] font-medium text-channels-default w-full text-left truncate">
           Find or start a conversation
         </button>
