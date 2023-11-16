@@ -3,14 +3,9 @@
 import Link from "next/link";
 import { CloseDM, DMPlus, Friend, Nitro, Shop } from "../svgs";
 import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import Image from "next/image";
 import { useState } from "react";
+import ActionTooltip from "../tooltip/ActionTooltip";
 
 type Dms = {
   username: string;
@@ -130,14 +125,12 @@ export default function PrivateChannels() {
         </li>
         <h2 className="text-xs pt-[18px] pr-2 pb-1 pl-[18px] font-semibold leading-3 text-channels-default tracking-[.02em]  flex items-center h-10 truncate hover:text-interactive-hover">
           <span className="grow uppercase">Direct Messages</span>
-          <TooltipProvider delayDuration={100}>
-            <Tooltip>
-              <TooltipTrigger>
-                <DMPlus />
-              </TooltipTrigger>
-              <TooltipContent>Create DM</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+
+          <ActionTooltip content="Create DM">
+            <button className="border-none w-4 mr-1">
+              <DMPlus />
+            </button>
+          </ActionTooltip>
         </h2>
         {dms.map((dm, idx) => {
           let selected = false;
@@ -202,26 +195,30 @@ export default function PrivateChannels() {
                     </svg>
                   </div>
                 </div>
-                <TooltipProvider delayDuration={100}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div
-                        className={cn("overflow-hidden", {
-                          "text-white": selected,
-                        })}
-                      >
-                        <p className="truncate" data-username="username">
-                          {dm.username}
-                        </p>
-                      </div>
-                    </TooltipTrigger>
-                    {showTooltip === dm.id && (
-                      <TooltipContent className="max-w-[200px] break-words">
+
+                {showTooltip === dm.id ? (
+                  <ActionTooltip content={dm.username}>
+                    <div
+                      className={cn("overflow-hidden", {
+                        "text-white": selected,
+                      })}
+                    >
+                      <p className="truncate" data-username="username">
                         {dm.username}
-                      </TooltipContent>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
+                      </p>
+                    </div>
+                  </ActionTooltip>
+                ) : (
+                  <div
+                    className={cn("overflow-hidden", {
+                      "text-white": selected,
+                    })}
+                  >
+                    <p className="truncate" data-username="username">
+                      {dm.username}
+                    </p>
+                  </div>
+                )}
               </Link>
               <button
                 className="hidden group-hover:block hover:text-interactive-hover text-channels-default pr-2"

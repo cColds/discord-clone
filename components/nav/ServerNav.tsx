@@ -3,15 +3,10 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { DiscordLogo, Plus } from "../svgs";
 import { cn } from "@/lib/utils";
 import Pill from "../pill/Pill";
+import ActionTooltip from "../tooltip/ActionTooltip";
 
 export default function ServerNav() {
   const params = useParams();
@@ -48,28 +43,24 @@ export default function ServerNav() {
     >
       <ul className="py-3">
         <div className="flex justify-center relative mb-2">
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger
-                className={cn(
-                  "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 bg-dark-700 hover:cursor-pointer hover:bg-primary hover:rounded-xl",
-                  {
-                    "bg-primary": params.serverId === undefined,
-                    "rounded-xl": params.serverId === undefined,
-                  }
-                )}
-                aria-label="Direct Messages"
-                onClick={() => onClick("/")}
-                onMouseOver={() => setHoveredServer("/")}
-                onMouseLeave={() => setHoveredServer("")}
-              >
-                <DiscordLogo />
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p className="font-bold">Direct Messages</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <ActionTooltip content="Direct Messages" side="right">
+            <button
+              className={cn(
+                "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 bg-dark-700 hover:cursor-pointer hover:bg-primary hover:rounded-xl",
+                {
+                  "bg-primary": params.serverId === undefined,
+                  "rounded-xl": params.serverId === undefined,
+                }
+              )}
+              aria-label="Direct Messages"
+              onClick={() => onClick("/")}
+              onMouseOver={() => setHoveredServer("/")}
+              onMouseLeave={() => setHoveredServer("")}
+            >
+              <DiscordLogo />
+            </button>
+          </ActionTooltip>
+
           {(hoveredServer === "/" || params.serverId === undefined) && (
             <Pill selected={!params.serverId} />
           )}
@@ -87,32 +78,27 @@ export default function ServerNav() {
                 className="flex justify-center relative w-full mb-2"
                 key={server.id}
               >
-                <TooltipProvider delayDuration={100}>
-                  <Tooltip>
-                    <TooltipTrigger
-                      className={cn(
-                        "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip",
-                        { "rounded-xl": params.serverId === server.id }
-                      )}
-                      aria-label={server.name}
-                      onClick={() => onClick(server.id)}
-                      onMouseOver={() => setHoveredServer(server.id)}
-                      onMouseLeave={() => setHoveredServer("")}
-                    >
-                      <Image
-                        src={server.icon}
-                        alt=""
-                        width={48}
-                        height={48}
-                        className="aspect-square min-w-[48px] min-h-[48px]"
-                        aria-label="hidden"
-                      />
-                    </TooltipTrigger>
-                    <TooltipContent side="right">
-                      <p className="font-bold">{server.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <ActionTooltip content={server.name} side="right">
+                  <button
+                    className={cn(
+                      "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip",
+                      { "rounded-xl": params.serverId === server.id }
+                    )}
+                    aria-label={server.name}
+                    onClick={() => onClick(server.id)}
+                    onMouseOver={() => setHoveredServer(server.id)}
+                    onMouseLeave={() => setHoveredServer("")}
+                  >
+                    <Image
+                      src={server.icon}
+                      alt=""
+                      width={48}
+                      height={48}
+                      className="aspect-square min-w-[48px] min-h-[48px]"
+                      aria-label="hidden"
+                    />
+                  </button>
+                </ActionTooltip>
 
                 {(hoveredServer === server.id || currentServerSelected) && (
                   <Pill selected={currentServerSelected} />
@@ -123,26 +109,23 @@ export default function ServerNav() {
         </div>
 
         <div className="flex justify-center">
-          <TooltipProvider delayDuration={100}>
-            <Tooltip>
-              <TooltipTrigger
-                className={cn(
-                  "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip bg-dark-700",
-                  {
-                    "rounded-xl": hoveredAddServer,
-                    "bg-green-360": hoveredAddServer,
-                  }
-                )}
-                onMouseOver={() => setHoveredAddServer(true)}
-                onMouseLeave={() => setHoveredAddServer(false)}
-              >
-                <Plus
-                  className={hoveredAddServer ? "text-white" : "text-green-360"}
-                />
-              </TooltipTrigger>
-              <TooltipContent side="right">Add a Server</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <ActionTooltip content="Add a Server" side="right">
+            <button
+              className={cn(
+                "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip bg-dark-700",
+                {
+                  "rounded-xl": hoveredAddServer,
+                  "bg-green-360": hoveredAddServer,
+                }
+              )}
+              onMouseOver={() => setHoveredAddServer(true)}
+              onMouseLeave={() => setHoveredAddServer(false)}
+            >
+              <Plus
+                className={hoveredAddServer ? "text-white" : "text-green-360"}
+              />
+            </button>
+          </ActionTooltip>
         </div>
       </ul>
     </nav>

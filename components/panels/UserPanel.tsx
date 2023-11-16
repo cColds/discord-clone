@@ -1,11 +1,6 @@
 import Image from "next/image";
 import { Deafan, Mic, Settings } from "../svgs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import ActionTooltip from "../tooltip/ActionTooltip";
 
 const user = {
   username: "cold",
@@ -62,47 +57,32 @@ export default function UserPanel() {
         </button>
 
         <div className="flex">
-          <TooltipProvider delayDuration={100}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
-                  aria-label="Mute"
-                >
-                  <Mic />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>Mute</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <ActionTooltip content="Mute">
+            <button
+              className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
+              aria-label="Mute"
+            >
+              <Mic />
+            </button>
+          </ActionTooltip>
 
-          <TooltipProvider delayDuration={100}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
-                  aria-label="Deafan"
-                >
-                  <Deafan />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>Deafan</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <ActionTooltip content="Deafan">
+            <button
+              className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
+              aria-label="Deafan"
+            >
+              <Deafan />
+            </button>
+          </ActionTooltip>
 
-          <TooltipProvider delayDuration={100}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
-                  aria-label="User Settings"
-                >
-                  <Settings />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>User Settings</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <ActionTooltip content="User Settings">
+            <button
+              className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
+              aria-label="User Settings"
+            >
+              <Settings />
+            </button>
+          </ActionTooltip>
         </div>
       </div>
     </section>
