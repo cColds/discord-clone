@@ -127,7 +127,7 @@ export default function PrivateChannels() {
           <span className="grow uppercase">Direct Messages</span>
 
           <ActionTooltip content="Create DM">
-            <button className="border-none w-4 mr-1">
+            <button className="w-4 mr-1">
               <DMPlus />
             </button>
           </ActionTooltip>

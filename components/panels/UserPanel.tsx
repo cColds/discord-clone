@@ -15,7 +15,7 @@ export default function UserPanel() {
       <div className="mb-[1px] px-2 text-sm h-[52px] flex items-center font-medium">
         <button
           aria-label="Set Status"
-          className="flex min-w-[120px] items-center gap-2 hover:bg-background-modifier-selected rounded-[4px] border-none grow"
+          className="flex min-w-[120px] items-center gap-2 hover:bg-background-modifier-selected rounded-[4px] grow"
         >
           <div className="w-8 h-8">
             <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">

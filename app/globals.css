@@ -85,4 +85,8 @@ body,
   a {
     @apply border-2 border-transparent focus-visible:border-sky-400 outline-none rounded transition-colors duration-300;
   }
+
+  button {
+    @apply border-none;
+  }
 }
