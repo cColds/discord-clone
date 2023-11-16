@@ -43,7 +43,7 @@ export default function ServerNav() {
   };
   return (
     <nav
-      className="min-w-[72px] bg-background-tertiary h-full"
+      className="min-w-[72px] bg-background-tertiary h-full overflow-auto"
       aria-label="Servers sidebar"
     >
       <ul className="py-3">
