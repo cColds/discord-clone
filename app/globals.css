@@ -86,3 +86,18 @@ body,
     @apply border-2 border-transparent focus-visible:border-sky-400 outline-none rounded transition-colors duration-300;
   }
 }
+
+.spin {
+  animation: 100ms ease-out spin;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(90deg);
+    opacity: 0.1;
+  }
+  to {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+}
