@@ -85,6 +85,27 @@ export default function Register() {
 
           <FormField
             control={form.control}
+            name="displayName"
+            render={({ field }) => (
+              <FormItem className="text-slate-300 w-full font-bold mb-5">
+                <FormLabel className="font-bold uppercase tracking-wide text-xs">
+                  Display Name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    {...field}
+                    autoComplete="false"
+                    maxLength={32}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem className="text-slate-300 w-full font-bold mb-5">

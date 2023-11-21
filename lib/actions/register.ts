@@ -9,7 +9,7 @@ export async function register(formData: z.infer<typeof registerSchema>) {
   const validatedFields = registerSchema.safeParse(formData);
   if (!validatedFields.success) return;
 
-  const { email, password, username } = validatedFields.data;
+  const { email, password, username, displayName } = validatedFields.data;
   await dbConnect();
   const existingEmail = await User.findOne({
     email: { $regex: email, $options: "i" },
@@ -36,6 +36,7 @@ export async function register(formData: z.infer<typeof registerSchema>) {
       password: hashedPassword,
       username,
       avatar: "/images/profile-pictures/blurple.png",
+      displayName: displayName || username,
     });
 
     await user.save();

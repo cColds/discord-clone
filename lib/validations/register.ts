@@ -15,4 +15,7 @@ export const registerSchema = z.object({
     .refine((val) => val.length >= 2 && val.length <= 32, {
       message: "This must be 2-32 characters.",
     }),
+  displayName: z
+    .string()
+    .max(32, { message: "Must be 32 characters or fewer in length." }),
 });
