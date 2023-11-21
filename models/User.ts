@@ -1,6 +1,6 @@
 import { Schema, model, models, Types, Document } from "mongoose";
 
-export interface User extends Document {
+export interface UserType extends Document {
   username: string;
   displayName: string;
   email: string;
@@ -16,7 +16,7 @@ export interface User extends Document {
   dms: Types.ObjectId[];
 }
 
-const UserSchema = new Schema<User>(
+const UserSchema = new Schema<UserType>(
   {
     username: { type: String, maxlength: 32, required: true },
     displayName: { type: String, maxLength: 32, required: true },
@@ -34,6 +34,6 @@ const UserSchema = new Schema<User>(
   { timestamps: true }
 );
 
-const UserModel = models.User || model<User>("User", UserSchema);
+const User = models.User || model<UserType>("User", UserSchema);
 
-export default UserModel;
+export default User;

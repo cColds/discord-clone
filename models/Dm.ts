@@ -1,12 +1,12 @@
 import { Schema, model, models, Types, Document } from "mongoose";
 
-export interface Dm extends Document {
+export interface DmType extends Document {
   members: Types.ObjectId[];
   messages: Types.ObjectId[];
   channelId: string;
 }
 
-const DmSchema = new Schema<Dm>(
+const DmSchema = new Schema<DmType>(
   {
     members: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
     messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
@@ -15,6 +15,6 @@ const DmSchema = new Schema<Dm>(
   { timestamps: true }
 );
 
-const DmModel = models.Dm || model<Dm>("Dm", DmSchema);
+const Dm = models.Dm || model<DmType>("Dm", DmSchema);
 
-export default DmModel;
+export default Dm;

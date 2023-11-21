@@ -1,11 +1,11 @@
 import { Schema, model, models, Types, Document } from "mongoose";
 
-export interface Message extends Document {
+export interface MessageType extends Document {
   sender: Types.ObjectId;
   message: string;
 }
 
-const MessageSchema = new Schema<Message>(
+const MessageSchema = new Schema<MessageType>(
   {
     sender: { type: Schema.Types.ObjectId, required: true },
     message: { type: String, maxLength: 2000, required: true },
@@ -13,6 +13,6 @@ const MessageSchema = new Schema<Message>(
   { timestamps: true }
 );
 
-const MessageModel = models.Message || model<Message>("Message", MessageSchema);
+const Message = models.Message || model<MessageType>("Message", MessageSchema);
 
-export default MessageModel;
+export default Message;
