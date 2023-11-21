@@ -1,20 +1,39 @@
-import mongoose from "mongoose";
+import { Schema, model, models, Types, Document } from "mongoose";
 
-export interface User extends mongoose.Document {
+export interface User extends Document {
   username: string;
+  displayName: string;
   email: string;
   password: string;
   avatar: string;
+  social: {
+    friends: Types.ObjectId[];
+    pending: Types.ObjectId[];
+    blocked: Types.ObjectId[];
+  };
+
+  servers: Types.ObjectId[];
+  dms: Types.ObjectId[];
 }
 
-const UserSchema = new mongoose.Schema<User>({
-  username: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  avatar: { type: String, required: true },
-});
-
-export default mongoose.model<User>(
-  "User",
-  mongoose.models?.User ? undefined : UserSchema
+const UserSchema = new Schema<User>(
+  {
+    username: { type: String, maxlength: 32, required: true },
+    displayName: { type: String, maxLength: 32, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    avatar: { type: String, required: true },
+    social: {
+      friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+      pending: [{ type: Schema.Types.ObjectId, ref: "User" }],
+      blocked: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    },
+    servers: [{ type: Schema.Types.ObjectId, ref: "Server" }],
+    dms: [{ type: Schema.Types.ObjectId, ref: "Dm" }],
+  },
+  { timestamps: true }
 );
+
+const UserModel = models.User || model<User>("User", UserSchema);
+
+export default UserModel;
