@@ -6,6 +6,7 @@ export interface UserType extends Document {
   email: string;
   password: string;
   avatar: string;
+  status: "Online" | "Idle" | "Do Not Disturb" | "Invisible" | "Offline";
   social: {
     friends: Types.ObjectId[];
     pending: Types.ObjectId[];
@@ -18,11 +19,19 @@ export interface UserType extends Document {
 
 const UserSchema = new Schema<UserType>(
   {
+    // TODO:
+    // - set min length to 2
+    // - set unique on email and username
     username: { type: String, maxlength: 32, required: true },
     displayName: { type: String, maxLength: 32, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     avatar: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ["Online", "Idle", "Do Not Disturb", "Invisible", "Offline"],
+      default: "Offline",
+    },
     social: {
       friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
       pending: [{ type: Schema.Types.ObjectId, ref: "User" }],
