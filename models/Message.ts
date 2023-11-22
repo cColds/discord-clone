@@ -13,6 +13,9 @@ const MessageSchema = new Schema<MessageType>(
   { timestamps: true }
 );
 
-const Message = models.Message || model<MessageType>("Message", MessageSchema);
+const Message = model<MessageType>(
+  "Message",
+  models.Message ? undefined : MessageSchema
+);
 
 export default Message;

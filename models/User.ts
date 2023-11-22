@@ -34,6 +34,21 @@ const UserSchema = new Schema<UserType>(
   { timestamps: true }
 );
 
-const User = models.User || model<UserType>("User", UserSchema);
+/* 
+This is typed loosely: const User = models.User || model<UserType>("User", UserSchema);
+The key issue of this problem is that things inside mongoose.models are all typed as Model<any> by default.
+The ternary I used will create one, or if it already exists, uses the cached one.
+It doesn't use set User to models.User so it won't infer as any.
+So that type will be inferred as Model<any> since this is a more broaden type.
+
+
+Another way to do it:
+    const UserModel = model<UserType>("User", UserSchema);
+    const User = (models.User as typeof UserModel) || UserModel;
+ 
+Source: https://stackoverflow.com/questions/65887351/how-to-properly-use-mongoose-models-in-next-js
+*/
+
+const User = model<UserType>("User", models.User ? undefined : UserSchema);
 
 export default User;

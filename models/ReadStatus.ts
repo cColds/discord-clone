@@ -12,7 +12,9 @@ const ReadStatusSchema = new Schema<ReadStatusType>({
   read: { type: Boolean, required: true },
 });
 
-const ReadStatus =
-  models.ReadStatus || model<ReadStatusType>("ReadStatus", ReadStatusSchema);
+const ReadStatus = model<ReadStatusType>(
+  "ReadStatus",
+  models.User ? undefined : ReadStatusSchema
+);
 
 export default ReadStatus;

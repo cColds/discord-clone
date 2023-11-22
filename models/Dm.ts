@@ -15,6 +15,6 @@ const DmSchema = new Schema<DmType>(
   { timestamps: true }
 );
 
-const Dm = models.Dm || model<DmType>("Dm", DmSchema);
+const Dm = model<DmType>("Dm", models.Dm ? undefined : DmSchema);
 
 export default Dm;
