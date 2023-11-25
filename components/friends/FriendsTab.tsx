@@ -1,14 +1,20 @@
 import { cn } from "@/lib/utils";
 import { Friend, Help, Inbox, NewGroupDM } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
+import { FriendTab } from "@/types/friend-tab";
 
 type TabButtonProps = {
   children: React.ReactNode;
-  selected?: boolean;
+  selected: boolean;
   className?: string;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const TabButton = ({ children, className, selected }: TabButtonProps) => {
+const TabButton = ({
+  children,
+  className,
+  selected,
+  ...props
+}: TabButtonProps) => {
   return (
     <button
       className={cn(
@@ -22,6 +28,7 @@ const TabButton = ({ children, className, selected }: TabButtonProps) => {
         }
       )}
       role="tab"
+      {...props}
     >
       {children}
     </button>
@@ -46,7 +53,12 @@ const ToolbarIcon = ({ children, name }: ToolbarIconProps) => {
   );
 };
 
-export default function FriendsTab() {
+type FriendsTabProps = {
+  onTabClick: (tabType: FriendTab) => void;
+  tab: FriendTab;
+};
+
+export default function FriendsTab({ onTabClick, tab }: FriendsTabProps) {
   return (
     <nav className="flex justify-between p-2 shadow-elevation-low min-h-[48px]">
       <div className="flex items-center">
@@ -64,23 +76,40 @@ export default function FriendsTab() {
           aria-label="Friends"
           className="flex items-center gap-2 text-interactive-normal"
         >
-          <TabButton className="ml-2" selected={true}>
+          <TabButton
+            onClick={() => onTabClick("Online")}
+            className="ml-2"
+            selected={tab === "Online"}
+          >
             Online
           </TabButton>
-          <TabButton>All</TabButton>
-          <TabButton>Pending</TabButton>
-          <TabButton>Blocked</TabButton>
+          <TabButton selected={tab === "All"} onClick={() => onTabClick("All")}>
+            All
+          </TabButton>
+          <TabButton
+            selected={tab === "Pending"}
+            onClick={() => onTabClick("Pending")}
+          >
+            Pending
+          </TabButton>
+          <TabButton
+            selected={tab === "Blocked"}
+            onClick={() => onTabClick("Blocked")}
+          >
+            Blocked
+          </TabButton>
 
           <button
             className={cn(
               "py-0.5 px-2 mr-2 rounded-sm bg-status-positive-background text-white font-semibold",
               {
-                "bg-transparent": false,
-                "text-positive": false,
-                "cursor-default": false,
+                "bg-transparent": tab === "Add Friend",
+                "text-positive": tab === "Add Friend",
+                "cursor-default": tab === "Add Friend",
               }
             )}
             role="tab"
+            onClick={() => onTabClick("Add Friend")}
           >
             Add Friend
           </button>

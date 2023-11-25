@@ -2,7 +2,7 @@
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
-import dbConnect from "../dbConnect";
+import dbConnect from "../db/dbConnect";
 import { registerSchema } from "../validations/register";
 
 export async function register(formData: z.infer<typeof registerSchema>) {

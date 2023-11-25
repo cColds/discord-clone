@@ -1,15 +1,23 @@
 import Image from "next/image";
 import { Deafan, Mic, Settings } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
+import { STATUS } from "@/constants";
 
-const user = {
-  username: "cold",
-  avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-  status: "Do Not Disturb",
-  id: "r98h",
+type UserPanelProps = {
+  username: string;
+  displayName: string;
+  email: string;
+  avatar: string;
+  status: "Online" | "Invisible" | "Do Not Disturb" | "Idle" | "Offline";
 };
 
-export default function UserPanel() {
+export default function UserPanel({
+  username,
+  displayName,
+  email,
+  avatar,
+  status,
+}: UserPanelProps) {
   return (
     <section className="bg-background-secondary-alt" aria-label="User area">
       <div className="mb-[1px] px-2 text-sm h-[52px] flex items-center font-medium">
@@ -27,7 +35,7 @@ export default function UserPanel() {
                 mask="url(#svg-mask-avatar-status-round-32)"
               >
                 <Image
-                  src={user.avatar}
+                  src={avatar}
                   alt=""
                   aria-hidden="true"
                   width={32}
@@ -40,18 +48,18 @@ export default function UserPanel() {
                 height="10"
                 x="22"
                 y="22"
-                fill="#f23f43"
-                mask="url(#svg-mask-status-dnd)"
+                fill={STATUS[status].color}
+                mask={STATUS[status].mask}
               ></rect>
             </svg>
           </div>
 
           <div className="py-1 mr-1 overflow-hidden">
             <div>
-              <p className="text-left truncate">{user.username}</p>
+              <p className="text-left truncate">{username}</p>
             </div>
             <div className="text-left text-xs text-header-secondary">
-              <p className="truncate">{user.status}</p>
+              <p className="truncate">{status}</p>
             </div>
           </div>
         </button>

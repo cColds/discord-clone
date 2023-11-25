@@ -4,57 +4,54 @@ import Image from "next/image";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { Message, More } from "../svgs";
 import { useRouter } from "next/navigation";
+import { FriendTab } from "@/types/friend-tab";
+import { SocialPopulated } from "@/types/social";
+import { STATUS } from "@/constants";
 
-const onlineFriends = [
-  {
-    username: "cold",
-    avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-    status: "Do Not Disturb",
-    id: "r98sh",
-  },
-  {
-    username: "cold",
-    avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-    status: "Do Not Disturb",
-    id: "r92348h",
-  },
-  {
-    username: "cold",
-    avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-    status: "Do Not Disturb",
-    id: "r23198h",
-  },
-  {
-    username: "cold",
-    avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-    status: "Do Not Disturb",
-    id: "r9sd8h",
-  },
-  {
-    username: "cold",
-    avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-    status: "Do Not Disturb",
-    id: "r98ah",
-  },
-  {
-    username: "cold",
-    avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-    status: "Do Not Disturb",
-    id: "r981h",
-  },
-];
+type FriendsListProps = {
+  social: SocialPopulated["social"];
+  tab: FriendTab;
+};
 
-export default function FriendsList() {
+export default function FriendsList({ tab, social }: FriendsListProps) {
   const router = useRouter();
+
+  const getSocialType = () => {
+    switch (tab) {
+      case "Online":
+        const onlineFriends = social.friends.filter((friend) =>
+          friend.status.match(/Online|Idle|Do Not Disturb/)
+        );
+
+        return onlineFriends;
+
+      case "All":
+        return social.friends;
+
+      case "Pending":
+        return social.pending;
+
+      case "Blocked":
+        return social.blocked;
+
+      // I have a condition that doesn't render this component if the tab is 'Add Friend'
+      // but I don't know how to tell TypeScript.
+      default:
+        console.log("No cases matched. Probably Add Friend tab.");
+        return [];
+    }
+  };
+
+  const socialType = getSocialType();
 
   return (
     <div className="overflow-hidden">
       <h2 className="mt-4 mr-5 mb-2 ml-[30px] text-xs uppercase text-header-primary truncate tracking-[0.02em]">
-        Online — {onlineFriends.length}
+        {tab === "All" ? "All Friends" : tab} — {socialType.length}
       </h2>
 
       <ul className="flex flex-col mt-2 pb-2 pr-2 overflow-auto">
-        {onlineFriends.map((friend) => {
+        {socialType.map((friend) => {
           return (
             <li
               className="flex justify-between ml-[30px] mr-5 border-t-[1px] border-background-modifier-accent hover:bg-background-interactive-hover rounded-md cursor-pointer h-[62px] px-2 grow group"
@@ -94,8 +91,8 @@ export default function FriendsList() {
                         height="10"
                         x="22"
                         y="22"
-                        fill="#f23f43"
-                        mask="url(#svg-mask-status-dnd)"
+                        fill={STATUS[friend.status].color}
+                        mask={STATUS[friend.status].mask}
                       ></rect>
                     </svg>
                   </div>
