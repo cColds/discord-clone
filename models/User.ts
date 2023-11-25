@@ -19,11 +19,8 @@ export interface UserType extends Document {
 
 const UserSchema = new Schema<UserType>(
   {
-    // TODO:
-    // - set min length to 2
-    // - set unique on email and username
-    username: { type: String, maxlength: 32, required: true },
-    displayName: { type: String, maxLength: 32, required: true },
+    username: { type: String, minlength: 2, maxlength: 32, required: true },
+    displayName: { type: String, minlength: 2, maxLength: 32, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     avatar: { type: String, required: true },
