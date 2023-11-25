@@ -2,13 +2,14 @@ import Image from "next/image";
 import { Deafan, Mic, Settings } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { STATUS } from "@/constants";
+import { Status } from "@/types/status";
 
 type UserPanelProps = {
   username: string;
   displayName: string;
   email: string;
   avatar: string;
-  status: "Online" | "Invisible" | "Do Not Disturb" | "Idle" | "Offline";
+  status: Status;
 };
 
 export default function UserPanel({

@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 import ActionTooltip from "../tooltip/ActionTooltip";
+import { Status } from "@/types/status";
+import { STATUS } from "@/constants";
 
 type Dms = {
   username: string;
   avatar: string;
-  status: "Online" | "Invisible" | "Do Not Disturb" | "Idle";
+  status: Status;
   id: string;
 }[];
 
@@ -48,20 +50,6 @@ const dms: Dms = [
     id: "98hn",
   },
 ];
-
-const statuses = {
-  Invisible: "url(#svg-mask-status-offline)",
-  Online: "url(#svg-mask-status-online)",
-  Idle: "url(#svg-mask-status-idle)",
-  "Do Not Disturb": "url(#svg-mask-status-dnd)",
-};
-
-const statusColors = {
-  Invisible: "#80848e",
-  Online: "rgb(35, 165, 90)",
-  Idle: "rgb(240, 178, 50)",
-  "Do Not Disturb": "rgb(242, 63, 67)",
-};
 
 export default function PrivateChannels() {
   const [showTooltip, setShowTooltip] = useState("");
@@ -189,8 +177,8 @@ export default function PrivateChannels() {
                         height="10"
                         x="22"
                         y="22"
-                        fill={statusColors[dm.status]}
-                        mask={statuses[dm.status]}
+                        fill={STATUS[dm.status].color}
+                        mask={STATUS[dm.status].mask}
                       ></rect>
                     </svg>
                   </div>

@@ -1,9 +1,11 @@
+import { Status } from "./status";
+
 export type SocialUser = {
   username: string;
   displayName: string;
   avatar: string;
   id: string;
-  status: "Online" | "Invisible" | "Do Not Disturb" | "Idle";
+  status: Status;
 };
 
 export type SocialPopulated = {

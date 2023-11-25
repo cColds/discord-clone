@@ -1,3 +1,4 @@
+import { Status } from "@/types/status";
 import { Schema, model, models, Types, Document } from "mongoose";
 
 export interface UserType extends Document {
@@ -6,7 +7,7 @@ export interface UserType extends Document {
   email: string;
   password: string;
   avatar: string;
-  status: "Online" | "Idle" | "Do Not Disturb" | "Invisible" | "Offline";
+  status: Status;
   social: {
     friends: Types.ObjectId[];
     pending: Types.ObjectId[];
