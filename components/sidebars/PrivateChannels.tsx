@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { CloseDM, DMPlus, Friend, Nitro, Shop } from "../svgs";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import { useState } from "react";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { Status } from "@/types/status";
-import { STATUS } from "@/constants";
+import AvatarMask from "../avatar/AvatarMask";
 
 type Dms = {
   username: string;
@@ -149,38 +148,11 @@ export default function PrivateChannels() {
               >
                 <div className="flex justify-center items-center shrink-0">
                   <div className="w-8 h-8">
-                    <svg
-                      width="40"
-                      height="40"
-                      viewBox="0 0 40 40"
-                      aria-hidden="true"
-                    >
-                      <foreignObject
-                        x="0"
-                        y="0"
-                        width="32"
-                        height="32"
-                        mask="url(#svg-mask-avatar-status-round-32)"
-                      >
-                        <div>
-                          <Image
-                            src={dm.avatar}
-                            alt={`${dm.username}, ${dm.status}`}
-                            width={32}
-                            height={32}
-                            className="rounded-full"
-                          />
-                        </div>
-                      </foreignObject>
-                      <rect
-                        width="10"
-                        height="10"
-                        x="22"
-                        y="22"
-                        fill={STATUS[dm.status].color}
-                        mask={STATUS[dm.status].mask}
-                      ></rect>
-                    </svg>
+                    <AvatarMask
+                      username={dm.username}
+                      status={dm.status}
+                      avatar={dm.avatar}
+                    />
                   </div>
                 </div>
 

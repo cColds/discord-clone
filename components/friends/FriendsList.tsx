@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { Message, More } from "../svgs";
 import { useRouter } from "next/navigation";
 import { FriendTab } from "@/types/friend-tab";
 import { SocialPopulated } from "@/types/social";
-import { STATUS } from "@/constants";
+import AvatarMask from "../avatar/AvatarMask";
 
 type FriendsListProps = {
   social: SocialPopulated["social"];
@@ -64,37 +63,11 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
 
                 <div className="flex items-center">
                   <div className="w-8 h-8 mr-2">
-                    <svg
-                      width="40"
-                      height="40"
-                      viewBox="0 0 40 40"
-                      aria-hidden="true"
-                    >
-                      <foreignObject
-                        x="0"
-                        y="0"
-                        width="32"
-                        height="32"
-                        mask="url(#svg-mask-avatar-status-round-32)"
-                      >
-                        <Image
-                          src={friend.avatar}
-                          alt=""
-                          aria-hidden="true"
-                          width={32}
-                          height={32}
-                          draggable={false}
-                        />
-                      </foreignObject>
-                      <rect
-                        width="10"
-                        height="10"
-                        x="22"
-                        y="22"
-                        fill={STATUS[friend.status].color}
-                        mask={STATUS[friend.status].mask}
-                      ></rect>
-                    </svg>
+                    <AvatarMask
+                      username={friend.username}
+                      status={friend.status}
+                      avatar={friend.avatar}
+                    />
                   </div>
                   <div className="py-1 mr-1 overflow-hidden">
                     <div>

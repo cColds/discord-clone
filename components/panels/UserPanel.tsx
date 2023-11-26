@@ -1,8 +1,7 @@
-import Image from "next/image";
 import { Deafan, Mic, Settings } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
-import { STATUS } from "@/constants";
 import { Status } from "@/types/status";
+import AvatarMask from "../avatar/AvatarMask";
 
 type UserPanelProps = {
   username: string;
@@ -27,32 +26,7 @@ export default function UserPanel({
           className="flex min-w-[120px] items-center gap-2 hover:bg-background-modifier-selected rounded-[4px] grow"
         >
           <div className="w-8 h-8">
-            <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
-              <foreignObject
-                x="0"
-                y="0"
-                width="32"
-                height="32"
-                mask="url(#svg-mask-avatar-status-round-32)"
-              >
-                <Image
-                  src={avatar}
-                  alt=""
-                  aria-hidden="true"
-                  width={32}
-                  height={32}
-                  draggable={false}
-                />
-              </foreignObject>
-              <rect
-                width="10"
-                height="10"
-                x="22"
-                y="22"
-                fill={STATUS[status].color}
-                mask={STATUS[status].mask}
-              ></rect>
-            </svg>
+            <AvatarMask username={username} status={status} avatar={avatar} />
           </div>
 
           <div className="py-1 mr-1 overflow-hidden">
