@@ -1,7 +1,7 @@
 import { Status } from "@/types/status";
-import { Schema, model, models, Types, Document } from "mongoose";
+import { Schema, model, models, Types } from "mongoose";
 
-export interface UserType extends Document {
+export interface UserType {
   username: string;
   displayName: string;
   email: string;
