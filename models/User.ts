@@ -38,7 +38,11 @@ const UserSchema = new Schema<UserType>(
     servers: [{ type: Schema.Types.ObjectId, ref: "Server" }],
     dms: [{ type: Schema.Types.ObjectId, ref: "Dm" }],
   },
-  { timestamps: true }
+  {
+    toJSON: { virtuals: true },
+
+    timestamps: true,
+  }
 );
 
 /* 
