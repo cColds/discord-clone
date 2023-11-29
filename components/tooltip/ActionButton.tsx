@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import ActionTooltip from "./ActionTooltip";
 
 type ActionButtonProps = {
@@ -5,11 +6,19 @@ type ActionButtonProps = {
   name: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const ActionButton = ({ children, name, ...props }: ActionButtonProps) => {
+const ActionButton = ({
+  children,
+  className,
+  name,
+  ...props
+}: ActionButtonProps) => {
   return (
     <ActionTooltip content={name}>
       <button
-        className="flex justify-center items-center text-interactive-normal hover:text-interactive-hover bg-background-secondary rounded-full w-9 h-9 group-hover:bg-background-tertiary"
+        className={cn(
+          "flex justify-center items-center text-interactive-normal hover:text-interactive-hover bg-background-secondary rounded-full w-9 h-9 group-hover:bg-background-tertiary",
+          className
+        )}
         {...props}
       >
         {children}
