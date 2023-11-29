@@ -1,4 +1,4 @@
-import { STATUS } from "@/constants";
+import { STATUS } from "@/utils/constants/status";
 import { Status } from "@/types/status";
 import Image from "next/image";
 

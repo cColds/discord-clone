@@ -1,4 +1,4 @@
-import { USERNAME_REGEX } from "@/constants";
+import { USERNAME_REGEX } from "@/utils/constants/usernameRegex";
 import { z } from "zod";
 
 export const registerSchema = z.object({

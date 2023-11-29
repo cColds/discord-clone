@@ -1,11 +1,12 @@
 "use client";
 
-import ActionTooltip from "../tooltip/ActionTooltip";
 import { Message, More } from "../svgs";
 import { useRouter } from "next/navigation";
 import { FriendTab } from "@/types/friend-tab";
 import { SocialPopulated } from "@/types/social";
 import AvatarMask from "../avatar/AvatarMask";
+import { getSocialType } from "@/utils/helpers/getSocialType";
+import ActionButton from "../tooltip/ActionButton";
 
 type FriendsListProps = {
   social: SocialPopulated["social"];
@@ -15,33 +16,7 @@ type FriendsListProps = {
 export default function FriendsList({ tab, social }: FriendsListProps) {
   const router = useRouter();
 
-  const getSocialType = () => {
-    switch (tab) {
-      case "Online":
-        const onlineFriends = social.friends.filter((friend) =>
-          friend.status.match(/Online|Idle|Do Not Disturb/)
-        );
-
-        return onlineFriends;
-
-      case "All":
-        return social.friends;
-
-      case "Pending":
-        return social.pending;
-
-      case "Blocked":
-        return social.blocked;
-
-      // I have a condition that doesn't render this component if the tab is 'Add Friend'
-      // but I don't know how to tell TypeScript.
-      default:
-        console.log("No cases matched. Probably Add Friend tab.");
-        return [];
-    }
-  };
-
-  const socialType = getSocialType();
+  const socialType = getSocialType(tab, social);
 
   return (
     <div className="overflow-hidden">
@@ -59,8 +34,6 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
               tabIndex={0}
             >
               <div className="flex justify-between items-center w-full">
-                {/* USER INFO */}
-
                 <div className="flex items-center">
                   <div className="w-8 h-8 mr-2">
                     <AvatarMask
@@ -81,7 +54,6 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
                   </div>
                 </div>
 
-                {/* ICON ACTIONS */}
                 <div className="flex ml-2 gap-2">
                   <ActionButton
                     name="Message"
@@ -105,21 +77,3 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
     </div>
   );
 }
-
-type ActionButtonProps = {
-  children: React.ReactNode;
-  name: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-const ActionButton = ({ children, name, ...props }: ActionButtonProps) => {
-  return (
-    <ActionTooltip content={name}>
-      <button
-        className="flex justify-center items-center text-interactive-normal hover:text-interactive-hover bg-background-secondary rounded-full w-9 h-9 group-hover:bg-background-tertiary"
-        {...props}
-      >
-        {children}
-      </button>
-    </ActionTooltip>
-  );
-};
