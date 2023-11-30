@@ -10,7 +10,7 @@ export interface UserType {
   status: Status;
   social: {
     friends: Types.ObjectId[];
-    pending: Types.ObjectId[];
+    pending: { type: Types.ObjectId; request: "Incoming" | "Outgoing" }[];
     blocked: Types.ObjectId[];
   };
 
@@ -32,7 +32,13 @@ const UserSchema = new Schema<UserType>(
     },
     social: {
       friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      pending: [{ type: Schema.Types.ObjectId, ref: "User" }],
+      pending: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          request: { type: String, enum: ["Incoming", "Outgoing"] },
+        },
+      ],
       blocked: [{ type: Schema.Types.ObjectId, ref: "User" }],
     },
     servers: [{ type: Schema.Types.ObjectId, ref: "Server" }],
