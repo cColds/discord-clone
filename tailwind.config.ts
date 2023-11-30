@@ -39,6 +39,8 @@ module.exports = {
         "background-secondary-alt": "rgb(35, 36, 40)",
         "interactive-hover": "rgb(219, 222, 225)",
         "channels-default": "rgb(148, 155, 164)",
+        "info-danger-foreground": "rgb(242, 63, 66)",
+        "info-positive-foreground": "rgb(35, 165, 89)",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

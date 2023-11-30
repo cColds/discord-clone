@@ -1,12 +1,13 @@
 "use client";
 
-import { Message, More } from "../svgs";
 import { useRouter } from "next/navigation";
 import { FriendTab } from "@/types/friend-tab";
 import { SocialPopulated } from "@/types/social";
 import AvatarMask from "../avatar/AvatarMask";
 import { getSocialType } from "@/utils/helpers/getSocialType";
-import ActionButton from "../tooltip/ActionButton";
+import FriendActions from "./action-buttons/FriendActions";
+import PendingActions from "./action-buttons/PendingActions";
+import BlockedActions from "./action-buttons/BlockedActions";
 
 type FriendsListProps = {
   social: SocialPopulated["social"];
@@ -55,19 +56,16 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
                 </div>
 
                 <div className="flex ml-2 gap-2">
-                  <ActionButton
-                    name="Message"
-                    onClick={() => router.push(`/channels/${friend.id}`)}
-                  >
-                    <Message />
-                  </ActionButton>
+                  {(tab === "Online" || tab === "All") && (
+                    <FriendActions id={friend.id} />
+                  )}
 
-                  <ActionButton
-                    name="More"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <More />
-                  </ActionButton>
+                  {tab === "Pending" && (
+                    // TODO: use dynamic type value when schema and types updated
+                    <PendingActions type="Incoming" id={friend.id} />
+                  )}
+
+                  {tab === "Blocked" && <BlockedActions id={friend.id} />}
                 </div>
               </div>
             </li>

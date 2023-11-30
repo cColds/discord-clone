@@ -8,6 +8,9 @@ export type SocialUser = {
   status: Status;
 };
 
+// TODO:
+// update pending and blocked type schema, because they may have properties like type: {incoming | outgoing} or blocked status
+
 export type SocialPopulated = {
   social: {
     friends: SocialUser[];
