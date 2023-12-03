@@ -9,7 +9,7 @@ export async function getUser(id?: string) {
   const user = await User.findById(id).populate<
     Pick<SocialPopulated, "social">
   >({
-    path: "social.friends social.pending social.blocked",
+    path: "social.friends social.pending.user social.blocked",
     select: "username displayName avatar status social",
   });
 

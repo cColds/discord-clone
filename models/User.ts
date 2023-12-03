@@ -34,8 +34,7 @@ const UserSchema = new Schema<UserType>(
       friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
       pending: [
         {
-          type: Schema.Types.ObjectId,
-          ref: "User",
+          user: { type: Schema.Types.ObjectId, ref: "User" },
           request: { type: String, enum: ["Incoming", "Outgoing"] },
         },
       ],

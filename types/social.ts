@@ -9,11 +9,14 @@ export type SocialUser = {
 };
 
 type PendingStatus = {
-  username: string;
-  displayName: string;
-  avatar: string;
-  id: string;
-  status: Status;
+  user: {
+    username: string;
+    displayName: string;
+    avatar: string;
+    id: string;
+    status: Status;
+  };
+
   request: "Incoming" | "Outgoing";
 };
 
