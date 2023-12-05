@@ -65,6 +65,6 @@ Another way to do it:
 Source: https://stackoverflow.com/questions/65887351/how-to-properly-use-mongoose-models-in-next-js
 */
 
-const User = model<UserType>("User", models.User ? undefined : UserSchema);
+const User = model<UserType>("User", models?.User ? undefined : UserSchema);
 
 export default User;
