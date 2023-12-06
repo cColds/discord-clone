@@ -6,6 +6,8 @@ type ActionButtonProps = {
   name: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
+// TODO: fix forwardRef error (still not sure which component causing it)
+
 const ActionButton = ({
   children,
   className,
