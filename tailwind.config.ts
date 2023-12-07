@@ -26,6 +26,8 @@ module.exports = {
         "background-tertiary": "#1E1F22",
         "background-primary": "rgb(49, 51, 56)",
         "background-secondary": "rgb(43, 45, 49)",
+        "brand-560": "rgb(71, 82, 196)",
+        "brand-600": "rgb(60, 69, 165)",
         "channel-icon": "rgb(128, 132, 142)",
         "dark-700": "#313338",
         "background-modifier-accent": "#4e50587a",
@@ -41,6 +43,10 @@ module.exports = {
         "channels-default": "rgb(148, 155, 164)",
         "info-danger-foreground": "rgb(242, 63, 66)",
         "info-positive-foreground": "rgb(35, 165, 89)",
+        "status-danger": "rgb(242, 63, 66)",
+        "button-danger-background": "rgb(218, 55, 60)",
+        "red-500": "rgb(164, 40, 40)",
+        "background-floating": "rgb(17, 18, 20)",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -62,7 +68,7 @@ module.exports = {
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
+          DEFAULT: "rgb(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
@@ -93,6 +99,8 @@ module.exports = {
       boxShadow: {
         "elevation-low":
           "rgba(2, 2, 2, 0.2) 0px 1px 0px 0px, rgba(6, 6, 7, 0.05) 0px 1.5px 0px 0px, rgba(2, 2, 2, 0.05) 0px 2px 0px 0px",
+
+        "elevation-high": "0 8px 16px #000 / 0.24)",
       },
     },
     backgroundImage: {
