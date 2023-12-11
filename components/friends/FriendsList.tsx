@@ -63,9 +63,9 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
                     <FriendActions id={friendData.id} />
                   )}
 
-                  {tab === "Pending" && (
+                  {isPendingStatus && tab === "Pending" && (
                     // TODO: use dynamic type value when schema and types updated
-                    <PendingActions type="Incoming" id={friendData.id} />
+                    <PendingActions type={friend.request} id={friendData.id} />
                   )}
 
                   {tab === "Blocked" && <BlockedActions id={friendData.id} />}
