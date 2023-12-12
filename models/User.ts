@@ -10,7 +10,10 @@ export interface UserType {
   status: Status;
   social: {
     friends: Types.ObjectId[];
-    pending: { type: Types.ObjectId; request: "Incoming" | "Outgoing" }[];
+    pending: {
+      user: Types.ObjectId;
+      request: "Incoming" | "Outgoing";
+    }[];
     blocked: Types.ObjectId[];
   };
 
