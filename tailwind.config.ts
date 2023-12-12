@@ -33,6 +33,7 @@ module.exports = {
         "dark-700": "#313338",
         "background-modifier-accent": "#4e50587a",
         "background-modifier-selected": "rgba(78, 80, 88, 0.6)",
+        "background-modifier-hover": "rgba(78, 80, 88, 0.298)",
         foreground: "hsl(var(--foreground))",
         "status-positive-background": "rgb(36, 128, 70)",
         positive: "rgb(45, 199, 112)",
@@ -42,6 +43,7 @@ module.exports = {
         "background-secondary-alt": "rgb(35, 36, 40)",
         "interactive-hover": "rgb(219, 222, 225)",
         "channels-default": "rgb(148, 155, 164)",
+        "text-muted": "rgb(148, 155, 164)",
         "info-danger-foreground": "rgb(242, 63, 66)",
         "info-positive-foreground": "rgb(35, 165, 89)",
         "status-danger": "rgb(242, 63, 66)",
@@ -110,6 +112,8 @@ module.exports = {
     },
     backgroundImage: {
       "auth-background": "url('/images/auth-background.svg')",
+      "wumpus-waiting-friends":
+        "url('/images/background/wumpus-waiting-friends.svg')",
     },
   },
   plugins: [require("tailwindcss-animate")],
