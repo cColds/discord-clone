@@ -2,6 +2,7 @@ import { SocialPopulated } from "@/types/social";
 import { FriendTab } from "@/types/friend-tab";
 import FriendsList from "./FriendsList";
 import FriendsListSearchBar from "../search/FriendsListSearchBar";
+import AddFriend from "./AddFriend";
 
 type FriendsBodyProps = {
   social: SocialPopulated["social"];
@@ -14,7 +15,7 @@ export default function FriendsBody({ social, tab }: FriendsBodyProps) {
       {/* Should add the rest of the tab components at some point */}
 
       {tab === "Add Friend" ? (
-        <h1 className="text-xl p-4">Add Friend</h1>
+        <AddFriend />
       ) : (
         <div className="flex flex-col grow">
           <FriendsListSearchBar />
