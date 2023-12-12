@@ -23,7 +23,7 @@ export default function FriendsBody({ social, tab }: FriendsBodyProps) {
         </div>
       )}
 
-      <aside className="min-w-[360px] max-w-[420px] basis-[30%] p-4 border-l-[1px] border-background-modifier-accent">
+      <aside className="min-w-[360px] max-w-[420px] basis-[30%] p-4 border-l-[1px] border-background-modifier-accent xl:block hidden">
         Activity Bar
       </aside>
     </div>
