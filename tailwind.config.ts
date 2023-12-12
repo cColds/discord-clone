@@ -22,6 +22,7 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         "interactive-normal": "rgb(181, 186, 193)",
+        "text-normal": "rgb(219, 222, 225)",
         "green-360": "rgb(35, 165, 89)",
         "background-tertiary": "#1E1F22",
         "background-primary": "rgb(49, 51, 56)",
@@ -47,8 +48,12 @@ module.exports = {
         "button-danger-background": "rgb(218, 55, 60)",
         "red-500": "rgb(164, 40, 40)",
         "background-floating": "rgb(17, 18, 20)",
+        "text-input-border": "rgba(0, 0, 0, 0.298)",
+        "text-link": "rgb(0, 168, 252)",
+        "text-danger": "rgb(250, 119, 124)",
+        "text-positive": "rgb(45, 199, 112)",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "rgb(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
