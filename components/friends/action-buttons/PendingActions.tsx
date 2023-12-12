@@ -49,7 +49,9 @@ const PendingActions = ({
       ) : (
         <ActionButton
           name="Cancel"
-          onClick={async () => {
+          onClick={async (e) => {
+            e.stopPropagation();
+
             await cancelPendingRequest(session?.user.id ?? "", id);
             router.refresh();
           }}
