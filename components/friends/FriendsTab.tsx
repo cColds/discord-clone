@@ -18,7 +18,7 @@ const TabButton = ({
   return (
     <button
       className={cn(
-        "px-2 py-0.5 rounded-sm hover:bg-background-interactive-hover hover:text-interactive-hover",
+        "px-2 py-0.5 rounded-sm hover:bg-background-interactive-hover hover:text-interactive-hover border-0 leading-5",
         className,
         {
           "cursor-default": selected,
@@ -101,7 +101,7 @@ export default function FriendsTab({ onTabClick, tab }: FriendsTabProps) {
 
           <button
             className={cn(
-              "py-0.5 px-2 mr-2 rounded-sm bg-status-positive-background text-white font-semibold",
+              "py-0.5 px-2 mr-2 rounded-sm bg-status-positive-background text-white font-semibold border-0 leading-5",
               {
                 "bg-transparent": tab === "Add Friend",
                 "text-positive": tab === "Add Friend",
