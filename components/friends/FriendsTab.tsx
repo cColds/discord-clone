@@ -38,14 +38,18 @@ const TabButton = ({
 type ToolbarIconProps = {
   children: React.ReactNode;
   name: string;
+  className?: string;
 };
 
-const ToolbarIcon = ({ children, name }: ToolbarIconProps) => {
+const ToolbarIcon = ({ children, name, className }: ToolbarIconProps) => {
   return (
     <ActionTooltip content={name} side="bottom">
       <button
         aria-label={name}
-        className="text-interactive-normal hover:text-interactive-hover mx-2"
+        className={cn(
+          "text-interactive-normal hover:text-interactive-hover mx-2",
+          className
+        )}
       >
         {children}
       </button>
@@ -60,8 +64,8 @@ type FriendsTabProps = {
 
 export default function FriendsTab({ onTabClick, tab }: FriendsTabProps) {
   return (
-    <nav className="flex justify-between p-2 shadow-elevation-low min-h-[48px]">
-      <div className="flex items-center">
+    <nav className="flex p-2 shadow-elevation-low min-h-[48px] overflow-hidden">
+      <div className="flex items-center overflow-hidden grow relative overflow-fade-gradient">
         <div className="text-channel-icon mx-2">
           <Friend />
         </div>
@@ -101,7 +105,7 @@ export default function FriendsTab({ onTabClick, tab }: FriendsTabProps) {
 
           <button
             className={cn(
-              "py-0.5 px-2 mr-2 rounded-sm bg-status-positive-background text-white font-semibold border-0 leading-5",
+              "py-0.5 px-2 mr-2 rounded-sm bg-status-positive-background text-white font-semibold border-0 leading-5 truncate",
               {
                 "bg-transparent": tab === "Add Friend",
                 "text-positive": tab === "Add Friend",
@@ -117,7 +121,7 @@ export default function FriendsTab({ onTabClick, tab }: FriendsTabProps) {
       </div>
 
       <div className="flex items-center">
-        <ToolbarIcon name="New Group DM">
+        <ToolbarIcon name="New Group DM" className="max-940:hidden">
           <NewGroupDM />
         </ToolbarIcon>
 

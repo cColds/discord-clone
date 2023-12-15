@@ -115,6 +115,10 @@ module.exports = {
       "wumpus-waiting-friends":
         "url('/images/background/wumpus-waiting-friends.svg')",
     },
+
+    screens: {
+      "max-940": { max: "940px" },
+    },
   },
   plugins: [require("tailwindcss-animate")],
 };

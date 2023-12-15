@@ -29,18 +29,12 @@ export default async function RootLayout({
     <html lang="en">
       <body className={ggSans.className}>
         <SvgMasks />
-        {data ? (
-          <Providers>
-            <div className="flex h-full w-full">
-              <ServerNav />
-              <main className="w-full">{children}</main>
-            </div>
-          </Providers>
-        ) : (
+        <Providers>
           <div className="flex h-full w-full">
-            <main className="w-full">{children}</main>
+            {data && <ServerNav />}
+            <main className="w-full overflow-hidden">{children}</main>
           </div>
-        )}
+        </Providers>
       </body>
     </html>
   );

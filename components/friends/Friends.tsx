@@ -13,7 +13,7 @@ export default function Friends({ social }: SocialPopulated) {
 
   return (
     <div
-      className="bg-background-primary grow flex flex-col"
+      className="bg-background-primary grow flex flex-col overflow-hidden"
       aria-label="Friends"
     >
       <FriendsTab onTabClick={handleTabClick} tab={tab} />
