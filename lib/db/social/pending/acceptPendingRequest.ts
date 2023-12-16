@@ -14,36 +14,30 @@ export const acceptPendingRequest = async (
   const mongooseSession = await mongoose.startSession();
 
   try {
-    mongooseSession.startTransaction();
-
-    await Promise.all([
-      User.findByIdAndUpdate(
-        friendId,
-        {
-          $pull: { "social.pending": { user: userId } },
-          $push: { "social.friends": userId },
-        },
-        { session: mongooseSession }
-      ),
-      User.findByIdAndUpdate(
-        userId,
-        {
-          $pull: {
-            "social.pending": { user: friendId },
+    await mongooseSession.withTransaction(async () => {
+      await Promise.all([
+        User.findByIdAndUpdate(
+          friendId,
+          {
+            $pull: { "social.pending": { user: userId } },
+            $push: { "social.friends": userId },
           },
-          $push: { "social.friends": friendId },
-        },
-        { session: mongooseSession }
-      ),
-    ]);
-
-    await mongooseSession.commitTransaction();
-
+          { session: mongooseSession }
+        ),
+        User.findByIdAndUpdate(
+          userId,
+          {
+            $pull: {
+              "social.pending": { user: friendId },
+            },
+            $push: { "social.friends": friendId },
+          },
+          { session: mongooseSession }
+        ),
+      ]);
+    });
     console.log("Accepted friend request!");
   } catch (err) {
     console.error(err);
-    await mongooseSession.abortTransaction();
-  } finally {
-    await mongooseSession.endSession();
   }
 };

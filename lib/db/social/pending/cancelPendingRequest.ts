@@ -14,28 +14,23 @@ export const cancelPendingRequest = async (
   const mongooseSession = await mongoose.startSession();
 
   try {
-    mongooseSession.startTransaction();
-
-    await Promise.all([
-      User.findByIdAndUpdate(
-        friendId,
-        { $pull: { "social.pending": { user: userId } } },
-        { session: mongooseSession }
-      ),
-      User.findByIdAndUpdate(
-        userId,
-        { $pull: { "social.pending": { user: friendId } } },
-        { session: mongooseSession }
-      ),
-    ]);
-
-    await mongooseSession.commitTransaction();
+    await mongooseSession.withTransaction(async () => {
+      await Promise.all([
+        User.findByIdAndUpdate(
+          friendId,
+          { $pull: { "social.pending": { user: userId } } },
+          { session: mongooseSession }
+        ),
+        User.findByIdAndUpdate(
+          userId,
+          { $pull: { "social.pending": { user: friendId } } },
+          { session: mongooseSession }
+        ),
+      ]);
+    });
 
     console.log("Cancel request success!");
   } catch (err) {
     console.error(err);
-    await mongooseSession.abortTransaction();
-  } finally {
-    await mongooseSession.endSession();
   }
 };

@@ -41,95 +41,77 @@ const getRandUser = async () => {
 const createPendingRequest = async (id: string) => {
   const session = await mongoose.startSession();
   try {
-    session.startTransaction();
-
-    const user = new User({
-      ...(await getRandUser()),
-      social: {
-        pending: [{ user: id, request: "Outgoing" }],
-      },
-    });
-
-    await user.save({ session });
-
-    console.log("pending user created", user);
-
-    await User.findByIdAndUpdate(
-      id,
-      {
-        $push: {
-          "social.pending": { user: user.id, request: "Incoming" },
+    await session.withTransaction(async () => {
+      const user = new User({
+        ...(await getRandUser()),
+        social: {
+          pending: [{ user: id, request: "Outgoing" }],
         },
-      },
-      { session }
-    );
+      });
 
-    await session.commitTransaction();
+      await user.save({ session });
+
+      console.log("pending user created", user);
+
+      await User.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            "social.pending": { user: user.id, request: "Incoming" },
+          },
+        },
+        { session }
+      );
+    });
   } catch (err) {
-    await session.abortTransaction();
-
     console.error(err);
-  } finally {
-    await session.endSession();
   }
 };
 
 const createBlockedUser = async (id: string) => {
   const session = await mongoose.startSession();
   try {
-    session.startTransaction();
+    await session.withTransaction(async () => {
+      const blockedUser = new User({
+        ...(await getRandUser()),
+      });
 
-    const blockedUser = new User({
-      ...(await getRandUser()),
+      await blockedUser.save({ session });
+
+      console.log("blocked user created", blockedUser);
+
+      await User.findByIdAndUpdate(
+        id,
+        { $push: { "social.blocked": blockedUser.id } },
+        { session }
+      );
     });
-
-    await blockedUser.save({ session });
-
-    console.log("blocked user created", blockedUser);
-
-    await User.findByIdAndUpdate(
-      id,
-      { $push: { "social.blocked": blockedUser.id } },
-      { session }
-    );
-
-    await session.commitTransaction();
   } catch (err) {
-    await session.abortTransaction();
-
     console.error(err);
-  } finally {
-    await session.endSession();
   }
 };
 
 const createFriend = async (id: string) => {
   const session = await mongoose.startSession();
   try {
-    session.startTransaction();
+    await session.withTransaction(async () => {
+      const friend = new User({
+        ...(await getRandUser()),
+        social: { friends: id },
+      });
 
-    const friend = new User({
-      ...(await getRandUser()),
-      social: { friends: id },
+      await friend.save({ session });
+
+      console.log("friend created", friend);
+
+      await User.findByIdAndUpdate(
+        id,
+        { $push: { "social.friends": friend.id } },
+        { session }
+      );
     });
-
-    await friend.save({ session });
-
-    console.log("friend created", friend);
-
-    await User.findByIdAndUpdate(
-      id,
-      { $push: { "social.friends": friend.id } },
-      { session }
-    );
-
-    await session.commitTransaction();
   } catch (err) {
-    await session.abortTransaction();
-
     console.error(err);
-  } finally {
-    await session.endSession();
   }
 };
 
