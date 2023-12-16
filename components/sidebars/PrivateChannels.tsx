@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { Status } from "@/types/status";
 import DmItem from "../dm/DmItem";
+import Notification from "../badges/Notification";
 
 type Dms = {
   username: string;
@@ -50,32 +51,46 @@ const dms: Dms = [
 type UpperListItemProps = {
   children: React.ReactNode;
   name: "Friends" | "Nitro" | "Shop";
+  incomingRequests?: number;
 };
 
-const UpperListItem = ({ children, name }: UpperListItemProps) => {
+const UpperListItem = ({
+  children,
+  name,
+  incomingRequests,
+}: UpperListItemProps) => {
   const selected = name === "Friends";
 
   return (
     <li
       className={cn(
-        "cursor-pointer flex mx-2 h-11 rounded-[4px] text-channels-default hover:bg-background-interactive-hover my-[1px] hover:text-interactive-hover font-medium",
+        "cursor-pointer flex mx-2 h-11 rounded-[4px] text-channels-default hover:bg-background-interactive-hover my-[1px] hover:text-interactive-hover font-medium pr-2",
         {
           "text-white": selected,
           "bg-background-modifier-selected": selected,
         }
       )}
     >
-      <Link href="/" className="flex gap-2">
-        <div className="flex items-center px-2">
+      <Link href="/" className="flex gap-2 items-center grow">
+        <div className="flex items-center px-2 grow">
           <div className="mr-3">{children}</div>
           <p>{name}</p>
         </div>
+        {incomingRequests && incomingRequests > 0 ? (
+          <Notification incomingRequests={incomingRequests} />
+        ) : null}
       </Link>
     </li>
   );
 };
 
-export default function PrivateChannels() {
+type PrivateChannelsProps = {
+  incomingRequests: number;
+};
+
+export default function PrivateChannels({
+  incomingRequests,
+}: PrivateChannelsProps) {
   return (
     <nav
       className="bg-background-secondary overflow-auto pb-2 grow"
@@ -87,7 +102,7 @@ export default function PrivateChannels() {
         </button>
       </div>
       <ul aria-label="Direct Messages" className="mt-2">
-        <UpperListItem name="Friends">
+        <UpperListItem name="Friends" incomingRequests={incomingRequests}>
           <Friend />
         </UpperListItem>
 

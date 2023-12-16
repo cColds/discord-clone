@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Friend, Help, Inbox, NewGroupDM } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { FriendTab } from "@/types/friend-tab";
+import Notification from "../badges/Notification";
 
 type TabButtonProps = {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ const TabButton = ({
   return (
     <button
       className={cn(
-        "px-2 py-0.5 rounded-sm hover:bg-background-interactive-hover hover:text-interactive-hover border-0 leading-5",
+        "px-2 py-0.5 rounded-sm hover:bg-background-interactive-hover hover:text-interactive-hover border-0 leading-5 flex items-center justify-center min-w-[40px]",
         className,
         {
           "cursor-default": selected,
@@ -60,9 +61,14 @@ const ToolbarIcon = ({ children, name, className }: ToolbarIconProps) => {
 type FriendsTabProps = {
   onTabClick: (tabType: FriendTab) => void;
   tab: FriendTab;
+  incomingRequests: number;
 };
 
-export default function FriendsTab({ onTabClick, tab }: FriendsTabProps) {
+export default function FriendsTab({
+  onTabClick,
+  tab,
+  incomingRequests,
+}: FriendsTabProps) {
   return (
     <nav className="flex p-2 shadow-elevation-low min-h-[48px] overflow-hidden">
       <div className="flex items-center overflow-hidden grow relative overflow-fade-gradient">
@@ -95,6 +101,12 @@ export default function FriendsTab({ onTabClick, tab }: FriendsTabProps) {
             onClick={() => onTabClick("Pending")}
           >
             Pending
+            {incomingRequests > 0 && (
+              <Notification
+                incomingRequests={incomingRequests}
+                className="ml-2"
+              />
+            )}
           </TabButton>
           <TabButton
             selected={tab === "Blocked"}
