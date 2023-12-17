@@ -15,26 +15,13 @@ type DmItemProps = {
   id: string;
 };
 
-const UsernameDisplay = ({ username }: { username: string }) => (
-  <div
-    className={cn("overflow-hidden", {
-      "text-white": false,
-    })}
-  >
-    <p className="truncate" data-username="username">
-      {username}
-    </p>
-  </div>
-);
-
 export default function DmItem({ id, username, status, avatar }: DmItemProps) {
   const [showTooltip, setShowTooltip] = useState("");
-  const handleMouseOver = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const el = e.target;
-    if (el instanceof HTMLElement && el.dataset.username === "username") {
-      const widthOverflow = el.offsetWidth < el.scrollWidth;
-      setShowTooltip(widthOverflow ? id : "");
-    }
+  const handleMouseOver = (e: React.MouseEvent<HTMLParagraphElement>) => {
+    const el = e.currentTarget;
+
+    const widthOverflow = el.offsetWidth < el.scrollWidth;
+    setShowTooltip(widthOverflow ? id : "");
   };
 
   // TODO:
@@ -53,7 +40,6 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
       <Link
         href={`/channels/${id}`}
         className="flex items-center gap-3 px-2 overflow-hidden grow"
-        onMouseOver={handleMouseOver}
       >
         <div className="flex justify-center items-center shrink-0">
           <div className="w-8 h-8">
@@ -63,10 +49,34 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
 
         {showTooltip === id ? (
           <ActionTooltip content={username}>
-            <UsernameDisplay username={username} />
+            <div
+              className={cn("overflow-hidden", {
+                "text-white": false,
+              })}
+            >
+              <p
+                className="truncate"
+                data-username="username"
+                onMouseOver={handleMouseOver}
+              >
+                {username}
+              </p>
+            </div>
           </ActionTooltip>
         ) : (
-          <UsernameDisplay username={username} />
+          <div
+            className={cn("overflow-hidden", {
+              "text-white": false,
+            })}
+          >
+            <p
+              className="truncate"
+              data-username="username"
+              onMouseOver={handleMouseOver}
+            >
+              {username}
+            </p>
+          </div>
         )}
       </Link>
       <button
