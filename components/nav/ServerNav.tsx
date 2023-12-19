@@ -1,128 +1,16 @@
-"use client";
+import { getUser } from "@/lib/db/getUser";
+import ServerItems from "./ServerItems";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/auth.config";
 
-import { useParams } from "next/navigation";
-import { useState } from "react";
-import Image from "next/image";
-import { DiscordLogo, Plus } from "../svgs";
-import { cn } from "@/lib/utils";
-import Pill from "../pill/Pill";
-import ActionTooltip from "../tooltip/ActionTooltip";
-import Link from "next/link";
+export default async function ServerNav() {
+  const { user } = (await getServerSession(authConfig)) || {};
+  const userDoc = user ? await getUser(user.id) : null;
+  if (userDoc == null) return null;
 
-const servers = [
-  {
-    name: "test",
-    id: "uijohasfdoias",
-    icon: "https://picsum.photos/seed/AUvOnuoS9O/512/512",
-  },
-  {
-    name: "cool",
-    id: "t98uj9io",
-    icon: "https://picsum.photos/seed/nKHk5uO/512/512",
-  },
-  {
-    name: "bobby bojangles",
-    id: "ijegr23",
-    icon: "https://picsum.photos/seed/x53NK0a2/512/512",
-  },
-];
-
-export default function ServerNav() {
-  const params = useParams();
-  const [hoveredServer, setHoveredServer] = useState("");
-  const [hoveredAddServer, setHoveredAddServer] = useState(false);
-
-  return (
-    <nav
-      className="min-w-[72px] bg-background-tertiary h-full overflow-auto"
-      aria-label="Servers sidebar"
-    >
-      <ul className="py-3">
-        <div className="flex justify-center relative mb-2">
-          <ActionTooltip content="Direct Messages" side="right">
-            <Link
-              href="/"
-              className={cn(
-                "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 bg-dark-700 hover:cursor-pointer hover:bg-primary hover:rounded-xl",
-                {
-                  "bg-primary": params.serverId === undefined,
-                  "rounded-xl": params.serverId === undefined,
-                }
-              )}
-              aria-label="Direct Messages"
-              onMouseOver={() => setHoveredServer("/")}
-              onMouseLeave={() => setHoveredServer("")}
-            >
-              <DiscordLogo />
-            </Link>
-          </ActionTooltip>
-          {(hoveredServer === "/" || params.serverId === undefined) && (
-            <Pill selected={!params.serverId} />
-          )}
-        </div>
-
-        <div className="h-0.5 w-8 bg-background-modifier-accent mb-2 mx-auto"></div>
-
-        <div className="flex flex-col items-center" aria-label="Servers">
-          {servers.map((server) => {
-            const currentServerSelected: boolean =
-              params.serverId === server.id;
-
-            return (
-              <div
-                className="flex justify-center relative w-full mb-2"
-                key={server.id}
-              >
-                <ActionTooltip content={server.name} side="right">
-                  <Link
-                    href={`/servers/${server.id}`}
-                    className={cn(
-                      "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip",
-                      { "rounded-xl": params.serverId === server.id }
-                    )}
-                    aria-label={server.name}
-                    onMouseOver={() => setHoveredServer(server.id)}
-                    onMouseLeave={() => setHoveredServer("")}
-                  >
-                    <Image
-                      src={server.icon}
-                      alt=""
-                      width={48}
-                      height={48}
-                      className="aspect-square min-w-[48px] min-h-[48px]"
-                      aria-label="hidden"
-                    />
-                  </Link>
-                </ActionTooltip>
-
-                {(hoveredServer === server.id || currentServerSelected) && (
-                  <Pill selected={currentServerSelected} />
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="flex justify-center">
-          <ActionTooltip content="Add a Server" side="right">
-            <button
-              className={cn(
-                "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip bg-dark-700",
-                {
-                  "rounded-xl": hoveredAddServer,
-                  "bg-green-360": hoveredAddServer,
-                }
-              )}
-              onMouseOver={() => setHoveredAddServer(true)}
-              onMouseLeave={() => setHoveredAddServer(false)}
-            >
-              <Plus
-                className={hoveredAddServer ? "text-white" : "text-green-360"}
-              />
-            </button>
-          </ActionTooltip>
-        </div>
-      </ul>
-    </nav>
+  const incomingRequests = userDoc.social.pending.filter(
+    (pending) => pending.request === "Incoming"
   );
+
+  return <ServerItems incomingRequests={incomingRequests.length} />;
 }
