@@ -13,12 +13,12 @@ export default async function Home() {
 
   const incomingRequests = user.social.pending.filter(
     (pending) => pending.request === "Incoming"
-  ).length;
+  );
 
   return (
     <div className="flex h-full">
       <div className="flex flex-col w-60">
-        <PrivateChannels incomingRequests={incomingRequests} />
+        <PrivateChannels incomingRequests={incomingRequests.length} />
         <UserPanel
           username={user.username}
           displayName={user.displayName}
