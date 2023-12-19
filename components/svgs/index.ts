@@ -6,7 +6,7 @@ export { Shop } from "./Shop";
 export { DMPlus } from "./DMPlus";
 export { CloseDM } from "./CloseDM";
 export { Mic } from "./Mic";
-export { Deafan } from "./Deafan";
+export { Deafen } from "./Deafen";
 export { Settings } from "./Settings";
 export { NewGroupDM } from "./NewGroupDM";
 export { Inbox } from "./Inbox";

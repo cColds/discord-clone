@@ -1,4 +1,4 @@
-export function Deafan() {
+export function Deafen() {
   return (
     <svg
       aria-hidden="true"

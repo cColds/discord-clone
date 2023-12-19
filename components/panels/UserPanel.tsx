@@ -1,4 +1,4 @@
-import { Deafan, Mic, Settings } from "../svgs";
+import { Deafen, Mic, Settings } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { Status } from "@/types/status";
 import AvatarMask from "../avatar/AvatarMask";
@@ -49,12 +49,12 @@ export default function UserPanel({
             </button>
           </ActionTooltip>
 
-          <ActionTooltip content="Deafan">
+          <ActionTooltip content="Deafen">
             <button
               className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
-              aria-label="Deafan"
+              aria-label="Deafen"
             >
-              <Deafan />
+              <Deafen />
             </button>
           </ActionTooltip>
 
