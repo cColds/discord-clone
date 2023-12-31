@@ -7,6 +7,7 @@ import ServerNav from "@/components/nav/ServerNav";
 import SvgMasks from "@/components/svgs/SvgMasks";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
+import { SocketProvider } from "./providers/SocketProvider";
 
 const ggSans = localFont({
   src: "../public/fonts/gg-sans.woff2",
@@ -29,12 +30,14 @@ export default async function RootLayout({
     <html lang="en">
       <body className={ggSans.className}>
         <SvgMasks />
-        <Providers>
-          <div className="flex h-full w-full">
-            {data && <ServerNav />}
-            <main className="w-full overflow-hidden">{children}</main>
-          </div>
-        </Providers>
+        <SocketProvider>
+          <Providers>
+            <div className="flex h-full w-full">
+              {data && <ServerNav />}
+              <main className="w-full overflow-hidden">{children}</main>
+            </div>
+          </Providers>
+        </SocketProvider>
       </body>
     </html>
   );
