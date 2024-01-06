@@ -30,7 +30,7 @@ export default function FriendsBody({ social, tab }: FriendsBodyProps) {
 
         <div className="flex p-4 justify-center items-center flex-col rounded-lg text-center">
           <h2 className="mb-1 text-header-primary font-bold">
-            It's quiet for now...
+            It&apos;s quiet for now...
           </h2>
           <p className="text-sm text-interactive-normal">
             When a friend starts an activity—like playing a game or hanging out

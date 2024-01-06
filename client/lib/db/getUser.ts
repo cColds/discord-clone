@@ -1,6 +1,9 @@
+"use server";
+
 import User from "@/models/User";
 import dbConnect from "./dbConnect";
 import { SocialPopulated } from "@/types/social";
+import { SessionUser } from "@/types/SessionUser";
 
 export async function getUser(id?: string) {
   if (!id) return null;
@@ -13,7 +16,8 @@ export async function getUser(id?: string) {
     select: "username displayName avatar status social",
   });
 
-  const serializedUser = JSON.parse(JSON.stringify(user)) as typeof user;
+  const serializedUser = JSON.parse(JSON.stringify(user)) as SessionUser &
+    SocialPopulated;
 
   return serializedUser;
 }

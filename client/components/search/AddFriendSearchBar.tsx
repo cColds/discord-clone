@@ -9,13 +9,14 @@ import { addFriendSchema } from "@/lib/validations/addFriend";
 import { addFriend } from "@/lib/actions/addFriend";
 import { useState, useTransition } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useSocket } from "@/app/providers/SocketProvider";
+import { getUserId } from "@/lib/db/getUserId";
 
 export default function AddFriendSearchBar() {
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState("");
-  const router = useRouter();
   const { data: session } = useSession();
+  const { socket } = useSocket();
 
   const form = useForm<z.infer<typeof addFriendSchema>>({
     resolver: zodResolver(addFriendSchema),
@@ -39,10 +40,17 @@ export default function AddFriendSearchBar() {
       }
 
       try {
-        await addFriend(data, session?.user.id ?? "");
+        if (!session?.user.id) throw new Error("Your user id is invalid");
+
+        await addFriend(data, session.user.id);
         form.reset();
         setSuccess(data.friendUsername);
-        router.refresh();
+
+        const receiverId = await getUserId(data.friendUsername);
+        socket.emit("send-friend-request", {
+          senderId: session.user.id,
+          receiverId,
+        });
       } catch (err) {
         const errOpts = {
           type: "manual",

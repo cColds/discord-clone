@@ -30,7 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={ggSans.className}>
         <SvgMasks />
-        <SocketProvider>
+        <SocketProvider userId={data?.user.id}>
           <Providers>
             <div className="flex h-full w-full">
               {data && <ServerNav />}
