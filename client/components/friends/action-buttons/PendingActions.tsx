@@ -54,7 +54,10 @@ const PendingActions = ({
               try {
                 if (!senderId) throw new Error("Your user id is invalid");
                 await cancelPendingRequest(senderId, recipientId);
-                router.refresh();
+                socket.emit("cancel-pending-request", {
+                  senderId,
+                  recipientId,
+                });
               } catch (err) {
                 console.error(err.message);
               }
@@ -74,10 +77,10 @@ const PendingActions = ({
               if (!senderId) throw new Error("Your user id is invalid");
 
               await cancelPendingRequest(senderId, recipientId);
+              socket.emit("cancel-pending-request", { senderId, recipientId });
             } catch (err) {
               console.error(err.message);
             }
-            router.refresh();
           }}
           className="hover:text-info-danger-foreground"
         >

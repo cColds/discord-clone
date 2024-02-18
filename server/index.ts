@@ -36,6 +36,8 @@ io.on("connection", (socket) => {
     io.emit("get-users", activeUsers);
   });
 
+  // todo: maybe create a function to emit sockets to users because a lot of socket event listener duplicate code
+
   socket.on("send-friend-request", ({ senderId, recipientId }) => {
     const sender = activeUsers[senderId];
     const recipient = activeUsers[recipientId];
@@ -43,7 +45,11 @@ io.on("connection", (socket) => {
     console.log({ sender, recipient });
 
     if (!sender || !recipient) {
-      console.log("Sender or recipient socket not found");
+      console.log("Sender or recipient socket not found", {
+        sender,
+        recipient,
+      });
+
       return;
     }
 
@@ -56,7 +62,11 @@ io.on("connection", (socket) => {
     const recipient = activeUsers[recipientId];
 
     if (!sender || !recipient) {
-      console.log("Sender or recipient socket not found");
+      console.log("Sender or recipient socket not found", {
+        sender,
+        recipient,
+      });
+
       return;
     }
 
@@ -69,7 +79,27 @@ io.on("connection", (socket) => {
     const recipient = activeUsers[recipientId];
 
     if (!sender || !recipient) {
-      console.log("Sender or recipient socket not found");
+      console.log("Sender or recipient socket not found", {
+        sender,
+        recipient,
+      });
+
+      return;
+    }
+
+    io.to(sender.socketId).emit("update-friend-list");
+    io.to(recipient.socketId).emit("update-friend-list");
+  });
+
+  socket.on("cancel-pending-request", ({ senderId, recipientId }) => {
+    const sender = activeUsers[senderId];
+    const recipient = activeUsers[recipientId];
+
+    if (!sender || !recipient) {
+      console.log("Sender or recipient socket not found", {
+        sender,
+        recipient,
+      });
       return;
     }
 
