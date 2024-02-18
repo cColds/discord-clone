@@ -1,14 +1,16 @@
 "use client";
 
+import { useSocket } from "@/app/providers/SocketProvider";
 import { Unblock } from "@/components/svgs";
 import ActionButton from "@/components/tooltip/ActionButton";
 import { unblockUser } from "@/lib/db/social/blocked/unblockUser";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 const BlockedActions = ({ recipientId }: { recipientId: string }) => {
   const { data: session } = useSession();
-  const router = useRouter();
+
+  const { socket } = useSocket();
+
   return (
     <ActionButton
       name="Unblock"
@@ -21,7 +23,8 @@ const BlockedActions = ({ recipientId }: { recipientId: string }) => {
           if (!senderId) throw new Error("Your user id is invalid");
 
           await unblockUser(senderId, recipientId);
-          router.refresh();
+
+          socket.emit("unblock-user", { senderId, recipientId });
         } catch (err) {
           console.error(err);
         }
