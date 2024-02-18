@@ -11,10 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { unfriendUser } from "@/lib/db/social/friends/unfriendUser";
 import { useSession } from "next-auth/react";
+import { useSocket } from "@/app/providers/SocketProvider";
 
 const FriendActions = ({ id }: { id: string }) => {
   const router = useRouter();
   const { data: session } = useSession();
+
+  const { socket } = useSocket();
 
   return (
     <>
@@ -44,11 +47,14 @@ const FriendActions = ({ id }: { id: string }) => {
             onClick={async (e) => {
               e.stopPropagation();
 
-              console.log("Add remove friend logic");
+              const senderId = session?.user.id;
+              const recipientId = id;
 
-              await unfriendUser(session?.user.id ?? "", id);
+              if (!senderId) throw new Error("Your user id is invalid");
 
-              router.refresh();
+              await unfriendUser(session?.user.id ?? "", recipientId);
+
+              socket.emit("unfriend-user", { senderId, recipientId });
             }}
           >
             Remove Friend

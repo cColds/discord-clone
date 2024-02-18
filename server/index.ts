@@ -62,6 +62,19 @@ io.on("connection", (socket) => {
     io.to(requester.socketId).emit("update-friend-list");
   });
 
+  socket.on("unfriend-user", ({ senderId, recipientId }) => {
+    const sender = activeUsers[senderId];
+    const recipient = activeUsers[recipientId];
+
+    if (!sender || !recipient) {
+      console.log("Sender or recipient socket not found");
+      return;
+    }
+
+    io.to(sender.socketId).emit("update-friend-list");
+    io.to(recipient.socketId).emit("update-friend-list");
+  });
+
   socket.on("disconnect", () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {
