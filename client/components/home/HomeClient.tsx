@@ -24,19 +24,19 @@ export default function HomeClient({ sessionUser }: HomeProps) {
   );
 
   useEffect(() => {
-    if (socket) {
-      socket.on("receive-friend-request", async () => {
-        const receiverUser = await getUser(user.id);
+    if (!socket) return;
 
-        if (receiverUser !== null) {
-          setUser(receiverUser);
-          console.log("updated friends list");
-        }
-      });
+    socket.on("update-friend-list", async () => {
+      const receiverUser = await getUser(user.id);
 
-      return () => socket.disconnect();
-    }
-  }, [socket, user]);
+      if (receiverUser !== null) {
+        setUser(receiverUser);
+        console.log("updated friends list");
+      }
+    });
+
+    return () => socket.disconnect();
+  }, [socket]);
 
   return (
     <div className="flex h-full">
