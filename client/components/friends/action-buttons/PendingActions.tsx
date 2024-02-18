@@ -1,7 +1,6 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import ActionButton from "@/components/tooltip/ActionButton";
 import { Accept, Cancel } from "@/components/svgs";
 import { cancelPendingRequest } from "@/lib/db/social/pending/cancelPendingRequest";
@@ -16,7 +15,6 @@ const PendingActions = ({
   recipientId: string;
 }) => {
   const { data: session } = useSession();
-  const router = useRouter();
 
   const { socket } = useSocket();
 
