@@ -54,10 +54,6 @@ export const SocketProvider = ({
       setIsConnected(false);
     });
 
-    socketInstance.on("receive-friend-request", () => {
-      console.log("friend req received");
-    });
-
     setSocket(socketInstance);
 
     return () => {

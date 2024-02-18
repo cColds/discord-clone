@@ -45,19 +45,34 @@ io.on("connection", (socket) => {
       return;
     }
 
-    io.to(userRecipient.socketId).emit("receive-friend-request");
-    io.to(userSender.socketId).emit("receive-friend-request");
+    io.to(userRecipient.socketId).emit("update-friend-list");
+    io.to(userSender.socketId).emit("update-friend-list");
+  });
+
+  socket.on("accept-friend-request", ({ accepterId, requesterId }) => {
+    const accepter = activeUsers[accepterId];
+    const requester = activeUsers[requesterId];
+
+    if (!accepter || !requester) {
+      console.log("Accepter or requester not found");
+      return;
+    }
+
+    io.to(accepter.socketId).emit("update-friend-list");
+    io.to(requester.socketId).emit("update-friend-list");
   });
 
   socket.on("disconnect", () => {
-    const { userId } = socketToUserMap[socket.id];
-
-    delete activeUsers[userId];
-    delete socketToUserMap[socket.id];
-
-    console.log("User disconnected", activeUsers);
-
-    io.emit("get-users", activeUsers);
+    const userMapping = socketToUserMap[socket.id];
+    if (userMapping) {
+      const { userId } = userMapping;
+      delete activeUsers[userId];
+      delete socketToUserMap[socket.id];
+      console.log("User disconnected", activeUsers);
+      io.emit("get-users", activeUsers);
+    } else {
+      console.log("User disconnected but mapping not found");
+    }
   });
 });
 

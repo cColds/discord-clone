@@ -6,6 +6,7 @@ import ActionButton from "@/components/tooltip/ActionButton";
 import { Accept, Cancel } from "@/components/svgs";
 import { cancelPendingRequest } from "@/lib/db/social/pending/cancelPendingRequest";
 import { acceptPendingRequest } from "@/lib/db/social/pending/acceptPendingRequest";
+import { useSocket } from "@/app/providers/SocketProvider";
 
 const PendingActions = ({
   type,
@@ -17,6 +18,8 @@ const PendingActions = ({
   const { data: session } = useSession();
   const router = useRouter();
 
+  const { socket } = useSocket();
+
   return (
     <>
       {type === "Incoming" ? (
@@ -26,8 +29,20 @@ const PendingActions = ({
             onClick={async (e) => {
               e.stopPropagation();
 
-              await acceptPendingRequest(session?.user.id ?? "", id);
-              router.refresh();
+              try {
+                const accepterId = session?.user.id;
+                const requesterId = id;
+
+                if (!accepterId) throw new Error("Your user id is invalid");
+                await acceptPendingRequest(session.user.id, id);
+
+                socket.emit("accept-friend-request", {
+                  accepterId,
+                  requesterId,
+                });
+              } catch (err) {
+                console.error(err.message);
+              }
             }}
             className="hover:text-info-positive-foreground"
           >
