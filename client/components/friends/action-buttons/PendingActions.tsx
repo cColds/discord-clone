@@ -10,15 +10,17 @@ import { useSocket } from "@/app/providers/SocketProvider";
 
 const PendingActions = ({
   type,
-  id,
+  recipientId,
 }: {
   type: "Incoming" | "Outgoing";
-  id: string;
+  recipientId: string;
 }) => {
   const { data: session } = useSession();
   const router = useRouter();
 
   const { socket } = useSocket();
+
+  const senderId = session?.user.id;
 
   return (
     <>
@@ -30,15 +32,12 @@ const PendingActions = ({
               e.stopPropagation();
 
               try {
-                const accepterId = session?.user.id;
-                const requesterId = id;
-
-                if (!accepterId) throw new Error("Your user id is invalid");
-                await acceptPendingRequest(session.user.id, id);
+                if (!senderId) throw new Error("Your user id is invalid");
+                await acceptPendingRequest(senderId, recipientId);
 
                 socket.emit("accept-friend-request", {
-                  accepterId,
-                  requesterId,
+                  senderId,
+                  recipientId,
                 });
               } catch (err) {
                 console.error(err.message);
@@ -52,9 +51,13 @@ const PendingActions = ({
             name="Ignore"
             onClick={async (e) => {
               e.stopPropagation();
-
-              await cancelPendingRequest(session?.user.id ?? "", id);
-              router.refresh();
+              try {
+                if (!senderId) throw new Error("Your user id is invalid");
+                await cancelPendingRequest(senderId, recipientId);
+                router.refresh();
+              } catch (err) {
+                console.error(err.message);
+              }
             }}
             className="hover:text-info-danger-foreground"
           >
@@ -67,7 +70,13 @@ const PendingActions = ({
           onClick={async (e) => {
             e.stopPropagation();
 
-            await cancelPendingRequest(session?.user.id ?? "", id);
+            try {
+              if (!senderId) throw new Error("Your user id is invalid");
+
+              await cancelPendingRequest(senderId, recipientId);
+            } catch (err) {
+              console.error(err.message);
+            }
             router.refresh();
           }}
           className="hover:text-info-danger-foreground"

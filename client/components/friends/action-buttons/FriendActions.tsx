@@ -13,7 +13,7 @@ import { unfriendUser } from "@/lib/db/social/friends/unfriendUser";
 import { useSession } from "next-auth/react";
 import { useSocket } from "@/app/providers/SocketProvider";
 
-const FriendActions = ({ id }: { id: string }) => {
+const FriendActions = ({ recipientId }: { recipientId: string }) => {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -23,7 +23,7 @@ const FriendActions = ({ id }: { id: string }) => {
     <>
       <ActionButton
         name="Message"
-        onClick={() => router.push(`/channels/${id}`)}
+        onClick={() => router.push(`/channels/${recipientId}`)}
       >
         <Message />
       </ActionButton>
@@ -46,15 +46,17 @@ const FriendActions = ({ id }: { id: string }) => {
             variant="destructive"
             onClick={async (e) => {
               e.stopPropagation();
+              try {
+                const senderId = session?.user.id;
 
-              const senderId = session?.user.id;
-              const recipientId = id;
+                if (!senderId) throw new Error("Your user id is invalid");
 
-              if (!senderId) throw new Error("Your user id is invalid");
+                await unfriendUser(senderId, recipientId);
 
-              await unfriendUser(session?.user.id ?? "", recipientId);
-
-              socket.emit("unfriend-user", { senderId, recipientId });
+                socket.emit("unfriend-user", { senderId, recipientId });
+              } catch (err) {
+                console.error(err);
+              }
             }}
           >
             Remove Friend

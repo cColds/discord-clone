@@ -8,8 +8,6 @@ export const cancelPendingRequest = async (
   userId: string,
   friendId: string
 ) => {
-  if (!userId) return;
-
   await dbConnect();
   const mongooseSession = await mongoose.startSession();
 

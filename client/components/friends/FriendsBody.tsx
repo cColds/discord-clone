@@ -12,8 +12,6 @@ type FriendsBodyProps = {
 export default function FriendsBody({ social, tab }: FriendsBodyProps) {
   return (
     <div className="flex grow">
-      {/* Should add the rest of the tab components at some point */}
-
       {tab === "Add Friend" ? (
         <AddFriend />
       ) : (

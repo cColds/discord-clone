@@ -27,10 +27,10 @@ export default function HomeClient({ sessionUser }: HomeProps) {
     if (!socket) return;
 
     socket.on("update-friend-list", async () => {
-      const receiverUser = await getUser(user.id);
+      const updatedUser = await getUser(user.id);
 
-      if (receiverUser !== null) {
-        setUser(receiverUser);
+      if (updatedUser !== null) {
+        setUser(updatedUser);
         console.log("updated friends list");
       }
     });

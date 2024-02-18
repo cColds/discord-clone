@@ -60,15 +60,20 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
 
                 <div className="flex ml-2 gap-2">
                   {(tab === "Online" || tab === "All") && (
-                    <FriendActions id={friendData.id} />
+                    <FriendActions recipientId={friendData.id} />
                   )}
 
                   {isPendingStatus && tab === "Pending" && (
                     // TODO: use dynamic type value when schema and types updated
-                    <PendingActions type={friend.request} id={friendData.id} />
+                    <PendingActions
+                      type={friend.request}
+                      recipientId={friendData.id}
+                    />
                   )}
 
-                  {tab === "Blocked" && <BlockedActions id={friendData.id} />}
+                  {tab === "Blocked" && (
+                    <BlockedActions recipientId={friendData.id} />
+                  )}
                 </div>
               </div>
             </li>

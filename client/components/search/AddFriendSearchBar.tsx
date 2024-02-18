@@ -40,16 +40,18 @@ export default function AddFriendSearchBar() {
       }
 
       try {
-        if (!session?.user.id) throw new Error("Your user id is invalid");
+        const senderId = session?.user.id;
 
-        await addFriend(data, session.user.id);
+        if (!senderId) throw new Error("Your user id is invalid");
+
+        await addFriend(data, senderId);
         form.reset();
         setSuccess(data.friendUsername);
 
-        const receiverId = await getUserId(data.friendUsername);
+        const recipientId = await getUserId(data.friendUsername);
         socket.emit("send-friend-request", {
-          senderId: session.user.id,
-          receiverId,
+          senderId,
+          recipientId,
         });
       } catch (err) {
         const errOpts = {

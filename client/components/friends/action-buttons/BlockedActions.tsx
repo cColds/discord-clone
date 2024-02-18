@@ -6,7 +6,7 @@ import { unblockUser } from "@/lib/db/social/blocked/unblockUser";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const BlockedActions = ({ id }: { id: string }) => {
+const BlockedActions = ({ recipientId }: { recipientId: string }) => {
   const { data: session } = useSession();
   const router = useRouter();
   return (
@@ -15,8 +15,16 @@ const BlockedActions = ({ id }: { id: string }) => {
       onClick={async (e) => {
         e.stopPropagation();
 
-        await unblockUser(session?.user.id ?? "", id);
-        router.refresh();
+        try {
+          const senderId = session?.user.id;
+
+          if (!senderId) throw new Error("Your user id is invalid");
+
+          await unblockUser(senderId, recipientId);
+          router.refresh();
+        } catch (err) {
+          console.error(err);
+        }
       }}
       className="hover:text-info-danger-foreground"
     >

@@ -36,30 +36,32 @@ io.on("connection", (socket) => {
     io.emit("get-users", activeUsers);
   });
 
-  socket.on("send-friend-request", ({ senderId, receiverId }) => {
-    const userSender = activeUsers[senderId];
-    const userRecipient = activeUsers[receiverId];
+  socket.on("send-friend-request", ({ senderId, recipientId }) => {
+    const sender = activeUsers[senderId];
+    const recipient = activeUsers[recipientId];
 
-    if (!userSender || !userRecipient) {
-      console.log("User sender or recipient not found");
+    console.log({ sender, recipient });
+
+    if (!sender || !recipient) {
+      console.log("Sender or recipient socket not found");
       return;
     }
 
-    io.to(userRecipient.socketId).emit("update-friend-list");
-    io.to(userSender.socketId).emit("update-friend-list");
+    io.to(recipient.socketId).emit("update-friend-list");
+    io.to(sender.socketId).emit("update-friend-list");
   });
 
-  socket.on("accept-friend-request", ({ accepterId, requesterId }) => {
-    const accepter = activeUsers[accepterId];
-    const requester = activeUsers[requesterId];
+  socket.on("accept-friend-request", ({ senderId, recipientId }) => {
+    const sender = activeUsers[senderId];
+    const recipient = activeUsers[recipientId];
 
-    if (!accepter || !requester) {
-      console.log("Accepter or requester not found");
+    if (!sender || !recipient) {
+      console.log("Sender or recipient socket not found");
       return;
     }
 
-    io.to(accepter.socketId).emit("update-friend-list");
-    io.to(requester.socketId).emit("update-friend-list");
+    io.to(sender.socketId).emit("update-friend-list");
+    io.to(recipient.socketId).emit("update-friend-list");
   });
 
   socket.on("unfriend-user", ({ senderId, recipientId }) => {
