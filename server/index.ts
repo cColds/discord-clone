@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
       socketToUserMap[socket.id] = { userId: newUserId };
     }
 
-    console.log("User connected", activeUsers);
+    console.log("User connected. Current Active Users: ", activeUsers);
 
     io.emit("get-users", activeUsers);
   });
@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
       const { userId } = userMapping;
       delete activeUsers[userId];
       delete socketToUserMap[socket.id];
-      console.log("User disconnected", activeUsers);
+      console.log("User disconnected. Current Active Users: ", activeUsers);
       io.emit("get-users", activeUsers);
     } else {
       console.log("User disconnected but mapping not found");

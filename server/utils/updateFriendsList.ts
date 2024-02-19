@@ -22,11 +22,15 @@ export function updateFriendList({
   const sender = activeUsers[senderId];
   const recipient = activeUsers[recipientId];
 
-  if (!sender || !recipient) {
-    console.log("Sender or recipient socket not found", { sender, recipient });
-    return;
+  console.log({ sender, recipient });
+
+  if (sender) {
+    io.to(sender.socketId).emit("update-friend-list");
+    console.log(`Emitted to sender ${sender.socketId}`);
   }
 
-  io.to(sender.socketId).emit("update-friend-list");
-  io.to(recipient.socketId).emit("update-friend-list");
+  if (recipient) {
+    io.to(recipient.socketId).emit("update-friend-list");
+    console.log(`Emitted to recipient ${recipient.socketId}`);
+  }
 }
