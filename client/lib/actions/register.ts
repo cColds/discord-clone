@@ -12,7 +12,7 @@ export async function register(formData: z.infer<typeof registerSchema>) {
   const { email, password, username, displayName } = validatedFields.data;
   await dbConnect();
   const existingEmail = await User.findOne({
-    email: { $regex: email, $options: "i" },
+    email: { $regex: `^${email}$`, $options: "i" },
   });
 
   if (existingEmail) {
@@ -20,7 +20,7 @@ export async function register(formData: z.infer<typeof registerSchema>) {
   }
 
   const existingUsername = await User.findOne({
-    username: { $regex: username, $options: "i" },
+    username: { $regex: `^${username}$`, $options: "i" },
   });
 
   if (existingUsername)

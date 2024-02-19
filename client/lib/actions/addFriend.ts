@@ -26,7 +26,7 @@ export async function addFriend(
   if (!yourAccount) throw new Error("Your account doesn't exist");
 
   const friendAccount = await User.findOne({
-    username: { $regex: friendUsername, $options: "i" },
+    username: { $regex: `^${friendUsername}$`, $options: "i" },
   });
 
   if (!friendAccount)
