@@ -116,6 +116,7 @@ module.exports = {
         "url('/images/background/wumpus-waiting-friends.svg')",
       "wumpus-pending-request":
         "url('/images/background/wumpus-pending-request.svg')",
+      "wumpus-none-online": "url('/images/background/wumpus-none-online.svg')",
     },
 
     screens: {
