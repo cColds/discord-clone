@@ -13,26 +13,46 @@ import FriendsListSearchBar from "../search/FriendsListSearchBar";
 type FriendsListProps = {
   social: SocialPopulated["social"];
   tab: FriendTab; // TODO: i think i somehow added invisible and offline status to the friend tab
+  onTabClick: (tabType: FriendTab) => void;
 };
 
-function showWumpusBackground(tab: FriendTab) {
+function showWumpusBackground(
+  tab: FriendTab,
+  onTabClick: (tabType: FriendTab) => void
+) {
   return (
     <div className="flex justify-center items-center grow">
       <div className="flex flex-col justify-center items-center">
-        {tab === "Pending" && (
-          <>
-            <div className="bg-wumpus-pending-request w-[415px] h-[200px] mb-10" />
-            <p className="text-text-muted text-center mt-2">
-              There are no pending friend requests. Here's Wumpus for now.
-            </p>
-          </>
-        )}
-
         {tab === "Online" && (
           <>
             <div className="bg-wumpus-none-online w-[421px] h-[218px] mb-10" />
             <p className="text-text-muted text-center mt-2">
               No one's around to play with Wumpus
+            </p>
+          </>
+        )}
+
+        {tab === "All" && (
+          <div className="flex justify-center items-center flex-col">
+            <div className="bg-wumpus-waiting-friends w-[376px] h-[162px] mb-10" />
+
+            <p className="text-text-muted text-center mt-2">
+              Wumpus is waiting on friends. You don&apos;t have to though!
+            </p>
+            <button
+              onClick={() => onTabClick("Add Friend")}
+              className="bg-brand-500 mt-5 h-[38px] min-w-[96px] min-h-[38px] transition-colors ease-linear duration-150 hover:bg-brand-560 text-sm rounded-[3px] px-0.5 py-4 flex justify-center items-center font-medium"
+            >
+              Add Friend
+            </button>
+          </div>
+        )}
+
+        {tab === "Pending" && (
+          <>
+            <div className="bg-wumpus-pending-request w-[415px] h-[200px] mb-10" />
+            <p className="text-text-muted text-center mt-2">
+              There are no pending friend requests. Here's Wumpus for now.
             </p>
           </>
         )}
@@ -50,7 +70,11 @@ function showWumpusBackground(tab: FriendTab) {
   );
 }
 
-export default function FriendsList({ tab, social }: FriendsListProps) {
+export default function FriendsList({
+  tab,
+  social,
+  onTabClick,
+}: FriendsListProps) {
   const router = useRouter();
 
   const socialType = getSocialType(tab, social);
@@ -58,7 +82,7 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
   return (
     <div className="flex flex-col grow">
       {socialType.length === 0 ? (
-        showWumpusBackground(tab)
+        showWumpusBackground(tab, onTabClick)
       ) : (
         <>
           <FriendsListSearchBar />

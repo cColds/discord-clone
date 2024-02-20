@@ -27,6 +27,7 @@ module.exports = {
         "background-tertiary": "#1E1F22",
         "background-primary": "rgb(49, 51, 56)",
         "background-secondary": "rgb(43, 45, 49)",
+        "brand-500": "rgb(88, 101, 242)", // aka brand-experiment
         "brand-560": "rgb(71, 82, 196)",
         "brand-600": "rgb(60, 69, 165)",
         "channel-icon": "rgb(128, 132, 142)",

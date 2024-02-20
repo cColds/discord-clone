@@ -25,7 +25,7 @@ export default function Friends({ social }: SocialPopulated) {
         incomingRequests={incomingRequests}
       />
 
-      <FriendsBody social={social} tab={tab} />
+      <FriendsBody social={social} tab={tab} onTabClick={handleTabClick} />
     </div>
   );
 }
