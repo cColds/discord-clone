@@ -5,6 +5,7 @@ import ActionTooltip from "../tooltip/ActionTooltip";
 import { Status } from "@/types/status";
 import DmItem from "../dm/DmItem";
 import Notification from "../badges/Notification";
+import Empty from "../svgs/Empty";
 
 type Dms = {
   username: string;
@@ -123,17 +124,21 @@ export default function PrivateChannels({
             </button>
           </ActionTooltip>
         </h2>
-        {dms.map((dm) => {
-          return (
-            <DmItem
-              key={dm.id}
-              id={dm.id}
-              username={dm.username}
-              status={dm.status}
-              avatar={dm.avatar}
-            />
-          );
-        })}
+        {true ? (
+          <Empty />
+        ) : (
+          dms.map((dm) => {
+            return (
+              <DmItem
+                key={dm.id}
+                id={dm.id}
+                username={dm.username}
+                status={dm.status}
+                avatar={dm.avatar}
+              />
+            );
+          })
+        )}
       </ul>
     </nav>
   );
