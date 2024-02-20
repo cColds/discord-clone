@@ -65,7 +65,7 @@ export default function ServerItems({
               >
                 <ActionTooltip content={server.name} side="right">
                   <Link
-                    href={`/servers/${server.id}`}
+                    href={`/channels/servers/${server.id}`}
                     className={cn(
                       "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip",
                       { "rounded-xl": params.serverId === server.id }

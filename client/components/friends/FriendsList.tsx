@@ -34,7 +34,7 @@ export default function FriendsList({ tab, social }: FriendsListProps) {
             <li
               className="flex justify-between ml-[30px] mr-5 border-t-[1px] border-background-modifier-accent hover:bg-background-interactive-hover rounded-md cursor-pointer h-[62px] px-2 grow group"
               key={friendData.id}
-              onClick={() => router.push(`/channels/${friendData.id}`)}
+              onClick={() => router.push(`/channels/dms/${friendData.id}`)}
               tabIndex={0}
             >
               <div className="flex justify-between items-center w-full">

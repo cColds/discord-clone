@@ -23,7 +23,7 @@ const FriendActions = ({ recipientId }: { recipientId: string }) => {
     <>
       <ActionButton
         name="Message"
-        onClick={() => router.push(`/channels/${recipientId}`)}
+        onClick={() => router.push(`/channels/dms/${recipientId}`)}
       >
         <Message />
       </ActionButton>

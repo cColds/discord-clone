@@ -38,7 +38,7 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
       )}
     >
       <Link
-        href={`/channels/${id}`}
+        href={`/channels/dms/${id}`}
         className="flex items-center gap-3 px-2 overflow-hidden grow"
       >
         <div className="flex justify-center items-center shrink-0">
