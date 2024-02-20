@@ -36,6 +36,15 @@ function showWumpusBackground(tab: FriendTab) {
             </p>
           </>
         )}
+
+        {tab === "Blocked" && (
+          <>
+            <div className="bg-wumpus-cant-unblock w-[433px] h-[232px] mb-10" />
+            <p className="text-text-muted text-center mt-2">
+              You can't unblock the Wumpus.
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
