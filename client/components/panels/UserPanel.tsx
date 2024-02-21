@@ -23,7 +23,7 @@ export default function UserPanel({
       <div className="mb-[1px] px-2 text-sm h-[52px] flex items-center font-medium">
         <button
           aria-label="Set Status"
-          className="flex min-w-[120px] items-center gap-2 hover:bg-background-modifier-selected rounded-[4px] grow"
+          className="flex min-w-[120px] items-center gap-2 hover:bg-background-modifier-selected border-0 rounded-[4px] grow -ml-0.5 mr-2 pl-0.5"
         >
           <div className="w-8 h-8">
             <AvatarMask username={username} status={status} avatar={avatar} />
