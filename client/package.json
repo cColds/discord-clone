@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "tsx lib/db/seed.ts"
+    "seed": "tsx lib/db/seed.ts",
+    "addFieldToAllDocs": "tsx lib/db/addFieldToAllDocs.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
