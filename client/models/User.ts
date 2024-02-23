@@ -16,7 +16,7 @@ export interface UserType {
     }[];
     blocked: Types.ObjectId[];
   };
-
+  online: boolean;
   servers: Types.ObjectId[];
   dms: Types.ObjectId[];
 }
@@ -37,8 +37,9 @@ const UserSchema = new Schema<UserType>(
     status: {
       type: String,
       enum: ["Online", "Idle", "Do Not Disturb", "Invisible", "Offline"],
-      default: "Offline",
+      default: "Online",
     },
+    online: { type: Boolean, default: false },
     social: {
       friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
       pending: [
