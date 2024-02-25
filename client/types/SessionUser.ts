@@ -7,4 +7,5 @@ export type SessionUser = {
   displayName: string;
   avatar: string;
   status: Status;
+  online: boolean;
 };
