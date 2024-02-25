@@ -1,6 +1,8 @@
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
+const bodyParser = require("body-parser");
+
 const app = express();
 app.use(
   cors({
@@ -9,10 +11,14 @@ app.use(
   })
 );
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const server = http.createServer(app);
 
 import { Server } from "socket.io";
 import { updateFriendList } from "./utils/updateFriendsList";
+import { updateOnlineStatus } from "./utils/updateOnlineStatus";
 
 const io = new Server(server, {
   cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
@@ -25,7 +31,7 @@ let socketToUserMap: Record<string, { userId: string }> = {};
 io.on("connection", (socket) => {
   console.log("A user has connected", socket.id);
 
-  socket.on("new-user-add", (newUserId) => {
+  socket.on("new-user-add", async (newUserId) => {
     const userExists = activeUsers[newUserId];
     if (!userExists) {
       activeUsers[newUserId] = { socketId: socket.id };
@@ -33,6 +39,8 @@ io.on("connection", (socket) => {
     }
 
     console.log("User connected. Current Active Users: ", activeUsers);
+
+    await updateOnlineStatus(newUserId, true);
 
     io.emit("get-users", activeUsers);
   });
@@ -57,10 +65,11 @@ io.on("connection", (socket) => {
     updateFriendList({ io, senderId, recipientId, activeUsers });
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect", async () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {
       const { userId } = userMapping;
+      await updateOnlineStatus(userId, false);
       delete activeUsers[userId];
       delete socketToUserMap[socket.id];
       console.log("User disconnected. Current Active Users: ", activeUsers);
