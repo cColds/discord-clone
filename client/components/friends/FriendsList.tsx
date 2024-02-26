@@ -108,7 +108,7 @@ export default function FriendsList({
                     }
                     tabIndex={0}
                   >
-                    <div className="flex justify-between items-center w-full">
+                    <div className="flex justify-between items-center w-full group">
                       <div className="flex items-center">
                         <div className="w-8 h-8 mr-2">
                           <AvatarMask
@@ -119,8 +119,12 @@ export default function FriendsList({
                           />
                         </div>
                         <div className="py-1 mr-1 overflow-hidden">
-                          <div>
-                            <p className="text-left truncate font-bold">
+                          <div className="flex items-center">
+                            <p className="text-header-primary text-left truncate font-bold">
+                              {friendData.displayName}
+                            </p>
+
+                            <p className="truncate ml-[5px] text-header-secondary text-sm invisible group-hover:visible font-medium">
                               {friendData.username}
                             </p>
                           </div>
