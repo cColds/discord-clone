@@ -1,10 +1,15 @@
 import { FriendTab } from "@/types/friend-tab";
-import { SocialPopulated } from "@/types/social";
+import { PendingStatus, SocialPopulated, SocialUser } from "@/types/social";
+
+type SocialTypeReturn = {
+  type: "Online" | "All" | "Pending" | "Blocked" | "unknown";
+  targetSocial: SocialUser[] | PendingStatus[];
+};
 
 export const getSocialType = (
   tab: FriendTab,
   social: SocialPopulated["social"]
-) => {
+): SocialTypeReturn => {
   switch (tab) {
     case "Online":
       const onlineFriends = social.friends.filter(
@@ -12,21 +17,21 @@ export const getSocialType = (
           friend.status.match(/Online|Idle|Do Not Disturb/) && friend.online
       );
 
-      return onlineFriends;
+      return { type: "Online", targetSocial: onlineFriends };
 
     case "All":
-      return social.friends;
+      return { type: "All", targetSocial: social.friends };
 
     case "Pending":
-      return social.pending;
+      return { type: "Pending", targetSocial: social.pending };
 
     case "Blocked":
-      return social.blocked;
+      return { type: "Blocked", targetSocial: social.blocked };
 
     // I have a condition that doesn't render this component if the tab is 'Add Friend'
     // but I don't know how to tell TypeScript.
     default:
       console.log("No cases matched. Probably Add Friend tab.");
-      return [];
+      return { type: "unknown", targetSocial: [] };
   }
 };

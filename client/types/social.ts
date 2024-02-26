@@ -9,7 +9,7 @@ export type SocialUser = {
   online: boolean;
 };
 
-type PendingStatus = {
+export type PendingStatus = {
   user: {
     username: string;
     displayName: string;

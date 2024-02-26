@@ -77,22 +77,22 @@ export default function FriendsList({
 }: FriendsListProps) {
   const router = useRouter();
 
-  const socialType = getSocialType(tab, social);
+  const { type, targetSocial } = getSocialType(tab, social);
 
   return (
     <div className="flex flex-col grow">
-      {socialType.length === 0 ? (
+      {targetSocial.length === 0 ? (
         showWumpusBackground(tab, onTabClick)
       ) : (
         <>
           <FriendsListSearchBar />
           <div className="overflow-hidden">
             <h2 className="mt-4 mr-5 mb-2 ml-[30px] text-xs uppercase text-header-primary truncate tracking-[0.02em]">
-              {tab === "All" ? "All Friends" : tab} — {socialType.length}
+              {tab === "All" ? "All Friends" : tab} — {targetSocial.length}
             </h2>
 
             <ul className="flex flex-col mt-2 pb-2 pr-2 overflow-auto">
-              {socialType.map((friend) => {
+              {targetSocial.map((friend) => {
                 const isPendingStatus = "user" in friend;
                 const friendData = isPendingStatus ? friend.user : friend;
                 const friendStatus = friendData.online
@@ -115,7 +115,7 @@ export default function FriendsList({
                             username={friendData.username}
                             status={friendStatus}
                             avatar={friendData.avatar}
-                            removeMask={isPendingStatus}
+                            removeMask={isPendingStatus || type === "Blocked"}
                           />
                         </div>
                         <div className="py-1 mr-1 overflow-hidden">
@@ -124,9 +124,11 @@ export default function FriendsList({
                               {friendData.displayName}
                             </p>
 
-                            <p className="truncate ml-[5px] text-header-secondary text-sm invisible group-hover:visible font-medium">
-                              {friendData.username}
-                            </p>
+                            {type !== "Blocked" && (
+                              <p className="truncate ml-[5px] text-header-secondary text-sm invisible group-hover:visible font-medium">
+                                {friendData.username}
+                              </p>
+                            )}
                           </div>
                           <div className="text-left text-sm text-header-secondary">
                             {isPendingStatus && (
@@ -135,7 +137,11 @@ export default function FriendsList({
                               </p>
                             )}
 
-                            {!isPendingStatus && (
+                            {type === "Blocked" && (
+                              <p className="truncate text-xs">Blocked</p>
+                            )}
+
+                            {!isPendingStatus && type !== "Blocked" && (
                               <p className="truncate">{friendStatus}</p>
                             )}
                           </div>
