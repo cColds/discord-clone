@@ -7,8 +7,9 @@ export const getSocialType = (
 ) => {
   switch (tab) {
     case "Online":
-      const onlineFriends = social.friends.filter((friend) =>
-        friend.status.match(/Online|Idle|Do Not Disturb/)
+      const onlineFriends = social.friends.filter(
+        (friend) =>
+          friend.status.match(/Online|Idle|Do Not Disturb/) && friend.online
       );
 
       return onlineFriends;

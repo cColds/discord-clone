@@ -31,7 +31,20 @@ export default function HomeClient({ sessionUser }: HomeProps) {
 
       if (updatedUser !== null) {
         setUser(updatedUser);
-        console.log("updated friends list");
+      }
+    });
+
+    socket.on("update-online-status", (isOnline: boolean) => {
+      setUser({ ...user, online: isOnline });
+    });
+
+    socket.on("update-friends-online-status", async (isOnline: boolean) => {
+      const updatedUser = await getUser(user.id);
+
+      if (updatedUser) {
+        setUser(updatedUser);
+      } else {
+        console.error("failed to update user");
       }
     });
 

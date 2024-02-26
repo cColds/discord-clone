@@ -95,6 +95,9 @@ export default function FriendsList({
               {socialType.map((friend) => {
                 const isPendingStatus = "user" in friend;
                 const friendData = isPendingStatus ? friend.user : friend;
+                const friendStatus = friendData.online
+                  ? friendData.status
+                  : "Offline";
 
                 return (
                   <li
@@ -110,7 +113,7 @@ export default function FriendsList({
                         <div className="w-8 h-8 mr-2">
                           <AvatarMask
                             username={friendData.username}
-                            status={friendData.status}
+                            status={friendStatus}
                             avatar={friendData.avatar}
                           />
                         </div>
@@ -121,7 +124,7 @@ export default function FriendsList({
                             </p>
                           </div>
                           <div className="text-left text-sm text-header-secondary">
-                            <p className="truncate">{friendData.status}</p>
+                            <p className="truncate">{friendStatus}</p>
                           </div>
                         </div>
                       </div>

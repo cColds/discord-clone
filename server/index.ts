@@ -40,9 +40,17 @@ io.on("connection", (socket) => {
 
     console.log("User connected. Current Active Users: ", activeUsers);
 
-    await updateOnlineStatus(newUserId, true);
+    const user = await updateOnlineStatus(newUserId, true);
 
     io.emit("get-users", activeUsers);
+    io.to(socket.id).emit("update-online-status", true);
+
+    user.social.friends.forEach((friendId: string) => {
+      const friend = activeUsers[friendId];
+      if (friend) {
+        socket.to(friend.socketId).emit("update-friends-online-status", true);
+      }
+    });
   });
 
   socket.on("send-friend-request", ({ senderId, recipientId }) => {
@@ -69,11 +77,19 @@ io.on("connection", (socket) => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {
       const { userId } = userMapping;
-      await updateOnlineStatus(userId, false);
+      const user = await updateOnlineStatus(userId, false);
       delete activeUsers[userId];
       delete socketToUserMap[socket.id];
       console.log("User disconnected. Current Active Users: ", activeUsers);
       io.emit("get-users", activeUsers);
+      user.social.friends.forEach((friendId: string) => {
+        const friend = activeUsers[friendId];
+        if (friend) {
+          socket
+            .to(friend.socketId)
+            .emit("update-friends-online-status", false);
+        }
+      });
     } else {
       console.log("User disconnected but mapping not found");
     }
