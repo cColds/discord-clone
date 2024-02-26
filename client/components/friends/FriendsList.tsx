@@ -115,6 +115,7 @@ export default function FriendsList({
                             username={friendData.username}
                             status={friendStatus}
                             avatar={friendData.avatar}
+                            removeMask={isPendingStatus}
                           />
                         </div>
                         <div className="py-1 mr-1 overflow-hidden">
@@ -124,7 +125,15 @@ export default function FriendsList({
                             </p>
                           </div>
                           <div className="text-left text-sm text-header-secondary">
-                            <p className="truncate">{friendStatus}</p>
+                            {isPendingStatus && (
+                              <p className="truncate text-xs">
+                                {friend.request} Friend Request
+                              </p>
+                            )}
+
+                            {!isPendingStatus && (
+                              <p className="truncate">{friendStatus}</p>
+                            )}
                           </div>
                         </div>
                       </div>
