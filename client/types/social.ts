@@ -6,6 +6,7 @@ export type SocialUser = {
   avatar: string;
   id: string;
   status: Status;
+  online: boolean;
 };
 
 type PendingStatus = {
@@ -15,6 +16,7 @@ type PendingStatus = {
     avatar: string;
     id: string;
     status: Status;
+    online: boolean;
   };
 
   request: "Incoming" | "Outgoing";

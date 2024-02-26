@@ -13,7 +13,7 @@ export async function getUser(id?: string) {
     Pick<SocialPopulated, "social">
   >({
     path: "social.friends social.pending.user social.blocked",
-    select: "username displayName avatar status social",
+    select: "username displayName avatar status social online",
   });
 
   const serializedUser = JSON.parse(JSON.stringify(user)) as SessionUser &
