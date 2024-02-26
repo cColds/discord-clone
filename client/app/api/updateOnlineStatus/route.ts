@@ -1,14 +1,6 @@
 import dbConnect from "@/lib/db/dbConnect";
 import User from "@/models/User";
-import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
-
-interface ExtendedNextApiRequest extends NextApiRequest {
-  body: {
-    userId: string;
-    isOnline: number;
-  };
-}
 
 export async function POST(request: Request) {
   const body = await request.json();
