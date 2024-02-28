@@ -10,7 +10,7 @@ export default function Friends({ social }: SocialPopulated) {
   const [tab, setTab] = useState<FriendTab>("Online");
 
   const handleTabClick = (tabType: FriendTab) => setTab(tabType);
-  const incomingRequests = social.pending.filter(
+  const pendingRequests = social.pending.filter(
     (pending) => pending.request === "Incoming"
   ).length;
 
@@ -22,7 +22,7 @@ export default function Friends({ social }: SocialPopulated) {
       <FriendsTab
         onTabClick={handleTabClick}
         tab={tab}
-        incomingRequests={incomingRequests}
+        pendingRequests={pendingRequests}
       />
 
       <FriendsBody social={social} tab={tab} onTabClick={handleTabClick} />

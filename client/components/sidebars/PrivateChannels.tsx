@@ -52,13 +52,13 @@ const dms: Dms = [
 type UpperListItemProps = {
   children: React.ReactNode;
   name: "Friends" | "Nitro" | "Shop";
-  incomingRequests?: number;
+  pendingRequests?: number;
 };
 
 const UpperListItem = ({
   children,
   name,
-  incomingRequests,
+  pendingRequests,
 }: UpperListItemProps) => {
   const selected = name === "Friends";
 
@@ -77,8 +77,8 @@ const UpperListItem = ({
           <div className="mr-3">{children}</div>
           <p>{name}</p>
         </div>
-        {incomingRequests && incomingRequests > 0 ? (
-          <Notification incomingRequests={incomingRequests} />
+        {pendingRequests && pendingRequests > 0 ? (
+          <Notification pendingRequests={pendingRequests} />
         ) : null}
       </Link>
     </li>
@@ -86,11 +86,11 @@ const UpperListItem = ({
 };
 
 type PrivateChannelsProps = {
-  incomingRequests: number;
+  pendingRequests: number;
 };
 
 export default function PrivateChannels({
-  incomingRequests,
+  pendingRequests,
 }: PrivateChannelsProps) {
   return (
     <nav
@@ -103,7 +103,7 @@ export default function PrivateChannels({
         </button>
       </div>
       <ul aria-label="Direct Messages" className="mt-2">
-        <UpperListItem name="Friends" incomingRequests={incomingRequests}>
+        <UpperListItem name="Friends" pendingRequests={pendingRequests}>
           <Friend />
         </UpperListItem>
 

@@ -7,14 +7,14 @@ import Link from "next/link";
 type HomeLinkProps = {
   hoveredServer: string;
   serverId: string | string[];
-  incomingRequests: number;
+  pendingRequests: number;
   setHoveredServer: (serverId: string) => void;
 };
 
 export default function HomeLink({
   hoveredServer,
   serverId,
-  incomingRequests,
+  pendingRequests,
   setHoveredServer,
 }: HomeLinkProps) {
   return (
@@ -71,7 +71,7 @@ export default function HomeLink({
                 href="#768bde72-aaab-4d1d-b8c9-adf60835f8c5-upper_badge_masks"
                 fill="black"
               ></use>
-              {incomingRequests > 0 && (
+              {pendingRequests > 0 && (
                 <use
                   href="#768bde72-aaab-4d1d-b8c9-adf60835f8c5-lower_badge_masks"
                   fill="black"
@@ -120,9 +120,9 @@ export default function HomeLink({
           </svg>
         </ActionTooltip>
 
-        {incomingRequests > 0 && (
+        {pendingRequests > 0 && (
           <Notification
-            incomingRequests={incomingRequests}
+            pendingRequests={pendingRequests}
             className="absolute bottom-0 right-0"
           />
         )}

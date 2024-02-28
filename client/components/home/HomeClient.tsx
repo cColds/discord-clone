@@ -4,12 +4,9 @@ import { useEffect, useState } from "react";
 import Friends from "../friends/Friends";
 import UserPanel from "../panels/UserPanel";
 import PrivateChannels from "../sidebars/PrivateChannels";
-import { SessionUser } from "@/types/SessionUser";
-import { SocialPopulated } from "@/types/social";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
-
-type User = SessionUser & SocialPopulated;
+import { User } from "@/types/user";
 
 type HomeProps = {
   sessionUser: User;
@@ -19,7 +16,7 @@ export default function HomeClient({ sessionUser }: HomeProps) {
   const [user, setUser] = useState<User>(sessionUser);
   const { socket } = useSocket();
 
-  const incomingRequests = user.social.pending.filter(
+  const pendingRequests = user.social.pending.filter(
     (pending) => pending.request === "Incoming"
   );
 
@@ -39,7 +36,7 @@ export default function HomeClient({ sessionUser }: HomeProps) {
     });
 
     socket.on("update-friends-online-status", async (isOnline: boolean) => {
-      const updatedUser = await getUser(user.id);
+      const updatedUser = await getUser(user.id); // todo/note: maybe quicker to filter through friends and update their online status instead of fetching, but maybe need to pass in friendId param
 
       if (updatedUser) {
         setUser(updatedUser);
@@ -54,7 +51,7 @@ export default function HomeClient({ sessionUser }: HomeProps) {
   return (
     <div className="flex h-full">
       <div className="flex flex-col w-60">
-        <PrivateChannels incomingRequests={incomingRequests.length} />
+        <PrivateChannels pendingRequests={pendingRequests.length} />
         <UserPanel
           username={user.username}
           displayName={user.displayName}

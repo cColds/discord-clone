@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 
 type NotficationProps = {
-  incomingRequests: number;
+  pendingRequests: number;
   className?: string;
 };
 
 export default function Notification({
-  incomingRequests,
+  pendingRequests,
   className,
 }: NotficationProps) {
   return (
@@ -16,7 +16,7 @@ export default function Notification({
         className
       )}
     >
-      {incomingRequests}
+      {pendingRequests}
     </div>
   );
 }

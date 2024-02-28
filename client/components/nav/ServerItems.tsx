@@ -1,15 +1,17 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Plus } from "../svgs";
 import { cn } from "@/lib/utils";
 import Pill from "../pill/Pill";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import Link from "next/link";
-import Notification from "../badges/Notification";
 import HomeLink from "./HomeLink";
+import { useSocket } from "@/app/providers/SocketProvider";
+import { User } from "@/types/user";
+import { getUser } from "@/lib/db/getUser";
 
 const servers = [
   {
@@ -29,14 +31,33 @@ const servers = [
   },
 ];
 
-export default function ServerItems({
-  incomingRequests,
-}: {
-  incomingRequests: number;
-}) {
+const getPendingRequests = (user: User) =>
+  user.social.pending.filter((pending) => pending.request === "Incoming")
+    .length;
+
+export default function ServerItems({ user }: { user: User }) {
   const params = useParams();
   const [hoveredServer, setHoveredServer] = useState("");
   const [hoveredAddServer, setHoveredAddServer] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState(
+    getPendingRequests(user)
+  );
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("update-friend-list", async () => {
+      const updatedUser = await getUser(user.id);
+
+      if (updatedUser !== null) {
+        const pendingAmount = getPendingRequests(updatedUser);
+        setPendingRequests(pendingAmount);
+      }
+    });
+
+    return () => socket.disconnect();
+  }, [socket]);
 
   return (
     <nav
@@ -45,7 +66,7 @@ export default function ServerItems({
     >
       <ul className="py-3">
         <HomeLink
-          incomingRequests={incomingRequests}
+          pendingRequests={pendingRequests}
           serverId={params.serverId}
           hoveredServer={hoveredServer}
           setHoveredServer={setHoveredServer}

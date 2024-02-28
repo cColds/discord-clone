@@ -61,13 +61,13 @@ const ToolbarIcon = ({ children, name, className }: ToolbarIconProps) => {
 type FriendsTabProps = {
   onTabClick: (tabType: FriendTab) => void;
   tab: FriendTab;
-  incomingRequests: number;
+  pendingRequests: number;
 };
 
 export default function FriendsTab({
   onTabClick,
   tab,
-  incomingRequests,
+  pendingRequests,
 }: FriendsTabProps) {
   return (
     <nav className="flex p-2 shadow-elevation-low min-h-[48px] overflow-hidden">
@@ -101,9 +101,9 @@ export default function FriendsTab({
             onClick={() => onTabClick("Pending")}
           >
             Pending
-            {incomingRequests > 0 && (
+            {pendingRequests > 0 && (
               <Notification
-                incomingRequests={incomingRequests}
+                pendingRequests={pendingRequests}
                 className="ml-2"
               />
             )}
