@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import "./globals.css";
-import Providers from "./providers/Providers";
+import SessionProvider from "./providers/SessionProvider";
 import ServerNav from "@/components/nav/ServerNav";
 import SvgMasks from "@/components/svgs/SvgMasks";
 import { getServerSession } from "next-auth";
@@ -31,12 +31,12 @@ export default async function RootLayout({
       <body className={ggSans.className}>
         <SvgMasks />
         <SocketProvider userId={data?.user.id}>
-          <Providers>
+          <SessionProvider>
             <div className="flex h-full w-full">
               {data && <ServerNav />}
               <main className="w-full overflow-hidden">{children}</main>
             </div>
-          </Providers>
+          </SessionProvider>
         </SocketProvider>
       </body>
     </html>
