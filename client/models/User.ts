@@ -1,6 +1,12 @@
 import { Status } from "@/types/status";
 import { Schema, model, models, Types } from "mongoose";
 
+export interface UserDM {
+  channelId: Types.ObjectId;
+  recipientId: Types.ObjectId;
+  open: boolean;
+}
+
 export interface UserType {
   username: string;
   displayName: string;
@@ -18,7 +24,7 @@ export interface UserType {
   };
   online: boolean;
   servers: Types.ObjectId[];
-  dms: Types.ObjectId[];
+  dms: UserDM[];
 }
 
 const UserSchema = new Schema<UserType>(
@@ -51,11 +57,16 @@ const UserSchema = new Schema<UserType>(
       blocked: [{ type: Schema.Types.ObjectId, ref: "User" }],
     },
     servers: [{ type: Schema.Types.ObjectId, ref: "Server" }],
-    dms: [{ type: Schema.Types.ObjectId, ref: "Dm" }],
+    dms: [
+      {
+        channelId: { type: Schema.Types.ObjectId, ref: "Dm" },
+        recipientId: { type: Schema.Types.ObjectId, ref: "User" },
+        open: { type: Boolean, default: true },
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
-
     timestamps: true,
   }
 );

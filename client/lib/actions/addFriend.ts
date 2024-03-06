@@ -1,6 +1,7 @@
 "use server";
 import { z } from "zod";
-import User from "@/models/User";
+import User, { UserDM } from "@/models/User";
+import Dm from "@/models/Dm";
 import dbConnect from "../db/dbConnect";
 import { addFriendSchema } from "../validations/addFriend";
 import mongoose from "mongoose";
@@ -57,7 +58,7 @@ export async function addFriend(
   );
 
   if (haveYouSentRequest)
-    return Promise.reject("You've already sent a friend request to that user");
+    return Promise.reject("You've already sent a friend request to that user"); // todo: dont throw error if other person sent just accept
 
   // Start transaction to accept friend request or send one (need to update your account and friend account's socials)
 
@@ -68,8 +69,9 @@ export async function addFriend(
   const mongooseSession = await mongoose.startSession();
 
   await mongooseSession.withTransaction(async () => {
-    // Accepts friend request if friend sent a request
     try {
+      // Accepts friend request if friend sent a request
+
       const hasIncomingRequest = isIdInArray(
         pending.map((p) => p.user),
         friendAccount.id
@@ -77,6 +79,45 @@ export async function addFriend(
 
       if (hasIncomingRequest) {
         console.log("Accepting friend request");
+        // Create DM if one doesn't exist yet
+
+        const dmExists = yourAccount.dms.find(
+          (dm) => dm.recipientId.toString() === friendAccount.id
+        );
+
+        console.log("Dm exists:", dmExists);
+
+        if (!dmExists) {
+          const dm = new Dm({
+            members: [yourAccount._id, friendAccount._id],
+            messages: [],
+          });
+
+          const yourDMOpts: UserDM = {
+            channelId: dm.id,
+            recipientId: friendAccount.id,
+            open: true,
+          };
+
+          const recipientDMOpts: UserDM = {
+            channelId: dm.id,
+            recipientId: yourAccount.id,
+            open: true,
+          };
+
+          await Promise.all([
+            dm.save(),
+            User.findByIdAndUpdate(yourUserId, {
+              $push: { dms: yourDMOpts },
+            }),
+            User.findByIdAndUpdate(friendAccount.id, {
+              $push: {
+                dms: recipientDMOpts,
+              },
+            }),
+          ]);
+          console.log("Created dm");
+        }
 
         return await Promise.all([
           User.findByIdAndUpdate(
