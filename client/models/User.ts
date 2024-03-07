@@ -1,5 +1,6 @@
 import { Status } from "@/types/status";
 import { Schema, model, models, Types } from "mongoose";
+import "./Dm";
 
 export interface UserDM {
   channelId: Types.ObjectId;
