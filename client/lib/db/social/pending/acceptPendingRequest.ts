@@ -35,13 +35,13 @@ export const acceptPendingRequest = async (
         });
 
         const yourDMOpts: UserDM = {
-          channelId: dm.id,
+          channelId: dm._id,
           recipientId: friendAccount._id,
           open: true,
         };
 
         const recipientDMOpts: UserDM = {
-          channelId: dm.id,
+          channelId: dm._id,
           recipientId: yourAccount._id,
           open: true,
         };
