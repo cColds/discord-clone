@@ -6,19 +6,21 @@ import UserPanel from "../panels/UserPanel";
 import PrivateChannels from "../sidebars/PrivateChannels";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
-import { User } from "@/types/user";
+import { UserType } from "@/types/user";
 
 type HomeProps = {
-  sessionUser: User;
+  sessionUser: UserType;
 };
 
 export default function HomeClient({ sessionUser }: HomeProps) {
-  const [user, setUser] = useState<User>(sessionUser);
+  const [user, setUser] = useState<UserType>(sessionUser);
   const { socket } = useSocket();
 
   const pendingRequests = user.social.pending.filter(
     (pending) => pending.request === "Incoming"
   );
+
+  const dmsOpen = user.dms.filter((dm) => dm.open);
 
   useEffect(() => {
     if (!socket) return;
@@ -51,7 +53,10 @@ export default function HomeClient({ sessionUser }: HomeProps) {
   return (
     <div className="flex h-full">
       <div className="flex flex-col w-60">
-        <PrivateChannels pendingRequests={pendingRequests.length} />
+        <PrivateChannels
+          pendingRequests={pendingRequests.length}
+          dms={dmsOpen}
+        />
         <UserPanel
           username={user.username}
           displayName={user.displayName}

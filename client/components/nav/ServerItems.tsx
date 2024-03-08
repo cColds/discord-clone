@@ -10,7 +10,7 @@ import ActionTooltip from "../tooltip/ActionTooltip";
 import Link from "next/link";
 import HomeLink from "./HomeLink";
 import { useSocket } from "@/app/providers/SocketProvider";
-import { User } from "@/types/user";
+import { UserType } from "@/types/user";
 import { getUser } from "@/lib/db/getUser";
 
 const servers = [
@@ -31,11 +31,11 @@ const servers = [
   },
 ];
 
-const getPendingRequests = (user: User) =>
+const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
     .length;
 
-export default function ServerItems({ user }: { user: User }) {
+export default function ServerItems({ user }: { user: UserType }) {
   const params = useParams();
   const [hoveredServer, setHoveredServer] = useState("");
   const [hoveredAddServer, setHoveredAddServer] = useState(false);

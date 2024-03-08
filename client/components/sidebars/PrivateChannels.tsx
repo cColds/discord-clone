@@ -2,52 +2,10 @@ import Link from "next/link";
 import { DMPlus, Friend, Nitro, Shop } from "../svgs";
 import { cn } from "@/lib/utils";
 import ActionTooltip from "../tooltip/ActionTooltip";
-import { Status } from "@/types/status";
 import DmItem from "../dm/DmItem";
 import Notification from "../badges/Notification";
 import Empty from "../svgs/Empty";
-
-type Dms = {
-  username: string;
-  avatar: string;
-  status: Status;
-  id: string;
-}[];
-
-const dms: Dms = [
-  {
-    username: "cold",
-    avatar: "https://avatars.githubusercontent.com/u/103373668?s=32&v=4",
-    status: "Do Not Disturb",
-    id: "r98h",
-  },
-  {
-    username: "Harmeet Matharoo",
-    avatar: "https://avatars.githubusercontent.com/u/39014834?s=32&v=4",
-    status: "Invisible",
-    id: "dv98h",
-  },
-
-  {
-    username: "shark",
-    avatar: "https://avatars.githubusercontent.com/u/95330865?s=32&v=4",
-    status: "Online",
-    id: "9823rh",
-  },
-
-  {
-    username: "Web Dev Simplified",
-    avatar: "https://avatars.githubusercontent.com/u/39717099?s=32&v=4",
-    status: "Idle",
-    id: "43298h",
-  },
-  {
-    username: "Some Meticulously Epic Person !!",
-    avatar: "https://avatars.githubusercontent.com/u/51186394",
-    status: "Invisible",
-    id: "98hn",
-  },
-];
+import { UserDms } from "@/types/user";
 
 type UpperListItemProps = {
   children: React.ReactNode;
@@ -87,10 +45,12 @@ const UpperListItem = ({
 
 type PrivateChannelsProps = {
   pendingRequests: number;
+  dms: UserDms["dms"];
 };
 
 export default function PrivateChannels({
   pendingRequests,
+  dms,
 }: PrivateChannelsProps) {
   return (
     <nav
@@ -124,20 +84,22 @@ export default function PrivateChannels({
             </button>
           </ActionTooltip>
         </h2>
-        {true ? (
-          <Empty />
-        ) : (
+        {dms.length ? (
           dms.map((dm) => {
+            const recipientDm = dm.recipientId;
+
             return (
               <DmItem
-                key={dm.id}
-                id={dm.id}
-                username={dm.username}
-                status={dm.status}
-                avatar={dm.avatar}
+                key={recipientDm.id}
+                id={recipientDm.id}
+                username={recipientDm.username}
+                status={recipientDm.status}
+                avatar={recipientDm.avatar}
               />
             );
           })
+        ) : (
+          <Empty />
         )}
       </ul>
     </nav>
