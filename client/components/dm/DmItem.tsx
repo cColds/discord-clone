@@ -7,6 +7,7 @@ import { Status } from "@/types/status";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { useState } from "react";
 import { CloseDM } from "../svgs";
+import { useParams } from "next/navigation";
 
 type DmItemProps = {
   username: string;
@@ -24,16 +25,15 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
     setShowTooltip(widthOverflow ? id : "");
   };
 
-  // TODO:
-  // Need to replace the cn classes with selected boolean instead of hardcoded false
-  // Get the selected dm via url (need to implement channels/[channelId] route first)
+  const params = useParams();
 
   return (
     <li
       className={cn(
         "flex cursor-pointer mx-2 my-[1px] rounded-[4px] h-11 hover:text-interactive-hover hover:bg-background-interactive-hover group text-channels-default",
         {
-          "bg-background-modifier-selected": false,
+          "text-white": params.channelId === id,
+          "bg-background-modifier-selected": params.channelId === id,
         }
       )}
     >
