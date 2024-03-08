@@ -9,7 +9,7 @@ export async function getUser(id?: string) {
 
   await dbConnect();
   const user = await User.findById(id).populate({
-    path: "social.friends social.pending.user social.blocked dms.channelId dms.recipientId",
+    path: "social.friends social.pending.user social.blocked dms.channel dms.recipient",
     select: "-password",
   });
 

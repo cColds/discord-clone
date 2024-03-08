@@ -86,15 +86,15 @@ export default function PrivateChannels({
         </h2>
         {dms.length ? (
           dms.map((dm) => {
-            const recipientDm = dm.recipientId;
+            const { recipient } = dm;
 
             return (
               <DmItem
-                key={recipientDm.id}
-                id={recipientDm.id}
-                username={recipientDm.username}
-                status={recipientDm.status}
-                avatar={recipientDm.avatar}
+                key={recipient.id}
+                id={recipient.id}
+                username={recipient.username}
+                status={recipient.status}
+                avatar={recipient.avatar}
               />
             );
           })

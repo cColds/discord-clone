@@ -25,7 +25,7 @@ export const acceptPendingRequest = async (
 
     await mongooseSession.withTransaction(async () => {
       const dmExists = yourAccount.dms.find(
-        (dm) => dm.recipientId.toString() === friendId
+        (dm) => dm.recipient.toString() === friendId
       );
 
       if (!dmExists) {
@@ -35,14 +35,14 @@ export const acceptPendingRequest = async (
         });
 
         const yourDMOpts: UserDM = {
-          channelId: dm._id,
-          recipientId: friendAccount._id,
+          channel: dm._id,
+          recipient: friendAccount._id,
           open: true,
         };
 
         const recipientDMOpts: UserDM = {
-          channelId: dm._id,
-          recipientId: yourAccount._id,
+          channel: dm._id,
+          recipient: yourAccount._id,
           open: true,
         };
 

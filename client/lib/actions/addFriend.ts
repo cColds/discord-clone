@@ -82,7 +82,7 @@ export async function addFriend(
         // Create DM if one doesn't exist yet
 
         const dmExists = yourAccount.dms.find(
-          (dm) => dm.recipientId.toString() === friendAccount.id
+          (dm) => dm.recipient.toString() === friendAccount.id
         );
 
         console.log("Dm exists:", dmExists);
@@ -94,14 +94,14 @@ export async function addFriend(
           });
 
           const yourDMOpts: UserDM = {
-            channelId: dm._id,
-            recipientId: friendAccount._id,
+            channel: dm._id,
+            recipient: friendAccount._id,
             open: true,
           };
 
           const recipientDMOpts: UserDM = {
-            channelId: dm._id,
-            recipientId: yourAccount._id,
+            channel: dm._id,
+            recipient: yourAccount._id,
             open: true,
           };
 

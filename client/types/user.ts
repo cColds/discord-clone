@@ -8,8 +8,8 @@ export type DmType = {
 
 export type UserDms = {
   dms: {
-    channelId: DmType;
-    recipientId: UserType;
+    channel: DmType;
+    recipient: UserType;
     open: boolean;
     id: string;
   }[];

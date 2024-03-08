@@ -3,8 +3,8 @@ import { Schema, model, models, Types } from "mongoose";
 import "./Dm";
 
 export interface UserDM {
-  channelId: Types.ObjectId;
-  recipientId: Types.ObjectId;
+  channel: Types.ObjectId;
+  recipient: Types.ObjectId;
   open: boolean;
 }
 
@@ -60,8 +60,8 @@ const UserSchema = new Schema<UserType>(
     servers: [{ type: Schema.Types.ObjectId, ref: "Server" }],
     dms: [
       {
-        channelId: { type: Schema.Types.ObjectId, ref: "Dm" },
-        recipientId: { type: Schema.Types.ObjectId, ref: "User" },
+        channel: { type: Schema.Types.ObjectId, ref: "Dm" },
+        recipient: { type: Schema.Types.ObjectId, ref: "User" },
         open: { type: Boolean, default: true },
       },
     ],
