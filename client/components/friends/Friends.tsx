@@ -6,7 +6,10 @@ import FriendsTab from "./FriendsTab";
 import { FriendTab } from "@/types/friend-tab";
 import { SocialPopulated } from "@/types/social";
 
-export default function Friends({ social }: SocialPopulated) {
+export default function Friends({
+  social,
+  userId,
+}: SocialPopulated & { userId: string }) {
   const [tab, setTab] = useState<FriendTab>("Online");
 
   const handleTabClick = (tabType: FriendTab) => setTab(tabType);
@@ -25,7 +28,12 @@ export default function Friends({ social }: SocialPopulated) {
         pendingRequests={pendingRequests}
       />
 
-      <FriendsBody social={social} tab={tab} onTabClick={handleTabClick} />
+      <FriendsBody
+        social={social}
+        tab={tab}
+        onTabClick={handleTabClick}
+        userId={userId}
+      />
     </div>
   );
 }

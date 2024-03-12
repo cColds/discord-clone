@@ -66,7 +66,7 @@ export default function HomeClient({ sessionUser }: HomeProps) {
         />
       </div>
 
-      <Friends social={user.social} />
+      <Friends social={user.social} userId={user.id} />
     </div>
   );
 }

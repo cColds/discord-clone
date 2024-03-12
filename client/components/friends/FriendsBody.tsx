@@ -6,12 +6,14 @@ import AddFriend from "./AddFriend";
 type FriendsBodyProps = {
   social: SocialPopulated["social"];
   tab: FriendTab;
+  userId: string;
   onTabClick: (tabType: FriendTab) => void;
 };
 
 export default function FriendsBody({
   social,
   tab,
+  userId,
   onTabClick,
 }: FriendsBodyProps) {
   return (
@@ -19,7 +21,12 @@ export default function FriendsBody({
       {tab === "Add Friend" ? (
         <AddFriend />
       ) : (
-        <FriendsList tab={tab} social={social} onTabClick={onTabClick} />
+        <FriendsList
+          tab={tab}
+          social={social}
+          onTabClick={onTabClick}
+          userId={userId}
+        />
       )}
 
       <aside className="min-w-[360px] max-w-[420px] basis-[30%] p-4 border-l-[1px] border-background-modifier-accent xl:block hidden">

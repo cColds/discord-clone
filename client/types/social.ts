@@ -1,5 +1,12 @@
 import { Status } from "./status";
 
+export type SocialDms = {
+  channel: string;
+  recipient: string;
+  open: boolean;
+  id: string;
+}[];
+
 export type SocialUser = {
   username: string;
   displayName: string;
@@ -7,6 +14,7 @@ export type SocialUser = {
   id: string;
   status: Status;
   online: boolean;
+  dms: SocialDms;
 };
 
 export type PendingStatus = {
@@ -17,6 +25,7 @@ export type PendingStatus = {
     id: string;
     status: Status;
     online: boolean;
+    dms: SocialDms;
   };
 
   request: "Incoming" | "Outgoing";

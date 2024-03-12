@@ -13,6 +13,7 @@ import FriendsListSearchBar from "../search/FriendsListSearchBar";
 type FriendsListProps = {
   social: SocialPopulated["social"];
   tab: FriendTab; // TODO: i think i somehow added invisible and offline status to the friend tab
+  userId: string;
   onTabClick: (tabType: FriendTab) => void;
 };
 
@@ -73,6 +74,7 @@ function showWumpusBackground(
 export default function FriendsList({
   tab,
   social,
+  userId,
   onTabClick,
 }: FriendsListProps) {
   const router = useRouter();
@@ -99,13 +101,17 @@ export default function FriendsList({
                   ? friendData.status
                   : "Offline";
 
+                const userDm = friendData.dms.find(
+                  (dm) => dm.recipient === userId
+                );
+
+                const dmId = userDm?.channel || "";
+
                 return (
                   <li
                     className="flex justify-between ml-[30px] mr-5 border-t-[1px] border-background-modifier-accent hover:bg-background-interactive-hover rounded-md cursor-pointer h-[62px] px-2 grow group"
-                    key={friendData.id}
-                    onClick={() =>
-                      router.push(`/channels/dms/${friendData.id}`)
-                    }
+                    key={dmId}
+                    onClick={() => router.push(`/channels/dms/${dmId}`)}
                     tabIndex={0}
                   >
                     <div className="flex justify-between items-center w-full group">

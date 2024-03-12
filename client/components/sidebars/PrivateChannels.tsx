@@ -52,8 +52,8 @@ export default function PrivateChannels({
 
             return (
               <DmItem
-                key={recipient.id}
-                id={recipient.id}
+                key={dm.channel._id}
+                id={dm.channel._id}
                 username={recipient.username}
                 status={recipient.status}
                 avatar={recipient.avatar}
