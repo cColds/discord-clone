@@ -7,6 +7,14 @@ type AvatarMaskProps = {
   username: string;
   status: Status;
   removeMask?: boolean;
+  svgWidth?: number;
+  svgHeight?: number;
+  imgWidth?: number;
+  imgHeight?: number;
+  rectWidth?: number;
+  rectHeight?: number;
+  rectX?: number;
+  rectY?: number;
 };
 
 export default function AvatarMask({
@@ -14,22 +22,35 @@ export default function AvatarMask({
   username,
   status,
   removeMask = false,
+  svgWidth = 40,
+  svgHeight = 40,
+  imgWidth = 32,
+  imgHeight = 32,
+  rectWidth = 10,
+  rectHeight = 10,
+  rectX = 22,
+  rectY = 22,
 }: AvatarMaskProps) {
   return (
-    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+    <svg
+      width={svgWidth}
+      height={svgHeight}
+      viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+      aria-hidden="true"
+    >
       <foreignObject
         x="0"
         y="0"
-        width="32"
-        height="32"
+        width={imgWidth}
+        height={imgHeight}
         mask={removeMask ? "" : "url(#svg-mask-avatar-status-round-32)"}
       >
         <div>
           <Image
             src={avatar}
             alt={`${username}, ${status}`}
-            width={32}
-            height={32}
+            width={imgWidth}
+            height={imgHeight}
             className="rounded-full"
             draggable={false}
           />
@@ -37,10 +58,10 @@ export default function AvatarMask({
       </foreignObject>
       {!removeMask && (
         <rect
-          width="10"
-          height="10"
-          x="22"
-          y="22"
+          width={rectWidth}
+          height={rectHeight}
+          x={rectX}
+          y={rectY}
           fill={STATUS[status].color}
           mask={STATUS[status].mask}
         ></rect>
