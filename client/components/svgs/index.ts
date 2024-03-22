@@ -20,3 +20,4 @@ export { Cancel } from "./Cancel";
 export { Unblock } from "./Unblock";
 export { Explore } from "./Explore";
 export { Arrow } from "./Arrow";
+export { UploadFile } from "./UploadFile";
