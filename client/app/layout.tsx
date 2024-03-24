@@ -8,6 +8,8 @@ import SvgMasks from "@/components/svgs/SvgMasks";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { SocketProvider } from "./providers/SocketProvider";
+import { UserProvider } from "./providers/UserProvider";
+import { getUser } from "@/lib/db/getUser";
 
 const ggSans = localFont({
   src: "../public/fonts/gg-sans.woff2",
@@ -26,18 +28,22 @@ export default async function RootLayout({
 }) {
   const data = await getServerSession(authConfig);
 
+  const user = await getUser(data?.user.id);
+
   return (
     <html lang="en">
       <body className={ggSans.className}>
         <SvgMasks />
-        <SocketProvider userId={data?.user.id}>
-          <SessionProvider>
-            <div className="flex h-full w-full">
-              {data && <ServerNav />}
-              <main className="w-full overflow-hidden">{children}</main>
-            </div>
-          </SessionProvider>
-        </SocketProvider>
+        <UserProvider userProp={user}>
+          <SocketProvider userId={data?.user.id}>
+            <SessionProvider>
+              <div className="flex h-full w-full">
+                {data && <ServerNav />}
+                <main className="w-full overflow-hidden">{children}</main>
+              </div>
+            </SessionProvider>
+          </SocketProvider>
+        </UserProvider>
       </body>
     </html>
   );
