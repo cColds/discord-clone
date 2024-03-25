@@ -1,7 +1,7 @@
+"use server";
+
 import { authConfig } from "@/auth.config";
-import DmChannel from "@/components/dm/DmChannel";
-import UserPanel from "@/components/panels/UserPanel";
-import PrivateChannels from "@/components/sidebars/PrivateChannels";
+import DmPageClient from "@/components/dm/DmPageClient";
 import { getDm } from "@/lib/db/getDm";
 import { getUser } from "@/lib/db/getUser";
 import { getServerSession } from "next-auth";
@@ -26,29 +26,15 @@ export default async function DmPage({
 
   const pendingRequests = user.social.pending.filter(
     (pending) => pending.request === "Incoming"
-  );
+  ).length;
 
   const dmsOpen = user.dms.filter((dm) => dm.open);
 
   return (
-    <>
-      <div className="flex h-full">
-        <div className="flex flex-col w-60">
-          <PrivateChannels
-            pendingRequests={pendingRequests.length}
-            dms={dmsOpen}
-          />
-          <UserPanel
-            username={user.username}
-            displayName={user.displayName}
-            email={user.email}
-            avatar={user.avatar}
-            status={user.status}
-          />
-        </div>
-
-        <DmChannel user={user} recipient={recipient} />
-      </div>
-    </>
+    <DmPageClient
+      recipient={recipient}
+      pendingRequests={pendingRequests}
+      dmsOpen={dmsOpen}
+    />
   );
 }

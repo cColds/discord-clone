@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Friends from "../friends/Friends";
 import UserPanel from "../panels/UserPanel";
 import PrivateChannels from "../sidebars/PrivateChannels";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
-import { UserType } from "@/types/user";
+import { useUser } from "@/app/providers/UserProvider";
+import { redirect } from "next/navigation";
 
-type HomeProps = {
-  sessionUser: UserType;
-};
+export default function HomeClient() {
+  const { user, setUser } = useUser();
 
-export default function HomeClient({ sessionUser }: HomeProps) {
-  const [user, setUser] = useState<UserType>(sessionUser);
+  if (!user) redirect("/");
+
   const { socket } = useSocket();
 
   const pendingRequests = user.social.pending.filter(

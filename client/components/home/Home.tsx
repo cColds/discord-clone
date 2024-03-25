@@ -9,5 +9,5 @@ export default async function Home() {
   const user = await getUser(session?.user.id);
   if (user == null) redirect("/login");
 
-  return <HomeClient sessionUser={user} />;
+  return <HomeClient />;
 }
