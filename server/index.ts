@@ -25,20 +25,24 @@ const io = new Server(server, {
   path: "/socket",
 });
 
-let activeUsers: Record<string, { socketId: string }> = {};
+let activeUsers: Record<string, { username: string; socketId: string }> = {};
 let socketToUserMap: Record<string, { userId: string }> = {};
 
 io.on("connection", (socket) => {
   console.log("A user has connected", socket.id);
 
-  socket.on("new-user-add", async (newUserId) => {
+  socket.on("new-user-add", async (newUserId, username) => {
     const userExists = activeUsers[newUserId];
+
     if (!userExists) {
-      activeUsers[newUserId] = { socketId: socket.id };
+      activeUsers[newUserId] = { username, socketId: socket.id };
       socketToUserMap[socket.id] = { userId: newUserId };
     }
 
-    console.log("User connected. Current Active Users: ", activeUsers);
+    console.log(
+      `User ${username} connected. Current Active Users: `,
+      activeUsers
+    );
 
     const user = await updateOnlineStatus(newUserId, true);
 
@@ -80,7 +84,10 @@ io.on("connection", (socket) => {
       const user = await updateOnlineStatus(userId, false);
       delete activeUsers[userId];
       delete socketToUserMap[socket.id];
-      console.log("User disconnected. Current Active Users: ", activeUsers);
+      console.log(
+        `User ${user} disconnected. Current Active Users: `,
+        activeUsers
+      );
       io.emit("get-users", activeUsers);
       user.social.friends.forEach((friendId: string) => {
         const friend = activeUsers[friendId];

@@ -1,5 +1,7 @@
 "use client";
 
+import { getUser } from "@/lib/db/getUser";
+import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { io as ClientIO, Socket } from "socket.io-client";
 
@@ -32,6 +34,7 @@ export const SocketProvider = ({
   const [socket, setSocket] = useState<null | Socket>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState<[] | OnlineUser[]>([]);
+  const pathname = usePathname();
 
   useEffect(() => {
     const socketInstance = new (ClientIO as any)("http://localhost:3001", {
@@ -39,7 +42,11 @@ export const SocketProvider = ({
     });
 
     if (userId) {
-      socketInstance.emit("new-user-add", userId);
+      getUser(userId)
+        .then((userData) => {
+          socketInstance.emit("new-user-add", userId, userData?.username);
+        })
+        .catch((err) => console.error(err));
     }
 
     socketInstance.on("get-users", (users: OnlineUser[]) => {
@@ -59,7 +66,7 @@ export const SocketProvider = ({
     return () => {
       socketInstance.disconnect();
     };
-  }, [userId]);
+  }, [userId, pathname]);
 
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>
