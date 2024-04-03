@@ -15,7 +15,7 @@ export default function DmChatOverlay({ user, recipient }: DmChatOverlayType) {
 
       <DmMainChat />
 
-      <DmMessageBox recipient={recipient} />
+      <DmMessageBox sender={user} recipient={recipient} />
     </div>
   );
 }

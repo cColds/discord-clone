@@ -4,13 +4,31 @@ import { UserType } from "@/types/user";
 import { UploadFile } from "../svgs";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import Image from "next/image";
+import { sendMessage } from "@/lib/actions/sendMessage";
+import { useParams } from "next/navigation";
 
-export default function DmMessageBox({ recipient }: { recipient: UserType }) {
+type DmMessageBoxType = {
+  recipient: UserType;
+  sender: UserType;
+};
+
+export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
   const [message, setMessage] = useState("");
+  const { channelId } = useParams();
 
-  const handleMessageSubmit = () => {
-    console.log("Message to send:", message);
-    setMessage("");
+  const handleMessageSubmit = async () => {
+    try {
+      console.log("Message to send:", message);
+
+      await sendMessage(
+        sender.id,
+        message,
+        Array.isArray(channelId) ? channelId[0] : channelId
+      );
+      setMessage("");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
