@@ -8,7 +8,7 @@ export interface MessageType extends Document {
 
 const MessageSchema = new Schema<MessageType>(
   {
-    sender: { type: Schema.Types.ObjectId, required: true },
+    sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
     message: { type: String, maxLength: 2000, required: true },
     channelId: { type: String, required: true },
   },
