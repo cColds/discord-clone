@@ -5,6 +5,7 @@ import PrivateChannels from "../sidebars/PrivateChannels";
 import DmChannel from "./DmChannel";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
+import { MessageType } from "@/types/message";
 
 type DmPageClientType = {
   recipient: UserType;
@@ -15,12 +16,14 @@ type DmPageClientType = {
     open: boolean;
     id: string;
   }[];
+  messages: MessageType[];
 };
 
 export default function DmPageClient({
   pendingRequests,
   dmsOpen,
   recipient,
+  messages,
 }: DmPageClientType) {
   const { user } = useUser();
   if (!user) redirect("/");
@@ -38,7 +41,7 @@ export default function DmPageClient({
         />
       </div>
 
-      <DmChannel user={user} recipient={recipient} />
+      <DmChannel user={user} recipient={recipient} messages={messages} />
     </div>
   );
 }

@@ -48,6 +48,7 @@ module.exports = {
         "background-interactive-hover": "rgba(78, 80, 88, 0.3)",
         "background-secondary-alt": "rgb(35, 36, 40)",
         "interactive-hover": "rgb(219, 222, 225)",
+        "background-message-hover": "rgba(2,2,2,0.06)",
         "channels-default": "rgb(148, 155, 164)",
         "text-muted": "rgb(148, 155, 164)",
         "info-danger-foreground": "rgb(242, 63, 66)",
