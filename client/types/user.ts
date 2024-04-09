@@ -4,7 +4,6 @@ import { Status } from "./status";
 
 export type DmType = {
   members: UserType[];
-  messages: { sender: UserType[]; message: string }[];
   _id: string;
 };
 

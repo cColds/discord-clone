@@ -14,10 +14,6 @@ export async function sendMessage(
   try {
     const messageDoc = new Message({ sender, message, channelId });
     await messageDoc.save();
-
-    const dmDoc = await Dm.findByIdAndUpdate(channelId, {
-      $push: { messages: messageDoc._id },
-    });
   } catch (err) {
     console.error(err);
   }

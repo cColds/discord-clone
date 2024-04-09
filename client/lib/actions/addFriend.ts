@@ -90,7 +90,6 @@ export async function addFriend(
         if (!dmExists) {
           const dm = new Dm({
             members: [yourAccount._id, friendAccount._id],
-            messages: [],
           });
 
           const yourDMOpts: UserDM = {
