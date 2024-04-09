@@ -21,3 +21,7 @@ export { Unblock } from "./Unblock";
 export { Explore } from "./Explore";
 export { Arrow } from "./Arrow";
 export { UploadFile } from "./UploadFile";
+export { Reaction } from "./Reaction";
+export { Menu } from "./Menu";
+export { Edit } from "./Edit";
+export { Reply } from "./Reply";

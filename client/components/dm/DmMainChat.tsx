@@ -13,8 +13,14 @@ import {
 import React from "react";
 import DateDivider from "@/components/DateDivider";
 import { cn } from "@/lib/utils";
+import MessageActions from "@/components/tooltip/MessageActions";
+import { useUser } from "@/app/providers/UserProvider";
+import { redirect } from "next/navigation";
 
 export default function DmMainChat({ messages }: { messages: MessageType[] }) {
+  const { user } = useUser();
+  if (!user) redirect("/");
+
   let prevMessage: null | MessageType = null;
 
   return (
@@ -97,6 +103,8 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
                     {msg.message}
                   </span>
                 </div>
+
+                <MessageActions isYourMessage={user.id === msg.sender._id} />
               </div>
             </li>
           </React.Fragment>
