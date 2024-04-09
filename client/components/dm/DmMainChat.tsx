@@ -31,12 +31,11 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
             formattedRelative.slice(1)
           : formattedDate;
 
-        let showDivider = null;
+        let showDateDivider = false;
         let shouldMergeMessages = false;
 
         if (!prevMessage) {
-          showDivider = true;
-          prevMessage = msg;
+          showDateDivider = true;
         } else {
           const sameDay = isSameDay(msg.createdAt, prevMessage.createdAt);
 
@@ -45,13 +44,14 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
             msg.sender._id === prevMessage.sender._id &&
             sameDay;
 
-          showDivider = !sameDay;
-          prevMessage = msg;
+          showDateDivider = !sameDay;
         }
+
+        prevMessage = msg;
 
         return (
           <React.Fragment key={msg._id}>
-            {showDivider && <DateDivider date={msg.createdAt} />}
+            {showDateDivider && <DateDivider date={msg.createdAt} />}
 
             <li className="relative">
               <div
