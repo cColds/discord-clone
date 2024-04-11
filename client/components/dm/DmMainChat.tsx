@@ -62,7 +62,10 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
             formattedRelative.slice(1)
           : formattedDate;
 
-        const editedDate = format(msg.createdAt, "EEEE, LLLL d h:mm a");
+        const editedDate = format(
+          msg.edited || msg.updatedAt,
+          "EEEE, LLLL d h:mm a"
+        );
 
         let showDateDivider = false;
         let shouldMergeMessages = false;
@@ -81,8 +84,6 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
         }
 
         prevMessage = msg;
-
-        console.log(msg);
 
         return (
           <React.Fragment key={msg._id}>
@@ -133,7 +134,10 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
                   {msg.edited && (
                     <ActionTooltip content={editedDate}>
                       <span className="text-xs text-text-muted leading-[1.375rem]">
-                        <time aria-label={formatted} dateTime={msg.updatedAt}>
+                        <time
+                          aria-label={formatted}
+                          dateTime={msg.edited.toString() || msg.updatedAt}
+                        >
                           <span> (edited)</span>
                         </time>
                       </span>
