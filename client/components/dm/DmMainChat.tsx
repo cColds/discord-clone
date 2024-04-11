@@ -127,13 +127,11 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
                     </time>
                   </span>
                 )}
-                <div className="">
-                  <span className="text-text-normal overflow-hidden inline-block h-5 pointer-events-none leading-[1.375rem]">
-                    {msg.message}
-                  </span>
+                <div className="text-text-normal overflow-hidden leading-[1.375rem]">
+                  <span>{msg.message}</span>
                   {msg.edited && (
                     <ActionTooltip content={editedDate}>
-                      <span className="text-xs text-text-muted leading-[1.375rem]">
+                      <span className="text-xs text-text-muted leading-[1.375rem] select-none">
                         <time
                           aria-label={formatted}
                           dateTime={msg.edited.toString() || msg.updatedAt}
