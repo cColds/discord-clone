@@ -10,14 +10,39 @@ import {
   isToday,
   isYesterday,
 } from "date-fns";
-import React from "react";
+import React, { useState } from "react";
 import DateDivider from "@/components/DateDivider";
 import { cn } from "@/lib/utils";
 import MessageActions from "@/components/tooltip/MessageActions";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
+import EditMessageBox from "@/components/EditMessageBox";
+import { editMessage } from "@/lib/db/editMessage";
+import ActionTooltip from "@/components/tooltip/ActionTooltip";
 
 export default function DmMainChat({ messages }: { messages: MessageType[] }) {
+  const [editMessageId, setEditMessageId] = useState<null | string>(null);
+  const [editedMessage, setEditedMessage] = useState<null | string>(null);
+
+  const handleEditMessage = (messageId: string | null) => {
+    setEditMessageId(messageId);
+    setEditedMessage(null);
+  };
+
+  const updateEditedMessage = (message: string) => setEditedMessage(message);
+
+  const saveMessageChange = async () => {
+    if (!editedMessage || !editMessageId) {
+      throw new Error("Message id cannot be null");
+    }
+
+    try {
+      await editMessage(editMessageId, editedMessage);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const { user } = useUser();
   if (!user) redirect("/");
 
@@ -37,6 +62,8 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
             formattedRelative.slice(1)
           : formattedDate;
 
+        const editedDate = format(msg.createdAt, "EEEE, LLLL d h:mm a");
+
         let showDateDivider = false;
         let shouldMergeMessages = false;
 
@@ -54,6 +81,8 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
         }
 
         prevMessage = msg;
+
+        console.log(msg);
 
         return (
           <React.Fragment key={msg._id}>
@@ -97,14 +126,36 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
                     </time>
                   </span>
                 )}
-
-                <div>
-                  <span className="text-text-normal overflow-hidden">
+                <div className="">
+                  <span className="text-text-normal overflow-hidden inline-block h-5 pointer-events-none leading-[1.375rem]">
                     {msg.message}
                   </span>
+                  {msg.edited && (
+                    <ActionTooltip content={editedDate}>
+                      <span className="text-xs text-text-muted leading-[1.375rem]">
+                        <time aria-label={formatted} dateTime={msg.updatedAt}>
+                          <span> (edited)</span>
+                        </time>
+                      </span>
+                    </ActionTooltip>
+                  )}
                 </div>
-
-                <MessageActions isYourMessage={user.id === msg.sender._id} />
+                {editMessageId === msg._id && (
+                  <EditMessageBox
+                    message={msg.message}
+                    onEditMessage={handleEditMessage}
+                    saveMessageChange={saveMessageChange}
+                    updateEditedMessage={updateEditedMessage}
+                    editedMessage={editedMessage}
+                  />
+                )}
+                {editMessageId !== msg._id && (
+                  <MessageActions
+                    isYourMessage={user.id === msg.sender._id}
+                    onEditMessage={handleEditMessage}
+                    messageId={msg._id}
+                  />
+                )}
               </div>
             </li>
           </React.Fragment>

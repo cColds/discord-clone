@@ -22,11 +22,4 @@ const Message = model<MessageType>(
   models.Message ? undefined : MessageSchema
 );
 
-MessageSchema.pre("save", function (next) {
-  if (this.isModified("message")) {
-    this.edited = new Date(); // Update 'edited' field to current date and time
-  }
-  next();
-});
-
 export default Message;

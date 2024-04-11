@@ -4,17 +4,20 @@ import ActionTooltip from "./ActionTooltip";
 type MessageActionButtonType = {
   content: string;
   children: React.ReactNode;
+  onClick?: () => void;
 };
 
 const MessageActionButton = ({
   content,
   children,
+  onClick,
 }: MessageActionButtonType) => {
   return (
     <ActionTooltip content={content}>
       <button
         className="flex items-center justify-center min-w-[24px] min-h-[24px] h-6 p-1 text-interactive-normal hover:text-interactive-hover hover:bg-background-modifier-hover cursor-pointer box-content"
         aria-label={content}
+        onClick={onClick}
       >
         {children}
       </button>
@@ -24,9 +27,15 @@ const MessageActionButton = ({
 
 type MessageActionsType = {
   isYourMessage: boolean;
+  onEditMessage: (messageId: null | string) => void;
+  messageId: string;
 };
 
-const MessageActions = ({ isYourMessage }: MessageActionsType) => {
+const MessageActions = ({
+  isYourMessage,
+  onEditMessage,
+  messageId,
+}: MessageActionsType) => {
   return (
     <div className="absolute top-0 right-0">
       <div
@@ -38,15 +47,16 @@ const MessageActions = ({ isYourMessage }: MessageActionsType) => {
             <Reaction className="w-5 h-5" />
           </MessageActionButton>
 
-          {!isYourMessage && (
+          {isYourMessage ? (
+            <MessageActionButton
+              content="Edit"
+              onClick={() => onEditMessage(messageId)}
+            >
+              <Edit className="w-5 h-5" />
+            </MessageActionButton>
+          ) : (
             <MessageActionButton content="Reply">
               <Reply className="w-5 h-5" />
-            </MessageActionButton>
-          )}
-
-          {isYourMessage && (
-            <MessageActionButton content="Edit">
-              <Edit className="w-5 h-5" />
             </MessageActionButton>
           )}
 
