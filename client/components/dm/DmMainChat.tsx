@@ -49,7 +49,7 @@ export default function DmMainChat({ messages }: { messages: MessageType[] }) {
   let prevMessage: null | MessageType = null;
 
   return (
-    <ol className="mb-[30px] min-h-[150px]">
+    <ol className="mb-[30px] min-h-[150px] overflow-hidden">
       {messages.map((msg) => {
         const formattedDate = format(msg.createdAt, "MM/dd/yyyy h:mm a");
         const formattedRelative = formatRelative(msg.createdAt, new Date());

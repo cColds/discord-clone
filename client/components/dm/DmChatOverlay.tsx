@@ -16,10 +16,13 @@ export default function DmChatOverlay({
   messages,
 }: DmChatOverlayType) {
   return (
-    <div className="grow flex flex-col justify-end">
-      <DmNewChatHeader user={user} recipient={recipient} />
-
-      <DmMainChat messages={messages} />
+    <div className="grow flex flex-col justify-end h-full">
+      <div className="overflow-y-scroll overflow-x-hidden">
+        <div className="flex flex-col min-h-full items-stretch justify-end">
+          <DmNewChatHeader user={user} recipient={recipient} />
+          <DmMainChat messages={messages} />
+        </div>
+      </div>
 
       <DmMessageBox sender={user} recipient={recipient} />
     </div>
