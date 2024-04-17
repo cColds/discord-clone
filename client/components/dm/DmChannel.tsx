@@ -1,6 +1,5 @@
-import { DmType, UserType } from "@/types/user";
+import { UserType } from "@/types/user";
 import DmChatOverlay from "./DmChatOverlay";
-import DmHeader from "./DmHeader";
 import { MessageType } from "@/types/message";
 
 type DmChannelType = {
@@ -19,8 +18,6 @@ export default function DmChannel({
       className="flex flex-col bg-background-primary grow"
       aria-label="(channel)"
     >
-      <DmHeader recipient={recipient} />
-
       <DmChatOverlay user={user} recipient={recipient} messages={messages} />
     </div>
   );

@@ -3,6 +3,7 @@ import DmNewChatHeader from "./DmNewChatHeader";
 import DmMessageBox from "./DmMessageBox";
 import DmMainChat from "./DmMainChat";
 import { MessageType } from "@/types/message";
+import DmHeader from "./DmHeader";
 
 type DmChatOverlayType = {
   user: UserType;
@@ -17,7 +18,9 @@ export default function DmChatOverlay({
 }: DmChatOverlayType) {
   return (
     <div className="grow flex flex-col justify-end h-full">
-      <div className="overflow-y-scroll overflow-x-hidden">
+      <DmHeader recipient={recipient} />
+
+      <div className="overflow-y-scroll overflow-x-hidden grow">
         <div className="flex flex-col min-h-full items-stretch justify-end">
           <DmNewChatHeader user={user} recipient={recipient} />
           <DmMainChat messages={messages} />
