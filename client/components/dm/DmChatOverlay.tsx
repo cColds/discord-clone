@@ -17,7 +17,7 @@ export default function DmChatOverlay({
   messages,
 }: DmChatOverlayType) {
   return (
-    <div className="grow flex flex-col justify-end h-full">
+    <div className="scroller grow flex flex-col justify-end h-full">
       <DmHeader recipient={recipient} />
 
       <div className="overflow-y-scroll overflow-x-hidden grow">

@@ -8,6 +8,11 @@ body,
   height: 100%;
 }
 
+:root {
+  --scrollbar-auto-track: hsl(220 calc(1 * 6.5%) 18% / 1);
+  --scrollbar-auto-thumb: hsl(225 calc(1 * 7.1%) 11% / 1);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -84,6 +89,31 @@ body,
   button,
   a {
     @apply border-2 border-transparent focus-visible:border-sky-400 outline-none rounded transition-colors duration-300;
+  }
+}
+
+.scroller {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-auto-track);
+    margin-bottom: 8px;
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    border-radius: 8px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 8px;
+    background-color: var(--scrollbar-auto-thumb);
+    min-height: 40px;
   }
 }
 
