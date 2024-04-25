@@ -1,6 +1,9 @@
 import { UserType } from "@/types/user";
-import DmChatOverlay from "./DmChatOverlay";
 import { MessageType } from "@/types/message";
+import DmHeader from "./DmHeader";
+import DmNewChatHeader from "./DmNewChatHeader";
+import DmMainChat from "./DmMainChat";
+import DmMessageBox from "./DmMessageBox";
 
 type DmChannelType = {
   user: UserType;
@@ -18,7 +21,18 @@ export default function DmChannel({
       className="flex flex-col bg-background-primary grow"
       aria-label="(channel)"
     >
-      <DmChatOverlay user={user} recipient={recipient} messages={messages} />
+      <div className="scroller grow flex flex-col justify-end h-full">
+        <DmHeader recipient={recipient} />
+
+        <div className="overflow-y-scroll overflow-x-hidden grow">
+          <div className="flex flex-col min-h-full items-stretch justify-end">
+            <DmNewChatHeader user={user} recipient={recipient} />
+            <DmMainChat messages={messages} />
+          </div>
+        </div>
+
+        <DmMessageBox sender={user} recipient={recipient} />
+      </div>
     </div>
   );
 }
