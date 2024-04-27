@@ -1,3 +1,5 @@
+"use client";
+
 import { format } from "date-fns";
 import Image from "next/image";
 import ActionTooltip from "@/components/tooltip/ActionTooltip";
@@ -9,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { UserType } from "@/types/user";
 import { useState } from "react";
 import { editMessage } from "@/lib/db/editMessage";
+import { useSocket } from "@/app/providers/SocketProvider";
 
 type MessageItemType = {
   msg: MessageType;
@@ -30,6 +33,8 @@ export default function MessageItem({
   const [editMessageId, setEditMessageId] = useState<null | string>(null);
   const [editedMessage, setEditedMessage] = useState<null | string>(null);
 
+  const { socket } = useSocket();
+
   const handleEditMessage = (messageId: string | null) => {
     setEditMessageId(messageId);
     setEditedMessage(null);
@@ -44,6 +49,7 @@ export default function MessageItem({
 
     try {
       await editMessage(editMessageId, editedMessage);
+      socket.emit("send-message");
     } catch (err) {
       console.error(err);
     }

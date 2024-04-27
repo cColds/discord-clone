@@ -77,6 +77,10 @@ io.on("connection", (socket) => {
     updateFriendList({ io, senderId, recipientId, activeUsers });
   });
 
+  socket.on("send-message", () => {
+    io.emit("received-message");
+  });
+
   socket.on("disconnect", async () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {

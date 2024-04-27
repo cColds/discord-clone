@@ -6,6 +6,7 @@ import { ChangeEvent, KeyboardEvent, useState } from "react";
 import Image from "next/image";
 import { sendMessage } from "@/lib/actions/sendMessage";
 import { useParams } from "next/navigation";
+import { useSocket } from "@/app/providers/SocketProvider";
 
 type DmMessageBoxType = {
   recipient: UserType;
@@ -15,6 +16,8 @@ type DmMessageBoxType = {
 export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
   const [message, setMessage] = useState("");
   const { channelId } = useParams();
+
+  const { socket } = useSocket();
 
   const handleMessageSubmit = async () => {
     try {
@@ -26,6 +29,7 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
         Array.isArray(channelId) ? channelId[0] : channelId
       );
       setMessage("");
+      socket.emit("send-message");
     } catch (err) {
       console.error(err);
     }

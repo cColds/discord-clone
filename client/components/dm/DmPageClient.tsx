@@ -6,6 +6,10 @@ import DmChannel from "./DmChannel";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
 import { MessageType } from "@/types/message";
+import { useSocket } from "@/app/providers/SocketProvider";
+import { useEffect, useState } from "react";
+import { getUser } from "@/lib/db/getUser";
+import { getMessages } from "@/lib/db/getMessages";
 
 type DmPageClientType = {
   recipient: UserType;
@@ -16,17 +20,60 @@ type DmPageClientType = {
     open: boolean;
     id: string;
   }[];
-  messages: MessageType[];
+  initialMessages: MessageType[];
+  channelId: string;
 };
 
 export default function DmPageClient({
   pendingRequests,
   dmsOpen,
   recipient,
-  messages,
+  initialMessages,
+  channelId,
 }: DmPageClientType) {
-  const { user } = useUser();
+  const [messages, setMessages] = useState(initialMessages);
+
+  const { user, setUser } = useUser();
   if (!user) redirect("/");
+
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("update-friend-list", async () => {
+      const updatedUser = await getUser(user.id);
+
+      if (updatedUser !== null) {
+        setUser(updatedUser);
+      }
+    });
+
+    socket.on("update-online-status", (isOnline: boolean) => {
+      setUser({ ...user, online: isOnline });
+    });
+
+    socket.on("update-friends-online-status", async (isOnline: boolean) => {
+      const updatedUser = await getUser(user.id);
+
+      if (updatedUser) {
+        setUser(updatedUser);
+      } else {
+        console.error("failed to update user");
+      }
+    });
+
+    socket.on("received-message", async () => {
+      // fetch new messages
+      const updatedMessages = await getMessages(25, channelId);
+
+      setMessages(updatedMessages);
+
+      console.log("success state change");
+    });
+
+    return () => socket.disconnect();
+  }, [socket]);
 
   return (
     <div className="flex h-full">
