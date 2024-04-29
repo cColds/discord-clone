@@ -47,7 +47,7 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
   };
 
   return (
-    <form className="mx-4 -mt-2">
+    <form className="mx-4 -mt-2 z-10">
       <div className="pl-4 mb-6 bg-channel-text-area rounded-lg flex items-center">
         <button
           aria-label="Upload a file or send invites"
