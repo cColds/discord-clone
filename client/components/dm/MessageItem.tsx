@@ -12,6 +12,7 @@ import { UserType } from "@/types/user";
 import { useState } from "react";
 import { editMessage } from "@/lib/db/editMessage";
 import { useSocket } from "@/app/providers/SocketProvider";
+import { useParams } from "next/navigation";
 
 type MessageItemType = {
   msg: MessageType;
@@ -34,6 +35,7 @@ export default function MessageItem({
   const [editedMessage, setEditedMessage] = useState<null | string>(null);
 
   const { socket } = useSocket();
+  const { channelId } = useParams();
 
   const handleEditMessage = (messageId: string | null) => {
     setEditMessageId(messageId);
@@ -49,7 +51,7 @@ export default function MessageItem({
 
     try {
       await editMessage(editMessageId, editedMessage);
-      socket.emit("send-message");
+      socket.emit("send-message", channelId);
     } catch (err) {
       console.error(err);
     }

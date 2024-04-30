@@ -77,8 +77,13 @@ io.on("connection", (socket) => {
     updateFriendList({ io, senderId, recipientId, activeUsers });
   });
 
-  socket.on("send-message", () => {
-    io.emit("received-message");
+  socket.on("join-channel", (channelId) => {
+    console.log("joining channel", channelId);
+    socket.join(channelId);
+  });
+
+  socket.on("send-message", (channelId) => {
+    io.to(channelId).emit("received-message");
   });
 
   socket.on("disconnect", async () => {

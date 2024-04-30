@@ -29,7 +29,7 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
         Array.isArray(channelId) ? channelId[0] : channelId
       );
       setMessage("");
-      socket.emit("send-message");
+      socket.emit("send-message", channelId);
     } catch (err) {
       console.error(err);
     }

@@ -41,6 +41,8 @@ export default function DmPageClient({
   useEffect(() => {
     if (!socket) return;
 
+    socket.emit("join-channel", channelId);
+
     socket.on("update-friend-list", async () => {
       const updatedUser = await getUser(user.id);
 
