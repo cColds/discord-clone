@@ -74,6 +74,10 @@ export default function DmPageClient({
       console.log("success state change");
     });
 
+    socket.on("scroll-to-bottom-chat", () => {
+      console.log("this should scroll to bottom!");
+    });
+
     return () => socket.disconnect();
   }, [socket]);
 
