@@ -86,6 +86,20 @@ io.on("connection", (socket) => {
     io.to(channelId).emit("received-message");
   });
 
+  socket.on(
+    "typing-indicator",
+    (channelId, userInfo: { userId: string; displayName: string }) => {
+      socket.broadcast.to(channelId).emit("show-typing-indicator", userInfo);
+    }
+  );
+
+  socket.on(
+    "stop-typing",
+    (channelId, userInfo: { userId: string; displayName: string }) => {
+      socket.broadcast.to(channelId).emit("stop-typing-indicator", userInfo);
+    }
+  );
+
   socket.on("disconnect", async () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {

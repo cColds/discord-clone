@@ -25,3 +25,4 @@ export { Reaction } from "./Reaction";
 export { Menu } from "./Menu";
 export { Edit } from "./Edit";
 export { Reply } from "./Reply";
+export { TypingDots } from "./TypingDots";

@@ -145,3 +145,36 @@ body,
     rgb(49, 51, 56) 100%
   );
 }
+
+@keyframes pulse {
+  0% {
+    opacity: 0.2;
+    r: 2.5;
+  }
+  50% {
+    opacity: 0.5;
+    r: 3;
+  }
+
+  100% {
+    r: 3.5;
+
+    opacity: 1;
+  }
+}
+
+.dot {
+  animation: pulse 1s infinite forwards; /* Adjust timing as needed */
+}
+
+.dot.first {
+  animation-delay: 0s;
+}
+
+.dot.second {
+  animation-delay: 0.5s; /* Delay so that the animation appears to flow from dot to dot */
+}
+
+.dot.third {
+  animation-delay: 1s;
+}

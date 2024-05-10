@@ -1,8 +1,8 @@
 "use client";
 
 import { UserType } from "@/types/user";
-import { UploadFile } from "../svgs";
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { TypingDots, UploadFile } from "../svgs";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { sendMessage } from "@/lib/actions/sendMessage";
 import { useParams } from "next/navigation";
@@ -15,9 +15,64 @@ type DmMessageBoxType = {
 
 export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
   const [message, setMessage] = useState("");
+  const [usersTyping, setUsersTyping] = useState<
+    { displayName: string; userId: string }[]
+  >([]);
+  const typingTimerRef = useRef<null | NodeJS.Timeout>(null);
+
   const { channelId } = useParams();
 
   const { socket } = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on(
+      "show-typing-indicator",
+      (user: { displayName: string; userId: string }) => {
+        setUsersTyping((current) => {
+          const isUserAlreadyTyping = current.some(
+            (u) => u.userId === user.userId
+          );
+
+          if (!isUserAlreadyTyping) {
+            if (typingTimerRef?.current) {
+              clearTimeout(typingTimerRef?.current);
+            }
+
+            const timerId = setTimeout(() => {
+              setUsersTyping((current) =>
+                current.filter((u) => u.userId !== user.userId)
+              );
+            }, 10000);
+
+            typingTimerRef.current = timerId;
+
+            return [...current, user];
+          }
+          return current;
+        });
+      }
+    );
+    socket.on(
+      "stop-typing-indicator",
+      (user: { displayName: string; userId: string }) => {
+        setUsersTyping((current) =>
+          current.filter((u) => u.userId !== user.userId)
+        );
+      }
+    );
+
+    return () => {
+      socket.off("show-typing-indicator");
+      socket.off("stop-typing-indicator");
+
+      if (typingTimerRef.current) {
+        clearTimeout(typingTimerRef.current);
+        typingTimerRef.current = null;
+      }
+    };
+  }, [socket]);
 
   const handleMessageSubmit = async () => {
     try {
@@ -29,7 +84,12 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
         Array.isArray(channelId) ? channelId[0] : channelId
       );
       setMessage("");
+
       socket.emit("send-message", channelId);
+      socket.emit("stop-typing", channelId, {
+        userId: sender.id,
+        displayName: sender.displayName,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -43,11 +103,17 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
   };
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.currentTarget.value !== "") {
+      socket.emit("typing-indicator", channelId, {
+        userId: sender.id,
+        displayName: sender.displayName,
+      });
+    }
     setMessage(e.currentTarget.value);
   };
 
   return (
-    <form className="mx-4 -mt-2 z-10">
+    <form className="px-4 shrink-0 -mt-2 z-10 relative">
       <div className="pl-4 mb-6 bg-channel-text-area rounded-lg flex items-center">
         <button
           aria-label="Upload a file or send invites"
@@ -78,6 +144,21 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
           </button>
         </div>
       </div>
+
+      {usersTyping.length > 0 && (
+        <div className="text-sm leading-6 resize-none flex items-center absolute bottom-[1px] left-4 right-4 h-6">
+          <div className="flex items-center overflow-hidden text-ellipsis">
+            <TypingDots className="ml-[9px]" />
+
+            <span className="min-w-0 truncate ml-1">
+              <strong>
+                {usersTyping.map((users) => users.displayName).join(", ")}
+              </strong>{" "}
+              is typing...
+            </span>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
