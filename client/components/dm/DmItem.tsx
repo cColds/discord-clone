@@ -30,7 +30,7 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
   return (
     <li
       className={cn(
-        "flex cursor-pointer mx-2 my-[1px] rounded-[4px] h-11 hover:text-interactive-hover hover:bg-background-interactive-hover group text-channels-default",
+        "flex cursor-pointer mx-2 my-[1px] rounded-[4px] h-11 hover:text-interactive-hover hover:bg-background-interactive-hover group text-channels-default max-w-[222px]",
         {
           "text-white": params.channelId === id,
           "bg-background-modifier-selected": params.channelId === id,
@@ -80,7 +80,7 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
         )}
       </Link>
       <button
-        className="hidden group-hover:block hover:text-interactive-hover text-channels-default pr-2"
+        className="hidden group-hover:block hover:text-interactive-hover text-channels-default pr-2 m-0.5 border-0"
         aria-label="Close DM"
       >
         <CloseDM />
