@@ -12,6 +12,7 @@ import HomeLink from "./HomeLink";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { UserType } from "@/types/user";
 import { getUser } from "@/lib/db/getUser";
+import AddServerModal from "../modals/AddServerModal";
 
 const servers = [
   {
@@ -42,6 +43,7 @@ export default function ServerItems({ user }: { user: UserType }) {
   const [pendingRequests, setPendingRequests] = useState(
     getPendingRequests(user)
   );
+
   const { socket } = useSocket();
 
   useEffect(() => {
@@ -115,7 +117,7 @@ export default function ServerItems({ user }: { user: UserType }) {
         </div>
 
         <div className="flex justify-center">
-          <ActionTooltip content="Add a Server" side="right">
+          <AddServerModal>
             <button
               className={cn(
                 "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip bg-dark-700",
@@ -131,7 +133,7 @@ export default function ServerItems({ user }: { user: UserType }) {
                 className={hoveredAddServer ? "text-white" : "text-green-360"}
               />
             </button>
-          </ActionTooltip>
+          </AddServerModal>
         </div>
       </ul>
     </nav>

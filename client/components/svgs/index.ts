@@ -4,7 +4,7 @@ export { Friend } from "./Friend";
 export { Nitro } from "./Nitro";
 export { Shop } from "./Shop";
 export { DMPlus } from "./DMPlus";
-export { CloseDM } from "./CloseDM";
+export { Close } from "./Close";
 export { Mic } from "./Mic";
 export { Deafen } from "./Deafen";
 export { Settings } from "./Settings";

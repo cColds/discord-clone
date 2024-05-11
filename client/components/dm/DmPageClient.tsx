@@ -1,7 +1,7 @@
 "use client";
 import { DmType, UserType } from "@/types/user";
-import UserPanel from "../panels/UserPanel";
-import PrivateChannels from "../sidebars/PrivateChannels";
+import UserPanel from "@/components/panels/UserPanel";
+import PrivateChannels from "@/components/sidebars/PrivateChannels";
 import DmChannel from "./DmChannel";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";

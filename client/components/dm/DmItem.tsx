@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Status } from "@/types/status";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { useState } from "react";
-import { CloseDM } from "../svgs";
+import { Close } from "../svgs";
 import { useParams } from "next/navigation";
 
 type DmItemProps = {
@@ -83,7 +83,7 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
         className="hidden group-hover:block hover:text-interactive-hover text-channels-default pr-2 m-0.5 border-0"
         aria-label="Close DM"
       >
-        <CloseDM />
+        <Close className="w-4 h-4" />
       </button>
     </li>
   );

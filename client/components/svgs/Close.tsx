@@ -1,11 +1,12 @@
-export function CloseDM() {
+export function Close({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
       role="img"
-      width="16"
-      height="16"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
+      className={className}
     >
       <path
         fill="currentColor"
