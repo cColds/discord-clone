@@ -22,6 +22,7 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         "background-accent": "rgb(65, 67, 74)",
+        "input-background": "rgb(30, 31, 34)",
         "interactive-normal": "rgb(181, 186, 193)",
         "button-secondary-background": "rgb(78, 80, 88)",
         "button-secondary-background-hover": "rgb(109, 111, 120)",
