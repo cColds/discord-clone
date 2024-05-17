@@ -40,17 +40,24 @@ const CreateServerContent = ({
   onToggleModal,
 }: CreateServerContentType) => {
   const [fileSelected, setFileSelected] = useState<string | false>(false);
+  const [fileObject, setFileObject] = useState<undefined | File>();
 
   const form = useForm<z.infer<typeof createServerSchema>>({
     resolver: zodResolver(createServerSchema),
-    defaultValues: { serverName: "" },
+    defaultValues: { serverName: "", icon: undefined },
   });
 
   const onSubmit = async (data: z.infer<typeof createServerSchema>) => {
     if (data.serverName.length > 100 || data.serverName.length < 2) return;
 
+    const form = new FormData();
+    form.append("serverName", data.serverName);
+    if (fileObject) {
+      form.append("file", fileObject);
+    }
+
     try {
-      await createServer(data);
+      await createServer(form);
       onModalChange(null);
       onToggleModal();
     } catch (err) {
@@ -89,6 +96,8 @@ const CreateServerContent = ({
               accept=".jpg,.jpeg,.png,.gif"
               aria-label="Upload a Server Icon"
               className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer text-[0px]"
+              form="createServer"
+              name="icon"
               onChange={async (e) => {
                 if (!e.target.files) {
                   console.log(`file ${e.target.files} is empty`);
@@ -98,8 +107,10 @@ const CreateServerContent = ({
                 const file = e.target.files[0];
 
                 try {
+                  console.log({ file });
                   const result = (await toBase64(file)) as string;
                   setFileSelected(result);
+                  setFileObject(file);
                 } catch (err) {
                   console.error(err);
                 }
