@@ -34,6 +34,7 @@ export async function createServer(formData: FormData, userId: string) {
       const server = new Server({
         serverName,
         icon: iconUrl || undefined,
+        members: [userId],
       });
       await server.save({ session });
 
