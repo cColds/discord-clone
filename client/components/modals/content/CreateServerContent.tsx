@@ -1,3 +1,6 @@
+"use client";
+
+import { useUser } from "@/app/providers/UserProvider";
 import { UploadIcon } from "@/components/svgs";
 import {
   DialogDescription,
@@ -42,13 +45,16 @@ const CreateServerContent = ({
   const [fileSelected, setFileSelected] = useState<string | false>(false);
   const [fileObject, setFileObject] = useState<undefined | File>();
 
+  const { user } = useUser();
+
   const form = useForm<z.infer<typeof createServerSchema>>({
     resolver: zodResolver(createServerSchema),
     defaultValues: { serverName: "", icon: undefined },
   });
 
   const onSubmit = async (data: z.infer<typeof createServerSchema>) => {
-    if (data.serverName.length > 100 || data.serverName.length < 2) return;
+    if (data.serverName.length > 100 || data.serverName.length < 2 || !user)
+      return;
 
     const form = new FormData();
     form.append("serverName", data.serverName);
@@ -57,7 +63,7 @@ const CreateServerContent = ({
     }
 
     try {
-      await createServer(form);
+      await createServer(form, user.id);
       onModalChange(null);
       onToggleModal();
     } catch (err) {
