@@ -14,6 +14,8 @@ const nextConfig = {
         port: "",
       },
     ],
+
+    domains: ["res.cloudinary.com"],
   },
 
   async redirects() {

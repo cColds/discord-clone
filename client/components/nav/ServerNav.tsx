@@ -1,7 +1,10 @@
+"use server";
+
 import { getUser } from "@/lib/db/getUser";
 import ServerItems from "./ServerItems";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
+import { getServers } from "@/lib/db/getServers";
 
 export default async function ServerNav() {
   const { user } = (await getServerSession(authConfig)) || {};
@@ -9,5 +12,7 @@ export default async function ServerNav() {
 
   if (userDoc == null) return null;
 
-  return <ServerItems user={userDoc} />;
+  const servers = await getServers(userDoc.id);
+  console.log(servers);
+  return <ServerItems user={userDoc} servers={servers} />;
 }
