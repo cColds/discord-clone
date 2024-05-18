@@ -35,6 +35,25 @@ export async function createServer(formData: FormData, userId: string) {
         serverName,
         icon: iconUrl || undefined,
         members: [userId],
+        categories: [
+          {
+            categoryName: "Text Channels",
+            channels: {
+              type: "text",
+              name: "general",
+              messages: [],
+            },
+          },
+
+          {
+            categoryName: "Voice Channels",
+            channels: {
+              type: "text",
+              name: "General",
+              messages: [],
+            },
+          },
+        ],
       });
       await server.save({ session });
 
