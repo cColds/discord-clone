@@ -49,7 +49,10 @@ const CreateServerContent = ({
 
   const form = useForm<z.infer<typeof createServerSchema>>({
     resolver: zodResolver(createServerSchema),
-    defaultValues: { serverName: "", icon: undefined },
+    defaultValues: {
+      serverName: `${user?.displayName}'s server`,
+      icon: undefined,
+    },
   });
 
   const onSubmit = async (data: z.infer<typeof createServerSchema>) => {
@@ -176,7 +179,7 @@ const CreateServerContent = ({
           className={cn(
             "border-0 py-4 h-[38px] min-w-[96px] w-[96px] min-h-[38px] text-sm leading-4 rounded-[3px] bg-brand-500 hover:bg-brand-560 focus-visible:border flex justify-center items-center font-bold disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-brand-500"
           )}
-          disabled={!form.formState.isDirty || !form.formState.isValid}
+          disabled={!form.formState.isValid}
           form="createServer"
         >
           Create
