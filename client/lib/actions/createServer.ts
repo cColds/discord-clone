@@ -48,7 +48,7 @@ export async function createServer(formData: FormData, userId: string) {
           {
             categoryName: "Voice Channels",
             channels: {
-              type: "text",
+              type: "voice",
               name: "General",
               messages: [],
             },
