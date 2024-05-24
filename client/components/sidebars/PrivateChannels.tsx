@@ -42,7 +42,7 @@ export default function PrivateChannels({
 
           <ActionTooltip content="Create DM">
             <button className="w-4 mr-1">
-              <DMPlus />
+              <DMPlus className="mr-1 w-4 h-4 text-interactive-normal hover:text-interactive-hover opacity-70" />
             </button>
           </ActionTooltip>
         </h2>

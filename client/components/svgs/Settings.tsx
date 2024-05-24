@@ -1,4 +1,4 @@
-export function Settings() {
+export function Settings({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
@@ -6,6 +6,7 @@ export function Settings() {
       width="20"
       height="20"
       viewBox="0 0 24 24"
+      className={className}
     >
       <path
         fill="currentColor"

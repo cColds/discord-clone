@@ -1,4 +1,4 @@
-export function DMPlus() {
+export function DMPlus({ className }: { className?: string }) {
   return (
     <svg
       x="0"
@@ -8,7 +8,7 @@ export function DMPlus() {
       width="24"
       height="24"
       viewBox="0 0 18 18"
-      className="mr-1 w-4 h-4 text-interactive-normal hover:text-interactive-hover"
+      className={className}
     >
       <polygon
         fillRule="nonzero"

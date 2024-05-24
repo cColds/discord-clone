@@ -13,6 +13,6 @@ export default async function ServerNav() {
   if (userDoc == null) return null;
 
   const servers = await getServers(userDoc.id);
-  console.log(servers);
+
   return <ServerItems user={userDoc} servers={servers} />;
 }
