@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import { Friend, Help, Inbox, NewGroupDM } from "../svgs";
-import ActionTooltip from "../tooltip/ActionTooltip";
 import { FriendTab } from "@/types/friend-tab";
 import Notification from "../badges/Notification";
+import ToolbarIcon from "../ToolbarIcon";
 
 type TabButtonProps = {
   children: React.ReactNode;
@@ -33,28 +33,6 @@ const TabButton = ({
     >
       {children}
     </button>
-  );
-};
-
-type ToolbarIconProps = {
-  children: React.ReactNode;
-  name: string;
-  className?: string;
-};
-
-const ToolbarIcon = ({ children, name, className }: ToolbarIconProps) => {
-  return (
-    <ActionTooltip content={name} side="bottom">
-      <button
-        aria-label={name}
-        className={cn(
-          "text-interactive-normal hover:text-interactive-hover mx-2",
-          className
-        )}
-      >
-        {children}
-      </button>
-    </ActionTooltip>
   );
 };
 
