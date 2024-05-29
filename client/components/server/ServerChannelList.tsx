@@ -7,12 +7,12 @@ import ActionTooltip from "../tooltip/ActionTooltip";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
 
-type ServerChannelProps = {
+type ServerChannelListProps = {
   channel: TextOrVoiceChannel;
   serverId: string;
 };
 
-const ServerChannel = ({ channel, serverId }: ServerChannelProps) => {
+const ServerChannelList = ({ channel, serverId }: ServerChannelListProps) => {
   const { channelId } = useParams();
 
   return (
@@ -78,4 +78,4 @@ const ServerChannel = ({ channel, serverId }: ServerChannelProps) => {
   );
 };
 
-export default ServerChannel;
+export default ServerChannelList;

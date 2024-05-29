@@ -6,7 +6,7 @@ import { ServerType } from "@/types/server";
 import { UserType } from "@/types/user";
 import UserPanel from "../panels/UserPanel";
 import React from "react";
-import ServerChannel from "./ServerChannel";
+import ServerChannelList from "./ServerChannelList";
 import ServerCategory from "./ServerCategory";
 
 type ServerSidebarProps = {
@@ -55,7 +55,7 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
 
               {server.channels.map((channel) => {
                 return (
-                  <ServerChannel
+                  <ServerChannelList
                     channel={channel}
                     serverId={server._id}
                     key={channel._id}
@@ -69,7 +69,7 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
                     <ServerCategory category={category} key={category._id} />
                     {category.channels.map((channel) => {
                       return (
-                        <ServerChannel
+                        <ServerChannelList
                           channel={channel}
                           serverId={server._id}
                           key={channel._id}
