@@ -1,4 +1,6 @@
-export function Search() {
+import { cn } from "@/lib/utils";
+
+export function Search({ className }: { className?: string }) {
   return (
     <svg
       aria-label="Search"
@@ -7,7 +9,7 @@ export function Search() {
       width="20"
       height="20"
       viewBox="0 0 24 24"
-      className="spin"
+      className={cn(className, "spin")}
     >
       <path
         fill="currentColor"

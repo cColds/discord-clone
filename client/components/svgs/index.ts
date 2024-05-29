@@ -31,3 +31,5 @@ export { Event } from "./Event";
 export { Hash } from "./Hash";
 export { CreateInvite } from "./CreateInvite";
 export { Volume } from "./Volume";
+export { MemberList } from "./MemberList";
+export { Pin } from "./Pin";
