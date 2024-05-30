@@ -33,3 +33,4 @@ export { CreateInvite } from "./CreateInvite";
 export { Volume } from "./Volume";
 export { MemberList } from "./MemberList";
 export { Pin } from "./Pin";
+export { EditPen } from "./EditPen";

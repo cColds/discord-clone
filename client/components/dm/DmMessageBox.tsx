@@ -9,11 +9,16 @@ import { useParams } from "next/navigation";
 import { useSocket } from "@/app/providers/SocketProvider";
 
 type DmMessageBoxType = {
-  recipient: UserType;
+  recipient?: UserType;
   sender: UserType;
+  channelName?: string;
 };
 
-export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
+export default function DmMessageBox({
+  recipient,
+  sender,
+  channelName,
+}: DmMessageBoxType) {
   const [message, setMessage] = useState("");
   const [usersTyping, setUsersTyping] = useState<
     { displayName: string; userId: string }[]
@@ -126,7 +131,9 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
         <div className="bg-transparent grow relative h-[44px]">
           <textarea
             className="border-0 outline-0 py-[11px] resize-none w-full h-full bg-channel-text-area overflow-hidden placeholder:text-channel-text-area-placeholder"
-            placeholder={`Message @${recipient.displayName}`}
+            placeholder={`Message ${
+              recipient ? `@${recipient?.displayName}` : `#${channelName}`
+            }`}
             onKeyDown={handleKeyDown}
             onChange={handleChange}
             value={message}
