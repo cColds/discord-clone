@@ -118,6 +118,7 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
         <button
           aria-label="Upload a file or send invites"
           className="-ml-4 rounded-[3px] px-4 py-2.5 h-[44px] flex items-center"
+          type="button"
         >
           <UploadFile />
         </button>
@@ -132,7 +133,7 @@ export default function DmMessageBox({ recipient, sender }: DmMessageBoxType) {
           ></textarea>
         </div>
         <div className="flex">
-          <button className="p-1 mx-1">
+          <button className="p-1 mx-1" type="button">
             <Image
               src="/images/emojis/slightly_smiling_face.png"
               alt=""
