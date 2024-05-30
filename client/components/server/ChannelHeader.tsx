@@ -2,11 +2,15 @@ import ToolbarIcon from "../ToolbarIcon";
 import SearchMessage from "../search/SearchMessage";
 import { Hash, Help, Inbox, MemberList, Pin } from "../svgs";
 
-const ChannelHeader = () => {
+type ChannelHeaderProps = {
+  channelName: string;
+};
+
+const ChannelHeader = ({ channelName }: ChannelHeaderProps) => {
   return (
-    <div className="flex flex-col shadow-elevation-low">
+    <div className="flex flex-col shadow-elevation-low z-30">
       <section
-        className="bg-background-primary shrink-0 z-30 flex justify-center items-center p-2 min-h-[48px]"
+        className="bg-background-primary shrink-0 flex justify-center items-center p-2 min-h-[48px]"
         aria-label="Channel header"
       >
         <div className="flex grow overflow-hidden h-full">
@@ -17,7 +21,7 @@ const ChannelHeader = () => {
 
             <div className="mr-2 shrink-0">
               <h1 className="text-md leading-5 font-semibold overflow-hidden whitespace-nowrap text-header-primary">
-                general
+                {channelName}
               </h1>
             </div>
           </div>

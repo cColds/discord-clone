@@ -1,4 +1,4 @@
-import ServerClient from "@/components/server/ServerClient";
+import ServerClient from "@/components/server/client-pages/ServerClient";
 import { getServer } from "@/lib/db/getServer";
 import { redirect } from "next/navigation";
 
