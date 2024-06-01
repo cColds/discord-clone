@@ -1,3 +1,5 @@
+import { Status } from "./status";
+
 export type ServerNavItem = {
   _id: string;
   serverName: string;
@@ -21,11 +23,20 @@ export type ServerType = {
   _id: string;
   icon?: string;
   serverName: string;
-  members: string[];
+  members: Member[];
   categories: {
     _id: string;
     categoryName: string;
     channels: TextOrVoiceChannel[];
   }[];
   channels: TextOrVoiceChannel[];
+};
+
+export type Member = {
+  _id: string;
+  displayName: string;
+  avatar: string;
+  status: Status;
+  username: string;
+  online: boolean;
 };
