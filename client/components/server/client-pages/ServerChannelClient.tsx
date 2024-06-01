@@ -93,6 +93,7 @@ const ServerChannelClient = ({
           messages={messages}
           channel={currentChannel}
           user={user}
+          members={server.members}
         />
       ) : (
         <NoTextChannels />

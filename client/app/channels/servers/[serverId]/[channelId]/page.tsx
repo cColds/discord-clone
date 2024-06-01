@@ -12,7 +12,6 @@ export default async function ServerChannelPage({
   if (!server) redirect("/");
 
   const initialMessages = await getMessages(25, params.channelId);
-  console.log("Initial Messages:", initialMessages);
 
   return (
     <ServerChannelClient

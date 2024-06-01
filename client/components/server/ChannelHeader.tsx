@@ -4,9 +4,15 @@ import { Hash, Help, Inbox, MemberList, Pin } from "../svgs";
 
 type ChannelHeaderProps = {
   channelName: string;
+  onMembersListToggle: () => void;
+  membersListOpen: boolean;
 };
 
-const ChannelHeader = ({ channelName }: ChannelHeaderProps) => {
+const ChannelHeader = ({
+  channelName,
+  onMembersListToggle,
+  membersListOpen,
+}: ChannelHeaderProps) => {
   return (
     <div className="flex flex-col shadow-elevation-low z-30">
       <section
@@ -31,7 +37,10 @@ const ChannelHeader = ({ channelName }: ChannelHeaderProps) => {
               <Pin />
             </ToolbarIcon>
 
-            <ToolbarIcon name="Hide Member List">
+            <ToolbarIcon
+              name={membersListOpen ? "Hide Member List" : "Show Member List"}
+              onClick={onMembersListToggle}
+            >
               <MemberList className="text-white" />
             </ToolbarIcon>
 
