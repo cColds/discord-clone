@@ -66,7 +66,7 @@ const ChannelMembersList = ({
         { hidden: membersListOpen }
       )}
     >
-      <div className="shrink-0 pb-5 w-[240px]">
+      <div className="shrink-0 pb-5 w-[240px] overflow-y-scroll overflow-x-hidden">
         <ul aria-label="Members" className="">
           <h3 className="pt-6 pr-2 pl-4 h-10 truncate uppercase text-xs tracking-wide font-bold text-channels-default">
             <span className="sr-only">
