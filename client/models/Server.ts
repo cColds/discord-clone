@@ -6,6 +6,7 @@ export interface ServerType extends Document {
   channels: ChannelType[];
   categories: CategoryType[];
   members: Types.ObjectId[];
+  invites: InviteType[];
 }
 
 type ChannelType = {
@@ -19,6 +20,11 @@ type CategoryType = {
   channels: ChannelType[];
 };
 
+type InviteType = {
+  code: string;
+  channel: { name: string; id: string };
+};
+
 const ChannelSchema = new Schema<ChannelType>({
   type: { type: String, enum: ["text", "voice"], required: true },
   name: { type: String, required: true },
@@ -30,6 +36,15 @@ const CategorySchema = new Schema({
   channels: [ChannelSchema],
 });
 
+const InviteSchema = new Schema({
+  code: { type: String, required: true },
+  channel: {
+    name: { type: String, required: true },
+    id: { type: String, required: true },
+  },
+  serverId: { type: String, required: true },
+});
+
 const ServerSchema = new Schema(
   {
     serverName: { type: String, required: true },
@@ -37,6 +52,7 @@ const ServerSchema = new Schema(
     channels: [ChannelSchema],
     categories: [CategorySchema],
     members: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    invites: [InviteSchema],
   },
   { timestamps: true }
 );
