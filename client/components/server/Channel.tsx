@@ -38,7 +38,7 @@ const Channel = ({
 
       <div className="flex flex-col grow overflow-hidden">
         <div className="flex grow min-h-full">
-          <div className="flex flex-col">
+          <div className="flex flex-col min-w-0">
             <ChannelMainChat
               channel={channel}
               user={user}
