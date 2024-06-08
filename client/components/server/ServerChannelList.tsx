@@ -1,25 +1,36 @@
 "use client";
 
-import { TextOrVoiceChannel } from "@/types/server";
+import { ServerType, TextOrVoiceChannel } from "@/types/server";
 import Link from "next/link";
 import { CreateInvite, Hash, Volume, Settings } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
+import CreateInviteModal from "../modals/server/CreateInviteModal";
+import { createInvite } from "@/lib/db/createInvite";
+import { useState } from "react";
 
 type ServerChannelListProps = {
   channel: TextOrVoiceChannel;
-  serverId: string;
+  server: ServerType;
 };
 
-const ServerChannelList = ({ channel, serverId }: ServerChannelListProps) => {
+const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
+  const [invite, setInvite] = useState("");
+
   const { channelId } = useParams();
+
+  const handleCreateInvite = async () => {
+    const inviteCode = await createInvite(server._id, channel);
+
+    setInvite(inviteCode);
+  };
 
   return (
     <li>
       <div className="py-[1px] ml-2">
         <Link
-          href={`/channels/servers/${serverId}/${channel._id}`}
+          href={`/channels/servers/${server._id}/${channel._id}`}
           aria-label={`${channel.name} (${channel.type} channel)`}
           className={cn(
             "cursor-pointer py-1.5 px-2 rounded hover:bg-background-modifier-hover flex flex-col group",
@@ -53,14 +64,19 @@ const ServerChannelList = ({ channel, serverId }: ServerChannelListProps) => {
             </p>
 
             <div className="flex items-center justify-center shrink-0">
-              <ActionTooltip content="Create Invite">
+              <CreateInviteModal
+                server={server}
+                channel={channel}
+                inviteCode={invite}
+              >
                 <button
                   className="ml-1 border-0 opacity-0 group-hover:opacity-100"
                   aria-label="Create Invite"
+                  onClick={handleCreateInvite}
                 >
                   <CreateInvite className="w-4 h-4 text-interactive-normal" />
                 </button>
-              </ActionTooltip>
+              </CreateInviteModal>
 
               <ActionTooltip content="Edit Channel">
                 <button

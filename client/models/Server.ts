@@ -23,6 +23,7 @@ type CategoryType = {
 type InviteType = {
   code: string;
   channel: { name: string; id: string };
+  serverId: string;
 };
 
 const ChannelSchema = new Schema<ChannelType>({

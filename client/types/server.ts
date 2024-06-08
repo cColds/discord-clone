@@ -19,6 +19,15 @@ export type ServerCategory = {
   channels: TextOrVoiceChannel[];
 };
 
+export type ServerInvite = {
+  code: string;
+  channel: {
+    name: string;
+    id: string;
+  };
+  serverId: string;
+};
+
 export type ServerType = {
   _id: string;
   icon?: string;
@@ -30,6 +39,8 @@ export type ServerType = {
     channels: TextOrVoiceChannel[];
   }[];
   channels: TextOrVoiceChannel[];
+
+  invites: ServerInvite[];
 };
 
 export type Member = {
