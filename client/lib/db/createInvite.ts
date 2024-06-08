@@ -22,23 +22,25 @@ export const createInvite = async (
     (invite) => invite.channel.id === channel._id
   );
 
+  const inviteCodeExists = Boolean(inviteCodes.at(-1)?.code);
   const inviteCode = inviteCodes.at(-1)?.code || generateInviteCode();
   try {
-    await Server.findByIdAndUpdate(serverId, {
-      $push: {
-        invites: {
-          code: inviteCode,
-          channel: {
-            name: channel.name,
-            id: channel._id,
+    if (!inviteCodeExists) {
+      await Server.findByIdAndUpdate(serverId, {
+        $push: {
+          invites: {
+            code: inviteCode,
+            channel: {
+              name: channel.name,
+              id: channel._id,
+            },
+            serverId,
           },
-          serverId,
         },
-      },
-    });
+      });
+    }
   } catch (err) {
     console.error(err);
   }
-
   return inviteCode;
 };
