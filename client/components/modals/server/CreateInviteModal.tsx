@@ -16,6 +16,8 @@ type CreateInviteModalProps = {
   server: ServerType;
   channel: TextOrVoiceChannel;
   inviteCode: string;
+  open: boolean;
+  onToggleOpen: () => void;
 };
 
 const CreateInviteModal = ({
@@ -23,9 +25,11 @@ const CreateInviteModal = ({
   channel,
   children,
   inviteCode,
+  open,
+  onToggleOpen,
 }: CreateInviteModalProps) => {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onToggleOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogContent className="bg-background-primary p-0 rounded-sm w-[440px] min-h-[144px] max-h-[645px] flex flex-col gap-0">

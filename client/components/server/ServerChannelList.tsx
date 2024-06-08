@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import CreateInviteModal from "../modals/server/CreateInviteModal";
 import { createInvite } from "@/lib/db/createInvite";
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 
 type ServerChannelListProps = {
   channel: TextOrVoiceChannel;
@@ -17,14 +17,21 @@ type ServerChannelListProps = {
 
 const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
   const [invite, setInvite] = useState("");
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   const { channelId } = useParams();
 
-  const handleCreateInvite = async () => {
+  const handleCreateInvite = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const inviteCode = await createInvite(server._id, channel);
 
     setInvite(inviteCode);
+    toggleInviteModal();
   };
+
+  const toggleInviteModal = () => setInviteModalOpen(!inviteModalOpen);
 
   return (
     <li>
@@ -68,6 +75,8 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
                 server={server}
                 channel={channel}
                 inviteCode={invite}
+                open={inviteModalOpen}
+                onToggleOpen={toggleInviteModal}
               >
                 <button
                   className="ml-1 border-0 opacity-0 group-hover:opacity-100"
