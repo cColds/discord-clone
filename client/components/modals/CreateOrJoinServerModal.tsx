@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import CreateServerContent from "./content/CreateServerContent";
 import ServerActionContent from "./content/ServerActionContent";
+import JoinServerContent from "./content/JoinServerContent";
 
 type CreateOrJoinServerModalType = {
   children: React.ReactNode;
@@ -42,7 +43,7 @@ const CreateOrJoinServerModal = ({ children }: CreateOrJoinServerModalType) => {
         )}
         {
           modalMode === "Join Server" && (
-            <CreateServerContent
+            <JoinServerContent
               onModalChange={handleModalChange}
               onToggleModal={toggleModalOpen}
             />
