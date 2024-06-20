@@ -100,7 +100,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
                         alt=""
                         width={48}
                         height={48}
-                        className="aspect-square min-w-[48px] min-h-[48px]"
+                        className="aspect-square min-w-[48px] min-h-[48px] object-cover"
                         aria-label="hidden"
                       />
                     ) : (

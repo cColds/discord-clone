@@ -95,7 +95,7 @@ const CreateServerContent = ({
                 src={fileSelected}
                 width={80}
                 height={80}
-                className="h-20 w-20 rounded-[80px] bg-background-secondary-alt"
+                className="h-20 w-20 rounded-[80px] bg-background-secondary-alt object-cover"
               />
             ) : (
               <UploadIcon />
