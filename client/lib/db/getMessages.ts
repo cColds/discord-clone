@@ -10,7 +10,7 @@ export async function getMessages(messagesAmount: number, channelId: string) {
     { channelId },
     { sort: { createdAt: -1 }, limit: messagesAmount }
   ).populate({
-    path: "sender message channelId _id createdAt updatedAt edited", // idk why have to put path here to project all fields
+    path: "sender message channelId _id createdAt updatedAt edited images", // idk why have to put path here to project all fields
     select: "-password",
   });
   const serializedMessages = JSON.parse(
