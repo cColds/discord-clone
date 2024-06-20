@@ -37,7 +37,7 @@ export default async function RootLayout({
         <UserProvider userProp={user}>
           <SocketProvider userId={data?.user.id}>
             <SessionProvider>
-              <div className="flex h-full w-full">
+              <div className="flex h-full w-full scroller">
                 {data && <ServerNav />}
                 <main className="w-full overflow-hidden">{children}</main>
               </div>

@@ -5,6 +5,7 @@ export type MessageType = {
   message: string;
   channelId: string;
   sender: UserNormal;
+  images?: { id: string; url: string; name: string }[];
   edited?: Date;
   createdAt: string;
   updatedAt: string;

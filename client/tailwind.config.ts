@@ -62,6 +62,7 @@ module.exports = {
         "text-link": "rgb(0, 168, 252)",
         "text-danger": "rgb(250, 119, 124)",
         "text-positive": "rgb(45, 199, 112)",
+        spoiler: "rgba(255, 255, 255, 0.1)",
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

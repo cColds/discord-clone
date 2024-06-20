@@ -15,7 +15,7 @@ type UploadResponse =
   | { success: true; result?: UploadApiResponse }
   | { success: false; error: UploadApiErrorResponse };
 
-const uploadToCloudinary = (
+export const uploadToCloudinary = (
   fileUri: string,
   fileName: string
 ): Promise<UploadResponse> => {
