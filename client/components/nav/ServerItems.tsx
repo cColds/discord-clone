@@ -51,7 +51,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
 
   return (
     <nav
-      className="min-w-[72px] bg-background-tertiary h-full overflow-auto"
+      className="min-w-[72px] bg-background-tertiary h-full overflow-auto hide-scroller"
       aria-label="Servers sidebar"
     >
       <ul className="py-3">
