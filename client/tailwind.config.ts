@@ -118,6 +118,9 @@ module.exports = {
 
         "elevation-high": "0 8px 16px #000 / 0.24)",
       },
+      gridTemplateColumns: {
+        "auto-fill": "repeat(auto-fill,minmax(100%,1fr))",
+      },
     },
     backgroundImage: {
       "auth-background": "url('/images/auth-background.svg')",

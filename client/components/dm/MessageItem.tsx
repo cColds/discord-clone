@@ -114,6 +114,25 @@ export default function MessageItem({
               </ActionTooltip>
             )}
           </div>
+          <div className="grid h-fit grid-flow-row gap-1 grid-cols-auto-fill min-h-0 min-w-0 py-0.5">
+            <div className="flex gap-1">
+              {msg.images?.map((img) => {
+                return (
+                  <div className="overflow-hidden">
+                    <Image
+                      key={img.id}
+                      src={img.url}
+                      alt=""
+                      width={200}
+                      height={200}
+                      className="object-cover min-w-full min-h-full max-w-full h-full rounded-sm cursor-pointer"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {editMessageId === msg._id && (
             <EditMessageBox
               message={msg.message}
