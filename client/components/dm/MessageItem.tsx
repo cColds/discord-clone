@@ -118,7 +118,7 @@ export default function MessageItem({
             <div className="flex gap-1">
               {msg.images?.map((img) => {
                 return (
-                  <div className="overflow-hidden">
+                  <div className="overflow-hidden" key={img.id}>
                     <Image
                       key={img.id}
                       src={img.url}

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
+import { getServer } from "@/lib/db/getServer";
 
 type ServerChannelClientProps = {
   server: ServerType;
@@ -24,6 +25,7 @@ const ServerChannelClient = ({
   initialMessages,
 }: ServerChannelClientProps) => {
   const [messages, setMessages] = useState(initialMessages);
+  const [serverState, setServerState] = useState(server);
 
   const { user, setUser } = useUser();
   if (!user) redirect("/");
@@ -65,14 +67,21 @@ const ServerChannelClient = ({
       }
     });
 
+    socket.on("create-channel", async () => {
+      const updatedServer = await getServer(server._id);
+      if (updatedServer) {
+        setServerState(updatedServer);
+      }
+    });
+
     return () => socket.disconnect();
   }, [socket]);
 
   let currentChannel =
-    server.channels.find((channel) => channel._id === channelId) || null;
+    serverState.channels.find((channel) => channel._id === channelId) || null;
 
   if (currentChannel == null) {
-    for (const category of server.categories) {
+    for (const category of serverState.categories) {
       const foundChannel = category.channels.find(
         (channel) => channel._id === channelId
       );
@@ -85,7 +94,7 @@ const ServerChannelClient = ({
 
   return (
     <div className="flex grow overflow-hidden h-full">
-      <ServerSidebar server={server} user={user} />
+      <ServerSidebar server={serverState} user={user} />
 
       {channelId && currentChannel ? (
         <Channel
@@ -93,7 +102,7 @@ const ServerChannelClient = ({
           messages={messages}
           channel={currentChannel}
           user={user}
-          members={server.members}
+          members={serverState.members}
         />
       ) : (
         <NoTextChannels />

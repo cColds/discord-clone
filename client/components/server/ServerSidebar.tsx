@@ -66,7 +66,11 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
               {server.categories.map((category) => {
                 return (
                   <React.Fragment key={category._id}>
-                    <ServerCategory category={category} key={category._id} />
+                    <ServerCategory
+                      category={category}
+                      key={category._id}
+                      serverId={server._id}
+                    />
                     {category.channels.map((channel) => {
                       return (
                         <ServerChannelList

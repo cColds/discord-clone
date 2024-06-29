@@ -63,6 +63,9 @@ module.exports = {
         "text-danger": "rgb(250, 119, 124)",
         "text-positive": "rgb(45, 199, 112)",
         spoiler: "rgba(255, 255, 255, 0.1)",
+        "primary-300": "rgb(196, 201, 206)",
+        "interactive-active": "oklab(0.999994 0.0000455678 0.0000200868)",
+        "modal-footer": "oklab(0.296332 -0.000731647 -0.00768477)",
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

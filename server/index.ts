@@ -100,6 +100,10 @@ io.on("connection", (socket) => {
     }
   );
 
+  socket.on("create-channel", (channelId) => {
+    io.to(channelId).emit("create-channel");
+  });
+
   socket.on("disconnect", async () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {

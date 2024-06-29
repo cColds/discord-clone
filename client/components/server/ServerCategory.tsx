@@ -1,13 +1,14 @@
 import { ChevronDown } from "lucide-react";
-import ActionTooltip from "../tooltip/ActionTooltip";
 import { DMPlus } from "../svgs";
 import { ServerCategory } from "@/types/server";
+import CreateChannelModal from "@/components/modals/server/CreateChannelModal";
 
 type ServerCategoryProps = {
   category: ServerCategory;
+  serverId: string;
 };
 
-const ServerCategory = ({ category }: ServerCategoryProps) => {
+const ServerCategory = ({ category, serverId }: ServerCategoryProps) => {
   return (
     <li className="pt-4">
       <div className="relative pl-4 pr-2 cursor-pointer h-6 flex items-center justify-between text-channels-default hover:text-interactive-hover">
@@ -24,14 +25,14 @@ const ServerCategory = ({ category }: ServerCategoryProps) => {
         </button>
 
         <div className="flex items-center justify-center shrink-0">
-          <ActionTooltip content="Create Channel">
+          <CreateChannelModal category={category} serverId={serverId}>
             <button
               className="block pointer w-[18px] h-18px] border-0 bg-transparent rounded-xs text-sm leading-4"
               aria-label="Create Channel"
             >
               <DMPlus className="w-4 h-4 text-channels-default hover:text-interactive-hover opacity-70" />
             </button>
-          </ActionTooltip>
+          </CreateChannelModal>
         </div>
       </div>
     </li>
