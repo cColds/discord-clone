@@ -5,7 +5,7 @@ export interface MessageType extends Document {
   message: string;
   channelId: string;
   edited?: Date;
-  images?: { id: string; url: string; name: string }[];
+  images: { id: string; url: string; name: string }[];
 }
 
 const MessageSchema = new Schema<MessageType>(
