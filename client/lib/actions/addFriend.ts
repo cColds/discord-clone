@@ -66,147 +66,122 @@ export async function addFriend(
   // If you've blocked them, remove the blocked request and then send them one
   // Otherwise, send the friend request (outgoing pending)
 
-  const mongooseSession = await mongoose.startSession();
+  try {
+    // Accepts friend request if friend sent a request
 
-  await mongooseSession.withTransaction(async () => {
-    try {
-      // Accepts friend request if friend sent a request
+    const hasIncomingRequest = isIdInArray(
+      pending.map((p) => p.user),
+      friendAccount.id
+    );
 
-      const hasIncomingRequest = isIdInArray(
-        pending.map((p) => p.user),
-        friendAccount.id
+    if (hasIncomingRequest) {
+      console.log("Accepting friend request");
+      // Create DM if one doesn't exist yet
+
+      const dmExists = yourAccount.dms.find(
+        (dm) => dm.recipient.toString() === friendAccount.id
       );
 
-      if (hasIncomingRequest) {
-        console.log("Accepting friend request");
-        // Create DM if one doesn't exist yet
+      console.log("Dm exists:", dmExists);
 
-        const dmExists = yourAccount.dms.find(
-          (dm) => dm.recipient.toString() === friendAccount.id
-        );
+      if (!dmExists) {
+        const dm = new Dm({
+          members: [yourAccount._id, friendAccount._id],
+        });
 
-        console.log("Dm exists:", dmExists);
+        const yourDMOpts: UserDM = {
+          channel: dm._id,
+          recipient: friendAccount._id,
+          open: true,
+        };
 
-        if (!dmExists) {
-          const dm = new Dm({
-            members: [yourAccount._id, friendAccount._id],
-          });
+        const recipientDMOpts: UserDM = {
+          channel: dm._id,
+          recipient: yourAccount._id,
+          open: true,
+        };
 
-          const yourDMOpts: UserDM = {
-            channel: dm._id,
-            recipient: friendAccount._id,
-            open: true,
-          };
+        await dm.save();
 
-          const recipientDMOpts: UserDM = {
-            channel: dm._id,
-            recipient: yourAccount._id,
-            open: true,
-          };
+        await User.findByIdAndUpdate(yourUserId, {
+          $push: { dms: yourDMOpts },
+        });
 
-          await Promise.all([
-            dm.save(),
-            User.findByIdAndUpdate(yourUserId, {
-              $push: { dms: yourDMOpts },
-            }),
-            User.findByIdAndUpdate(friendAccount.id, {
-              $push: {
-                dms: recipientDMOpts,
-              },
-            }),
-          ]);
+        await User.findByIdAndUpdate(friendAccount.id, {
+          $push: {
+            dms: recipientDMOpts,
+          },
+        }),
           console.log("Created dm");
-        }
-
-        return await Promise.all([
-          User.findByIdAndUpdate(
-            yourUserId,
-            {
-              $pull: { "social.pending": { user: friendAccount.id } },
-              $push: { "social.friends": friendAccount.id },
-            },
-            { session: mongooseSession }
-          ),
-          User.findByIdAndUpdate(
-            friendAccount.id,
-            {
-              $pull: { "social.pending": { user: yourAccount.id } },
-              $push: { "social.friends": yourAccount.id },
-            },
-            { session: mongooseSession }
-          ),
-        ]);
       }
 
-      // Unblocks friend and then send request
-
-      const isFriendBlocked = isIdInArray(blocked, friendAccount.id);
-
-      if (isFriendBlocked) {
-        console.log("Unblock friend and then send request");
-
-        return await Promise.all([
-          User.findByIdAndUpdate(
-            yourUserId,
-            {
-              $pull: {
-                "social.blocked": friendAccount.id,
-              },
-              $push: {
-                "social.pending": {
-                  user: friendAccount.id,
-                  request: "Outgoing",
-                },
-              },
-            },
-            { session: mongooseSession }
-          ),
-          User.findByIdAndUpdate(
-            friendAccount.id,
-            {
-              $push: {
-                "social.pending": {
-                  user: yourAccount.id,
-                  request: "Incoming",
-                },
-              },
-            },
-            { session: mongooseSession }
-          ),
-        ]);
-      }
-
-      // Send an outgoing friend request
-
-      console.log("Sending an outgoing friend request");
-
-      return await Promise.all([
-        User.findByIdAndUpdate(
-          yourUserId,
-          {
-            $push: {
-              "social.pending": {
-                user: friendAccount.id,
-                request: "Outgoing",
-              },
-            },
-          },
-          { session: mongooseSession }
-        ),
-        User.findByIdAndUpdate(
-          friendAccount.id,
-          {
-            $push: {
-              "social.pending": { user: yourAccount.id, request: "Incoming" },
-            },
-          },
-          { session: mongooseSession }
-        ),
+      await Promise.all([
+        User.findByIdAndUpdate(yourUserId, {
+          $pull: { "social.pending": { user: friendAccount.id } },
+          $push: { "social.friends": friendAccount.id },
+        }),
+        User.findByIdAndUpdate(friendAccount.id, {
+          $pull: { "social.pending": { user: yourAccount.id } },
+          $push: { "social.friends": yourAccount.id },
+        }),
       ]);
-    } catch (err) {
-      console.error(err);
 
-      return Promise.reject(err.message);
+      return;
     }
-  });
+
+    // Unblocks friend and then send request
+
+    const isFriendBlocked = isIdInArray(blocked, friendAccount.id);
+
+    if (isFriendBlocked) {
+      console.log("Unblock friend and then send request");
+
+      await Promise.all([
+        User.findByIdAndUpdate(yourUserId, {
+          $pull: {
+            "social.blocked": friendAccount.id,
+          },
+          $push: {
+            "social.pending": {
+              user: friendAccount.id,
+              request: "Outgoing",
+            },
+          },
+        }),
+        User.findByIdAndUpdate(friendAccount.id, {
+          $push: {
+            "social.pending": {
+              user: yourAccount.id,
+              request: "Incoming",
+            },
+          },
+        }),
+      ]);
+      return;
+    }
+
+    // Send an outgoing friend request
+
+    console.log("Sending an outgoing friend request");
+
+    await Promise.all([
+      User.findByIdAndUpdate(yourUserId, {
+        $push: {
+          "social.pending": {
+            user: friendAccount.id,
+            request: "Outgoing",
+          },
+        },
+      }),
+      User.findByIdAndUpdate(friendAccount.id, {
+        $push: {
+          "social.pending": { user: yourAccount.id, request: "Incoming" },
+        },
+      }),
+    ]);
+  } catch (err) {
+    console.error(err);
+
+    return Promise.reject(err.message);
+  }
 }
