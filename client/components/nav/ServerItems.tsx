@@ -14,6 +14,7 @@ import { UserType } from "@/types/user";
 import { getUser } from "@/lib/db/getUser";
 import CreateOrJoinServerModal from "../modals/CreateOrJoinServerModal";
 import { ServerNavItem } from "@/types/server";
+import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 
 const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
@@ -78,6 +79,12 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
                   )
               : "";
 
+            const transformation = "c_fill,h_96,w_96";
+
+            let url = server.icon
+              ? transformCloudinaryUrl(server.icon, transformation)
+              : "";
+
             return (
               <div
                 className="flex justify-center relative w-full mb-2"
@@ -96,7 +103,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
                   >
                     {server?.icon ? (
                       <Image
-                        src={server.icon}
+                        src={url}
                         alt=""
                         width={48}
                         height={48}
