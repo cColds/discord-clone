@@ -1,5 +1,6 @@
 "use client";
 
+import { useSocket } from "@/app/providers/SocketProvider";
 import { useUser } from "@/app/providers/UserProvider";
 import { UploadIcon } from "@/components/svgs";
 import {
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { createServerSchema } from "@/lib/validations/createServer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -46,6 +48,8 @@ const CreateServerContent = ({
   const [fileObject, setFileObject] = useState<undefined | File>();
 
   const { user } = useUser();
+  const router = useRouter();
+  const { socket } = useSocket();
 
   const form = useForm<z.infer<typeof createServerSchema>>({
     resolver: zodResolver(createServerSchema),
@@ -66,9 +70,17 @@ const CreateServerContent = ({
     }
 
     try {
-      await createServer(form, user.id);
+      const server = await createServer(form, user.id);
       onModalChange(null);
       onToggleModal();
+
+      if (server) {
+        const serverLink = `http://localhost:3000/channels/servers/${server._id}`;
+
+        router.push(serverLink);
+
+        socket.emit("create-server", user.id);
+      }
     } catch (err) {
       console.error(err);
     }

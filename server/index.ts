@@ -110,6 +110,14 @@ io.on("connection", (socket) => {
     io.to(user.socketId).emit("join-server");
   });
 
+  socket.on("create-server", (userId) => {
+    const user = activeUsers[userId];
+
+    console.log(userId, user);
+
+    io.to(user.socketId).emit("create-server");
+  });
+
   socket.on("disconnect", async () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {

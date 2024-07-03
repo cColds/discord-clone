@@ -25,7 +25,7 @@ export async function createServer(formData: FormData, userId: string) {
   const session = await mongoose.startSession();
 
   try {
-    await session.withTransaction(async () => {
+    const serverDoc = await session.withTransaction(async () => {
       let iconUrl = "";
       if (icon) {
         iconUrl = await uploadFileToCloudinary(formData);
@@ -62,7 +62,11 @@ export async function createServer(formData: FormData, userId: string) {
         { $push: { servers: server.id } },
         { session }
       );
+
+      return server;
     });
+
+    return JSON.parse(JSON.stringify(serverDoc)) as typeof serverDoc;
   } catch (err) {
     console.error(err);
     throw new Error("Server creation failed due to database error");

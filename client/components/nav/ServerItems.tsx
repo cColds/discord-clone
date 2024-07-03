@@ -57,6 +57,14 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
       }
     });
 
+    socket.on("create-server", async () => {
+      const updatedServers = await getServers(user.id);
+
+      if (updatedServers) {
+        setServersState(updatedServers);
+      }
+    });
+
     return () => socket.disconnect();
   }, [socket]);
 
