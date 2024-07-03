@@ -104,6 +104,12 @@ io.on("connection", (socket) => {
     io.to(channelId).emit("create-channel");
   });
 
+  socket.on("join-server", (userId) => {
+    const user = activeUsers[userId];
+
+    io.to(user.socketId).emit("join-server");
+  });
+
   socket.on("disconnect", async () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {

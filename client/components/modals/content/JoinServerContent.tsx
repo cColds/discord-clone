@@ -1,5 +1,6 @@
 "use client";
 
+import { useSocket } from "@/app/providers/SocketProvider";
 import { useUser } from "@/app/providers/UserProvider";
 import {
   DialogDescription,
@@ -43,6 +44,7 @@ const JoinServerContent = ({
   });
 
   const router = useRouter();
+  const { socket } = useSocket();
 
   const onSubmit = async (data: z.infer<typeof joinServerSchema>) => {
     const inviteCode = data.invite;
@@ -67,6 +69,7 @@ const JoinServerContent = ({
         onToggleModal();
 
         router.push(serverLink);
+        socket.emit("join-server", user.id);
       } else {
         form.setError("invite", {
           type: "custom",

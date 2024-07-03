@@ -15,6 +15,7 @@ import { getUser } from "@/lib/db/getUser";
 import CreateOrJoinServerModal from "../modals/CreateOrJoinServerModal";
 import { ServerNavItem } from "@/types/server";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
+import { getServers } from "@/lib/db/getServers";
 
 const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
@@ -32,6 +33,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
   const [pendingRequests, setPendingRequests] = useState(
     getPendingRequests(user)
   );
+  const [serversState, setServersState] = useState(servers);
 
   const { socket } = useSocket();
 
@@ -44,6 +46,14 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
       if (updatedUser !== null) {
         const pendingAmount = getPendingRequests(updatedUser);
         setPendingRequests(pendingAmount);
+      }
+    });
+
+    socket.on("join-server", async () => {
+      const updatedServers = await getServers(user.id);
+
+      if (updatedServers) {
+        setServersState(updatedServers);
       }
     });
 
@@ -66,7 +76,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
         <div className="h-0.5 w-8 bg-background-modifier-accent mb-2 mx-auto"></div>
 
         <div className="flex flex-col items-center" aria-label="Servers">
-          {servers.map((server) => {
+          {serversState.map((server) => {
             const currentServerSelected: boolean =
               params.serverId === server._id;
 
