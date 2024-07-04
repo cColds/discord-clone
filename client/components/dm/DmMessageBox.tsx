@@ -20,6 +20,7 @@ type DmMessageBoxType = {
   recipient?: UserType;
   sender: UserType;
   channelName?: string;
+  type: "dm" | "server";
 };
 
 type PreviewImageType = {
@@ -32,6 +33,7 @@ export default function DmMessageBox({
   recipient,
   sender,
   channelName,
+  type,
 }: DmMessageBoxType) {
   const [message, setMessage] = useState("");
   const [usersTyping, setUsersTyping] = useState<
@@ -114,7 +116,8 @@ export default function DmMessageBox({
       await sendMessage(
         sender.id,
         form,
-        Array.isArray(channelId) ? channelId[0] : channelId
+        Array.isArray(channelId) ? channelId[0] : channelId,
+        type
       );
       setMessage("");
       setPreviewImages([]);

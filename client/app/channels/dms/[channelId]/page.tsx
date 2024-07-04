@@ -33,11 +33,15 @@ export default async function DmPage({
 
   const dmsOpen = user.dms.filter((dm) => dm.open);
 
+  const sortedDms = dmsOpen.sort((a, b) =>
+    a.channel.lastMessageTimestamp > b.channel.lastMessageTimestamp ? -1 : 1
+  );
+
   return (
     <DmPageClient
       recipient={recipient}
       pendingRequests={pendingRequests}
-      dmsOpen={dmsOpen}
+      dmsOpen={sortedDms}
       initialMessages={initialMessages}
       channelId={params.channelId}
     />

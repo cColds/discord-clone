@@ -53,7 +53,7 @@ export default function DmChannel({
           </div>
         </div>
 
-        <DmMessageBox sender={user} recipient={recipient} />
+        <DmMessageBox sender={user} recipient={recipient} type="dm" />
       </div>
     </div>
   );

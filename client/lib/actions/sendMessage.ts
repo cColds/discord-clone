@@ -4,26 +4,12 @@ import dbConnect from "../db/dbConnect";
 import Message from "@/models/Message";
 import Dm from "@/models/Dm";
 import { uploadToCloudinary } from "@/app/api/sign-cloudinary-params/route";
-import { sendMessageSchema } from "../validations/sendMessage";
-// Import necessary Node.js modules
-import { Readable } from "stream";
-
-/**
- * Convert a Node.js Readable stream (which `req` is) to a Buffer.
- */
-function streamToBuffer(stream: Readable): Promise<Buffer> {
-  const chunks: Buffer[] = [];
-  return new Promise((resolve, reject) => {
-    stream.on("data", (chunk) => chunks.push(chunk));
-    stream.on("error", reject);
-    stream.on("end", () => resolve(Buffer.concat(chunks)));
-  });
-}
 
 export async function sendMessage(
   sender: string,
   formData: FormData,
-  channelId: string
+  channelId: string,
+  type: "dm" | "server"
 ) {
   const data = {
     message: formData.get("message"),
@@ -72,6 +58,14 @@ export async function sendMessage(
       images: imageUrls,
     });
     await messageDoc.save();
+
+    if (type === "dm") {
+      await Dm.findByIdAndUpdate(
+        channelId,
+        { $set: { lastMessageTimestamp: Date.now() } },
+        { strict: false }
+      );
+    }
   } catch (err) {
     console.error(err);
   }

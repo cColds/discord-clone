@@ -44,7 +44,11 @@ const Channel = ({
               user={user}
               messages={messages}
             />
-            <DmMessageBox sender={user} channelName={channel.name} />
+            <DmMessageBox
+              sender={user}
+              channelName={channel.name}
+              type="server"
+            />
           </div>
           <ChannelMembersList
             members={members}
