@@ -5,7 +5,7 @@ import { Status } from "./status";
 export type DmType = {
   members: UserType[];
   _id: string;
-  lastMessageTimestamp: string;
+  lastMessageTimestamp: Date;
 };
 
 export type UserDms = {

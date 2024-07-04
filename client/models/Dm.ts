@@ -8,7 +8,7 @@ export interface DmType extends Document {
 const DmSchema = new Schema<DmType>(
   {
     members: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
-    lastMessageTimestamp: { type: Date, default: Date.now },
+    lastMessageTimestamp: { type: Date, required: true },
   },
   { timestamps: true }
 );

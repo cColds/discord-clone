@@ -21,6 +21,12 @@ export default function HomeClient() {
   );
 
   const dmsOpen = user.dms.filter((dm) => dm.open);
+  const sortedDms = dmsOpen.sort((a, b) => {
+    return (
+      new Date(b.channel.lastMessageTimestamp).getTime() -
+      new Date(a.channel.lastMessageTimestamp).getTime()
+    );
+  });
 
   useEffect(() => {
     if (!socket) return;
@@ -55,7 +61,7 @@ export default function HomeClient() {
       <div className="flex flex-col w-60">
         <PrivateChannels
           pendingRequests={pendingRequests.length}
-          dms={dmsOpen}
+          dms={sortedDms}
         />
         <UserPanel
           username={user.username}

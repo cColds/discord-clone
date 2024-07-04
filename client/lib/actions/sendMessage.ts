@@ -62,7 +62,7 @@ export async function sendMessage(
     if (type === "dm") {
       await Dm.findByIdAndUpdate(
         channelId,
-        { $set: { lastMessageTimestamp: Date.now() } },
+        { $set: { lastMessageTimestamp: new Date() } },
         { strict: false }
       );
     }

@@ -29,7 +29,10 @@ export const acceptPendingRequest = async (
     if (!dmExists) {
       const dm = new Dm({
         members: [yourAccount._id, friendAccount._id],
+        lastMessageTimestamp: new Date(),
       });
+
+      await dm.save();
 
       const yourDMOpts: UserDM = {
         channel: dm._id,
@@ -44,7 +47,6 @@ export const acceptPendingRequest = async (
       };
 
       await Promise.all([
-        dm.save(),
         User.findByIdAndUpdate(userId, {
           $push: { dms: yourDMOpts },
         }),

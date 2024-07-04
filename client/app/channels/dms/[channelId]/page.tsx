@@ -32,10 +32,12 @@ export default async function DmPage({
   ).length;
 
   const dmsOpen = user.dms.filter((dm) => dm.open);
-
-  const sortedDms = dmsOpen.sort((a, b) =>
-    a.channel.lastMessageTimestamp > b.channel.lastMessageTimestamp ? -1 : 1
-  );
+  const sortedDms = dmsOpen.sort((a, b) => {
+    return (
+      new Date(b.channel.lastMessageTimestamp).getTime() -
+      new Date(a.channel.lastMessageTimestamp).getTime()
+    );
+  });
 
   return (
     <DmPageClient
