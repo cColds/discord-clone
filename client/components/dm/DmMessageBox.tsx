@@ -128,6 +128,9 @@ export default function DmMessageBox({
         userId: sender.id,
         displayName: sender.displayName,
       });
+      if (type === "dm") {
+        socket.emit("update-dms-list", recipient?.id || "", sender.id);
+      }
     } catch (err) {
       console.error(err);
     }

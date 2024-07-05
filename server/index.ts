@@ -118,6 +118,19 @@ io.on("connection", (socket) => {
     io.to(user.socketId).emit("create-server");
   });
 
+  socket.on("update-dms-list", (recipientId, senderId) => {
+    const senderSocket = activeUsers[senderId];
+    const recipientSocket = activeUsers[recipientId];
+
+    if (recipientSocket) {
+      io.to(recipientSocket.socketId).emit("update-dms-list");
+    }
+
+    if (senderSocket) {
+      io.to(senderSocket.socketId).emit("update-dms-list");
+    }
+  });
+
   socket.on("disconnect", async () => {
     const userMapping = socketToUserMap[socket.id];
     if (userMapping) {

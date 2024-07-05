@@ -1,5 +1,5 @@
 "use client";
-import { DmType, UserType } from "@/types/user";
+import { UserType } from "@/types/user";
 import UserPanel from "@/components/panels/UserPanel";
 import PrivateChannels from "@/components/sidebars/PrivateChannels";
 import DmChannel from "./DmChannel";
@@ -10,23 +10,17 @@ import { useSocket } from "@/app/providers/SocketProvider";
 import { useEffect, useState } from "react";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
+import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
 
 type DmPageClientType = {
   recipient: UserType;
   pendingRequests: number;
-  dmsOpen: {
-    channel: DmType;
-    recipient: UserType;
-    open: boolean;
-    id: string;
-  }[];
   initialMessages: MessageType[];
   channelId: string;
 };
 
 export default function DmPageClient({
   pendingRequests,
-  dmsOpen,
   recipient,
   initialMessages,
   channelId,
@@ -36,6 +30,7 @@ export default function DmPageClient({
   const { user, setUser } = useUser();
   if (!user) redirect("/");
 
+  const dms = sortOpenDms(user.dms);
   const { socket } = useSocket();
 
   useEffect(() => {
@@ -66,7 +61,6 @@ export default function DmPageClient({
     });
 
     socket.on("received-message", async () => {
-      // fetch new messages
       const updatedMessages = await getMessages(25, channelId);
 
       setMessages(updatedMessages);
@@ -78,13 +72,21 @@ export default function DmPageClient({
       console.log("this should scroll to bottom!");
     });
 
+    socket.on("update-dms-list", async () => {
+      const updatedUser = await getUser(user.id);
+
+      if (updatedUser) {
+        setUser(updatedUser);
+      }
+    });
+
     return () => socket.disconnect();
   }, [socket]);
 
   return (
     <div className="flex h-full">
       <div className="flex flex-col w-60">
-        <PrivateChannels pendingRequests={pendingRequests} dms={dmsOpen} />
+        <PrivateChannels pendingRequests={pendingRequests} dms={dms} />
         <UserPanel
           username={user.username}
           displayName={user.displayName}

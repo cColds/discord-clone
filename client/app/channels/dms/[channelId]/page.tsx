@@ -31,19 +31,10 @@ export default async function DmPage({
     (pending) => pending.request === "Incoming"
   ).length;
 
-  const dmsOpen = user.dms.filter((dm) => dm.open);
-  const sortedDms = dmsOpen.sort((a, b) => {
-    return (
-      new Date(b.channel.lastMessageTimestamp).getTime() -
-      new Date(a.channel.lastMessageTimestamp).getTime()
-    );
-  });
-
   return (
     <DmPageClient
       recipient={recipient}
       pendingRequests={pendingRequests}
-      dmsOpen={sortedDms}
       initialMessages={initialMessages}
       channelId={params.channelId}
     />

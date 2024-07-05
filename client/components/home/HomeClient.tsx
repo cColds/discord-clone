@@ -8,6 +8,7 @@ import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
+import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
 
 export default function HomeClient() {
   const { user, setUser } = useUser();
@@ -20,13 +21,7 @@ export default function HomeClient() {
     (pending) => pending.request === "Incoming"
   );
 
-  const dmsOpen = user.dms.filter((dm) => dm.open);
-  const sortedDms = dmsOpen.sort((a, b) => {
-    return (
-      new Date(b.channel.lastMessageTimestamp).getTime() -
-      new Date(a.channel.lastMessageTimestamp).getTime()
-    );
-  });
+  const dms = sortOpenDms(user.dms);
 
   useEffect(() => {
     if (!socket) return;
@@ -44,12 +39,20 @@ export default function HomeClient() {
     });
 
     socket.on("update-friends-online-status", async (isOnline: boolean) => {
-      const updatedUser = await getUser(user.id); // todo/note: maybe quicker to filter through friends and update their online status instead of fetching, but maybe need to pass in friendId param
+      const updatedUser = await getUser(user.id);
 
       if (updatedUser) {
         setUser(updatedUser);
       } else {
         console.error("failed to update user");
+      }
+    });
+
+    socket.on("update-dms-list", async () => {
+      const updatedUser = await getUser(user.id);
+
+      if (updatedUser) {
+        setUser(updatedUser);
       }
     });
 
@@ -59,10 +62,7 @@ export default function HomeClient() {
   return (
     <div className="flex h-full">
       <div className="flex flex-col w-60">
-        <PrivateChannels
-          pendingRequests={pendingRequests.length}
-          dms={sortedDms}
-        />
+        <PrivateChannels pendingRequests={pendingRequests.length} dms={dms} />
         <UserPanel
           username={user.username}
           displayName={user.displayName}
