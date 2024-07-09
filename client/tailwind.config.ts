@@ -26,6 +26,7 @@ module.exports = {
         "interactive-normal": "rgb(181, 186, 193)",
         "button-secondary-background": "rgb(78, 80, 88)",
         "button-secondary-background-hover": "rgb(109, 111, 120)",
+        "button-secondary-background-active": "rgb(128, 132, 142)",
         "channel-text-area-placeholder": "rgb(109, 111, 120)",
         "text-normal": "rgb(219, 222, 225)",
         "green-360": "rgb(35, 165, 89)",

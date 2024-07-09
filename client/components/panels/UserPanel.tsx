@@ -2,6 +2,8 @@ import { Deafen, Mic, Settings } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { Status } from "@/types/status";
 import AvatarMask from "../avatar/AvatarMask";
+import { useState } from "react";
+import UserSettings from "./UserSettings";
 
 type UserPanelProps = {
   username: string;
@@ -18,6 +20,8 @@ export default function UserPanel({
   avatar,
   status,
 }: UserPanelProps) {
+  const [openSettings, setOpenSettings] = useState(false);
+
   return (
     <section className="bg-background-secondary-alt" aria-label="User area">
       <div className="mb-[1px] px-2 text-sm h-[52px] flex items-center font-medium">
@@ -77,10 +81,13 @@ export default function UserPanel({
             <button
               className="text-interactive-normal hover:bg-background-modifier-selected w-8 h-8 flex justify-center items-center hover:text-interactive-hover"
               aria-label="User Settings"
+              onClick={() => setOpenSettings(true)}
             >
               <Settings />
             </button>
           </ActionTooltip>
+
+          {openSettings && <UserSettings />}
         </div>
       </div>
     </section>

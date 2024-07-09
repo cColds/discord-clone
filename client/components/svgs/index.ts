@@ -36,3 +36,4 @@ export { Pin } from "./Pin";
 export { EditPen } from "./EditPen";
 export { UploadFile } from "./UploadFile";
 export { Trash } from "./Trash";
+export { ProfileBanner } from "./ProfileBanner";
