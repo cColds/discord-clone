@@ -5,11 +5,13 @@ import { useUser } from "@/app/providers/UserProvider";
 type UserSettingsContentProps = {
   selected: UserSettingsTabs;
   onTabClick: (tabName: UserSettingsTabs) => void;
+  onClose: () => void;
 };
 
 const UserSettingsContent = ({
   selected,
   onTabClick,
+  onClose,
 }: UserSettingsContentProps) => {
   const { user } = useUser();
 
@@ -19,7 +21,7 @@ const UserSettingsContent = ({
     <div className="bg-background-primary flex-grow basis-[800px] h-full scroller">
       <div className="overflow-x-hidden overflow-y-scroll flex h-full">
         {selected === "My Account" && (
-          <UserAccount user={user} onTabClick={onTabClick} />
+          <UserAccount user={user} onTabClick={onTabClick} onClose={onClose} />
         )}
       </div>
     </div>

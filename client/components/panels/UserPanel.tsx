@@ -87,7 +87,9 @@ export default function UserPanel({
             </button>
           </ActionTooltip>
 
-          {openSettings && <UserSettings />}
+          {openSettings && (
+            <UserSettings onClose={() => setOpenSettings(false)} />
+          )}
         </div>
       </div>
     </section>
