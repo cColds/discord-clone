@@ -15,6 +15,7 @@ type AvatarMaskProps = {
   rectHeight?: number;
   rectX?: number;
   rectY?: number;
+  maskSize?: 32 | 80;
 };
 
 export default function AvatarMask({
@@ -30,6 +31,7 @@ export default function AvatarMask({
   rectHeight = 10,
   rectX = 22,
   rectY = 22,
+  maskSize = 32,
 }: AvatarMaskProps) {
   return (
     <svg
@@ -43,7 +45,9 @@ export default function AvatarMask({
         y="0"
         width={imgWidth}
         height={imgHeight}
-        mask={removeMask ? "" : "url(#svg-mask-avatar-status-round-32)"}
+        mask={
+          removeMask ? "" : `url(#svg-mask-avatar-status-round-${maskSize})`
+        }
       >
         <div>
           <Image

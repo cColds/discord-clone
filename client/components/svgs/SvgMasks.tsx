@@ -14,6 +14,15 @@ export default function SvgMasks() {
         <circle fill="black" cx="0.84375" cy="0.84375" r="0.25"></circle>
       </mask>
 
+      <mask
+        id="svg-mask-avatar-status-round-80"
+        maskContentUnits="objectBoundingBox"
+        viewBox="0 0 1 1"
+      >
+        <circle fill="white" cx="0.5" cy="0.5" r="0.5"></circle>
+        <circle fill="black" cx="0.85" cy="0.85" r="0.175"></circle>
+      </mask>
+
       {/* STATUSES */}
 
       <mask
