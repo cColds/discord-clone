@@ -4,6 +4,7 @@ import { ProfileBanner } from "../svgs/ProfileBanner";
 import { UserSettingsTabs } from "@/types/user-settings-tabs";
 import PrimaryButton from "../buttons/PrimaryButton";
 import CloseSettings from "../CloseSettings";
+import EditUsernameModal from "../modals/user-settings/EditUsernameModal";
 
 type UserAccountProps = {
   user: UserType;
@@ -15,12 +16,13 @@ type AccountFieldListProps = {
   label: "Display Name" | "Username" | "Email";
   value: string;
   ariaLabel: string;
+  children?: React.ReactNode;
 };
 
 const AccountFieldList = ({
   label,
   value,
-  ariaLabel,
+  children,
 }: AccountFieldListProps) => {
   return (
     <div className="flex justify-between">
@@ -32,13 +34,7 @@ const AccountFieldList = ({
         <span className="text-header-primary text-md leading-5">{value}</span>
       </div>
 
-      <button
-        aria-label={ariaLabel}
-        className="bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-active h-8 min-w-[60px] min-h-[32px] transition duration-150 ease-in-out rounded-sm py-0.5 px-4 text-sm leading-4 border-0"
-        type="button"
-      >
-        Edit
-      </button>
+      {children}
     </div>
   );
 };
@@ -84,17 +80,44 @@ const UserAccount = ({ user, onTabClick, onClose }: UserAccountProps) => {
               label="Display Name"
               value={user.displayName}
               ariaLabel="Edit display name"
-            />
+            >
+              <button
+                aria-label="Edit display name"
+                className="bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-active h-8 min-w-[60px] min-h-[32px] transition duration-150 ease-in-out rounded-sm py-0.5 px-4 text-sm leading-4 border-0"
+                type="button"
+                onClick={() => onTabClick("Profiles")}
+              >
+                Edit
+              </button>
+            </AccountFieldList>
             <AccountFieldList
               label="Username"
               value={user.username}
               ariaLabel="Edit username"
-            />
+            >
+              <EditUsernameModal>
+                <button
+                  aria-label="Edit username"
+                  className="bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-active h-8 min-w-[60px] min-h-[32px] transition duration-150 ease-in-out rounded-sm py-0.5 px-4 text-sm leading-4 border-0"
+                  type="button"
+                >
+                  Edit
+                </button>
+              </EditUsernameModal>
+            </AccountFieldList>
             <AccountFieldList
               label="Email"
               value={user.email}
               ariaLabel="Edit email address"
-            />
+            >
+              <button
+                aria-label="Edit email address"
+                className="bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-active h-8 min-w-[60px] min-h-[32px] transition duration-150 ease-in-out rounded-sm py-0.5 px-4 text-sm leading-4 border-0"
+                type="button"
+              >
+                Edit
+              </button>
+            </AccountFieldList>
           </div>
         </div>
         <div className="mt-10">
