@@ -5,6 +5,7 @@ import { UserSettingsTabs } from "@/types/user-settings-tabs";
 import PrimaryButton from "../buttons/PrimaryButton";
 import CloseSettings from "../CloseSettings";
 import EditUsernameModal from "../modals/user-settings/EditUsernameModal";
+import EditEmailModal from "../modals/user-settings/EditEmailModal";
 
 type UserAccountProps = {
   user: UserType;
@@ -110,13 +111,15 @@ const UserAccount = ({ user, onTabClick, onClose }: UserAccountProps) => {
               value={user.email}
               ariaLabel="Edit email address"
             >
-              <button
-                aria-label="Edit email address"
-                className="bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-active h-8 min-w-[60px] min-h-[32px] transition duration-150 ease-in-out rounded-sm py-0.5 px-4 text-sm leading-4 border-0"
-                type="button"
-              >
-                Edit
-              </button>
+              <EditEmailModal>
+                <button
+                  aria-label="Edit email address"
+                  className="bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-active h-8 min-w-[60px] min-h-[32px] transition duration-150 ease-in-out rounded-sm py-0.5 px-4 text-sm leading-4 border-0"
+                  type="button"
+                >
+                  Edit
+                </button>
+              </EditEmailModal>
             </AccountFieldList>
           </div>
         </div>
