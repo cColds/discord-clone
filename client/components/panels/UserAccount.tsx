@@ -6,6 +6,7 @@ import PrimaryButton from "../buttons/PrimaryButton";
 import CloseSettings from "../CloseSettings";
 import EditUsernameModal from "../modals/user-settings/EditUsernameModal";
 import EditEmailModal from "../modals/user-settings/EditEmailModal";
+import EditPasswordModal from "../modals/user-settings/EditPasswordModal";
 
 type UserAccountProps = {
   user: UserType;
@@ -129,9 +130,9 @@ const UserAccount = ({ user, onTabClick, onClose }: UserAccountProps) => {
           </h2>
           <div className="flex flex-col">
             <div className="mb-7">
-              <PrimaryButton>
-                <p>Change Password</p>
-              </PrimaryButton>
+              <EditPasswordModal>
+                <PrimaryButton>Change Password</PrimaryButton>
+              </EditPasswordModal>
             </div>
           </div>
         </div>
