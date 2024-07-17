@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import React from "react";
 
 type PrimaryButtonProps = {
   onClick?: () => void;
@@ -7,24 +8,19 @@ type PrimaryButtonProps = {
   type?: "button" | "submit";
 };
 
-const PrimaryButton = ({
-  onClick,
-  children,
-  className,
-  type = "button",
-}: PrimaryButtonProps) => {
+const PrimaryButton = React.forwardRef((props: PrimaryButtonProps, ref) => {
   return (
     <button
-      type={type}
+      type={props.type}
       className={cn(
         "truncate px-4 py-2 h-8 min-w-[60px] text-sm leading-4 min-h-[32px] text-white border-0 bg-brand-500 hover:bg-brand-560 active:bg-brand-600",
-        className
+        props.className
       )}
-      onClick={onClick}
+      onClick={props.onClick}
     >
-      {children}
+      {props.children}
     </button>
   );
-};
+});
 
 export default PrimaryButton;
