@@ -72,7 +72,7 @@ const UserProfile = ({ user, onClose, handleUserUpdate }: UserProfileProps) => {
 
   return (
     <div
-      className="px-10 pb-20 pt-[60px] max-w-[740px] min-w-[460px] min-h-full flex gap-10"
+      className="px-10 pb-20 pt-[60px] min-w-[460px] min-h-full flex gap-10"
       role="tabpanel"
     >
       <div className="flex-grow">
