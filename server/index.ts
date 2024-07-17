@@ -143,14 +143,17 @@ io.on("connection", (socket) => {
         activeUsers
       );
       io.emit("get-users", activeUsers);
-      user.social.friends.forEach((friendId: string) => {
-        const friend = activeUsers[friendId];
-        if (friend) {
-          socket
-            .to(friend.socketId)
-            .emit("update-friends-online-status", false);
-        }
-      });
+
+      if (user) {
+        user.social.friends.forEach((friendId: string) => {
+          const friend = activeUsers[friendId];
+          if (friend) {
+            socket
+              .to(friend.socketId)
+              .emit("update-friends-online-status", false);
+          }
+        });
+      }
     } else {
       console.log("User disconnected but mapping not found");
     }
