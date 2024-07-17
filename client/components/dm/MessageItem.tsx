@@ -13,6 +13,7 @@ import { useState } from "react";
 import { editMessage } from "@/lib/db/editMessage";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { useParams } from "next/navigation";
+import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 
 type MessageItemType = {
   msg: MessageType;
@@ -57,6 +58,15 @@ export default function MessageItem({
     }
   };
 
+  const transformation = "c_fill,h_80,w_80";
+
+  const defaultAvatar = "/images/profile-pictures/blurple.png";
+
+  const transformedAvatar =
+    defaultAvatar === msg.sender.avatar
+      ? msg.sender.avatar
+      : transformCloudinaryUrl(msg.sender.avatar, transformation);
+
   return (
     <>
       {showDateDivider && <DateDivider date={msg.createdAt} />}
@@ -74,7 +84,7 @@ export default function MessageItem({
           {!shouldMergeMessages ? (
             <>
               <Image
-                src={msg.sender.avatar}
+                src={transformedAvatar}
                 alt=""
                 width={40}
                 height={40}
