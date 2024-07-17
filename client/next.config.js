@@ -13,9 +13,12 @@ const nextConfig = {
         hostname: "avatars.githubusercontent.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+      },
     ],
-
-    domains: ["res.cloudinary.com"],
   },
 
   async redirects() {
