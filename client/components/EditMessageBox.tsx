@@ -43,14 +43,14 @@ const EditMessageBox = ({
       <div className="py-[7px] text-xs text-text-normal leading-3">
         escape to
         <button
-          className="text-text-link duration-[50] cursor-pointer"
+          className="text-text-link duration-75 cursor-pointer"
           onClick={() => onEditMessage(null)}
         >
           cancel
         </button>
         • enter to
         <button
-          className="text-text-link duration-[50] cursor-pointer"
+          className="text-text-link duration-75 cursor-pointer"
           onClick={() => {
             try {
               onEditMessage(null);
