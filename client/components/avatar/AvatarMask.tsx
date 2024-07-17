@@ -49,13 +49,13 @@ export default function AvatarMask({
           removeMask ? "" : `url(#svg-mask-avatar-status-round-${maskSize})`
         }
       >
-        <div>
+        <div className="w-full h-full">
           <Image
             src={avatar}
             alt={`${username}, ${status}`}
             width={imgWidth}
             height={imgHeight}
-            className="rounded-full"
+            className={`rounded-full object-cover`}
             draggable={false}
           />
         </div>

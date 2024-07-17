@@ -20,20 +20,13 @@ import { Input } from "@/components/ui/input";
 import { createServer } from "@/lib/actions/createServer";
 import { cn } from "@/lib/utils";
 import { createServerSchema } from "@/lib/validations/createServer";
+import { toBase64 } from "@/utils/helpers/toBase64";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-const toBase64 = (file: File) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
 
 type CreateServerContentType = {
   onModalChange: (mode: null | "Create Server" | "Join Server") => void;

@@ -44,6 +44,8 @@ module.exports = {
         "channel-text-area": "rgb(56, 58, 64)",
         foreground: "hsl(var(--foreground))",
         "status-positive-background": "rgb(36, 128, 70)",
+        "status-positive-background-hover": "rgb(26, 99, 52)",
+        "status-positive-background-active": "rgb(21, 86, 43)",
         positive: "rgb(45, 199, 112)",
         "header-primary": "#f2f3f5",
         "header-secondary": "rgb(181, 186, 193)",
@@ -67,6 +69,7 @@ module.exports = {
         "primary-300": "rgb(196, 201, 206)",
         "interactive-active": "oklab(0.999994 0.0000455678 0.0000200868)",
         "modal-footer": "oklab(0.296332 -0.000731647 -0.00768477)",
+        "surface-overlay": "oklab(0.182455 -0.000417277 -0.0043847)",
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

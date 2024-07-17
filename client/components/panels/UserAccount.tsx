@@ -52,7 +52,10 @@ const UserAccount = ({ user, onTabClick, onClose }: UserAccountProps) => {
           My Account
         </h2>
         <div className="bg-background-tertiary rounded overflow-hidden relative">
-          <ProfileBanner />
+          <ProfileBanner
+            className="min-w-[660px] min-h-[100px] z-0"
+            viewBox="0 0 660 100"
+          />
           <div className="w-full flex justify-between pl-[120px] pt-4 pb-7 pr-4">
             <div className="w-20 h-20 absolute top-[82px] left-[22px] rounded-full">
               <AvatarMask
