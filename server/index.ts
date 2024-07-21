@@ -106,16 +106,21 @@ io.on("connection", (socket) => {
 
   socket.on("join-server", (userId) => {
     const user = activeUsers[userId];
-
-    io.to(user.socketId).emit("join-server");
+    if (user.socketId) {
+      io.to(user.socketId).emit("join-server");
+    } else {
+      console.log("Could not find user socket id", user);
+    }
   });
 
   socket.on("create-server", (userId) => {
     const user = activeUsers[userId];
 
-    console.log(userId, user);
-
-    io.to(user.socketId).emit("create-server");
+    if (user.socketId) {
+      io.to(user.socketId).emit("create-server");
+    } else {
+      console.log("Could not find user socket id", user);
+    }
   });
 
   socket.on("update-dms-list", (recipientId, senderId) => {
