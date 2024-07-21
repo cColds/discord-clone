@@ -32,12 +32,12 @@ type EditEmailModalProps = {
 export default function EditEmailModal({ children }: EditEmailModalProps) {
   const [open, setOpen] = useState(false);
 
+  const { user, setUser } = useUser();
+
   const form = useForm<z.infer<typeof changeEmailSchema>>({
     resolver: zodResolver(changeEmailSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: user?.email || "", password: "" },
   });
-
-  const { user, setUser } = useUser();
 
   const onSubmit = async (data: z.infer<typeof changeEmailSchema>) => {
     if (!user?.id) {

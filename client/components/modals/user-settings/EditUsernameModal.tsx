@@ -31,13 +31,12 @@ export default function EditUsernameModal({
   children,
 }: EditUsernameModalProps) {
   const [open, setOpen] = useState(false);
+  const { user, setUser } = useUser();
 
   const form = useForm<z.infer<typeof changeUsernameSchema>>({
     resolver: zodResolver(changeUsernameSchema),
-    defaultValues: { username: "", password: "" },
+    defaultValues: { username: user?.username || "", password: "" },
   });
-
-  const { user, setUser } = useUser();
 
   const onSubmit = async (data: z.infer<typeof changeUsernameSchema>) => {
     if (!user?.id) {
