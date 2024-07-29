@@ -37,9 +37,12 @@ export const SocketProvider = ({
   const pathname = usePathname();
 
   useEffect(() => {
-    const socketInstance = new (ClientIO as any)("http://localhost:3001", {
-      path: "/socket",
-    });
+    const socketInstance = new (ClientIO as any)(
+      process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3001",
+      {
+        path: "/socket",
+      }
+    );
 
     if (userId) {
       getUser(userId)

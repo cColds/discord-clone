@@ -1,6 +1,6 @@
 export const uploadFileToCloudinary = async (formData: FormData) => {
   const authCloudinary = await fetch(
-    `${process.env.NEXT_URL}/api/sign-cloudinary-params`,
+    `${process.env.NEXT_PUBLIC_URL}/api/sign-cloudinary-params`,
     {
       method: "POST",
       body: formData,

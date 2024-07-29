@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.NEXT_PUBLIC_URL,
     methods: ["GET", "POST"],
   })
 );
@@ -21,7 +21,7 @@ import { updateFriendList } from "./utils/updateFriendsList";
 import { updateOnlineStatus } from "./utils/updateOnlineStatus";
 
 const io = new Server(server, {
-  cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
+  cors: { origin: process.env.NEXT_PUBLIC_URL, methods: ["GET", "POST"] },
   path: "/socket",
 });
 

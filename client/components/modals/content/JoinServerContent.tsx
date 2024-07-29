@@ -62,7 +62,7 @@ const JoinServerContent = ({
           (invite) => invite.code === inviteCode
         );
 
-        const serverLink = `http://localhost:3000/channels/servers/${
+        const serverLink = `${process.env.NEXT_PUBLIC_URL}/channels/servers/${
           serverToJoin._id
         }/${channelInvite?.channel.id || ""}`;
         console.log(serverLink);

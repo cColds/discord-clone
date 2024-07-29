@@ -68,7 +68,7 @@ const CreateServerContent = ({
       onToggleModal();
 
       if (server) {
-        const serverLink = `http://localhost:3000/channels/servers/${server._id}`;
+        const serverLink = `${process.env.NEXT_PUBLIC_URL}/channels/servers/${server._id}`;
 
         router.push(serverLink);
 
