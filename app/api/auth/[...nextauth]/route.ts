@@ -6,7 +6,7 @@ import { authConfig } from "@/auth.config";
 import dbConnect from "@/lib/db/dbConnect";
 import { loginSchema } from "@/lib/validations/login";
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   ...authConfig,
 
   providers: [
