@@ -3,7 +3,7 @@
 import dbConnect from "../db/dbConnect";
 import Message from "@/models/Message";
 import Dm from "@/models/Dm";
-import { uploadToCloudinary } from "@/app/api/sign-cloudinary-params/route";
+import { uploadToCloudinary } from "../db/uploadToCloudinary";
 
 export async function sendMessage(
   sender: string,
