@@ -18,8 +18,8 @@ const NoTextChannels = () => {
             No Text Channels
           </h2>
           <p className="text-md leading-5 text-center text-text-muted mt-2">
-            You find yourself in a strange place. You don't have access to any
-            text channels, or there are none in this server.
+            You find yourself in a strange place. You don&apos;t have access to
+            any text channels, or there are none in this server.
           </p>
         </div>
       </div>

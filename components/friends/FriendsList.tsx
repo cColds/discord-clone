@@ -28,7 +28,7 @@ function showWumpusBackground(
           <>
             <div className="bg-wumpus-none-online w-[421px] h-[218px] mb-10" />
             <p className="text-text-muted text-center mt-2">
-              No one's around to play with Wumpus
+              No one&apos;s around to play with Wumpus
             </p>
           </>
         )}
@@ -53,7 +53,7 @@ function showWumpusBackground(
           <>
             <div className="bg-wumpus-pending-request w-[415px] h-[200px] mb-10" />
             <p className="text-text-muted text-center mt-2">
-              There are no pending friend requests. Here's Wumpus for now.
+              There are no pending friend requests. Here&apos;s Wumpus for now.
             </p>
           </>
         )}
@@ -62,7 +62,7 @@ function showWumpusBackground(
           <>
             <div className="bg-wumpus-cant-unblock w-[433px] h-[232px] mb-10" />
             <p className="text-text-muted text-center mt-2">
-              You can't unblock the Wumpus.
+              You can&apos;t unblock the Wumpus.
             </p>
           </>
         )}

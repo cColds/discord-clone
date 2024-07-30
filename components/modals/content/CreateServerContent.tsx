@@ -157,7 +157,7 @@ const CreateServerContent = ({
             />
 
             <div className="text-text-muted mt-2 pb-1 text-xs leading-4">
-              By creating a server, you agree to Discord's
+              By creating a server, you agree to Discord&apos;s
               <strong>
                 <a
                   className="text-text-link hover:underline"
