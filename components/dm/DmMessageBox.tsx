@@ -6,7 +6,6 @@ import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { sendMessage } from "@/lib/actions/sendMessage";
 import { useParams } from "next/navigation";
-import { useSocket } from "@/app/providers/SocketProvider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { v4 as uuidv4 } from "uuid";
+import { useTypingIndicator } from "@/hooks/useTypingIndicator";
 
 type DmMessageBoxType = {
   recipient?: UserType;
@@ -39,64 +39,14 @@ export default function DmMessageBox({
   const [usersTyping, setUsersTyping] = useState<
     { displayName: string; userId: string }[]
   >([]);
-  const typingTimerRef = useRef<null | NodeJS.Timeout>(null);
 
   const { channelId } = useParams();
 
-  const { socket } = useSocket();
   const [open, setOpen] = useState(false);
   const [previewImages, setPreviewImages] = useState<PreviewImageType[]>([]);
   const [filesToUpload, setFilesToUpload] = useState<FileList | null>(null);
 
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on(
-      "show-typing-indicator",
-      (user: { displayName: string; userId: string }) => {
-        setUsersTyping((current) => {
-          const isUserAlreadyTyping = current.some(
-            (u) => u.userId === user.userId
-          );
-
-          if (!isUserAlreadyTyping) {
-            if (typingTimerRef?.current) {
-              clearTimeout(typingTimerRef?.current);
-            }
-
-            const timerId = setTimeout(() => {
-              setUsersTyping((current) =>
-                current.filter((u) => u.userId !== user.userId)
-              );
-            }, 10000);
-
-            typingTimerRef.current = timerId;
-
-            return [...current, user];
-          }
-          return current;
-        });
-      }
-    );
-    socket.on(
-      "stop-typing-indicator",
-      (user: { displayName: string; userId: string }) => {
-        setUsersTyping((current) =>
-          current.filter((u) => u.userId !== user.userId)
-        );
-      }
-    );
-
-    return () => {
-      socket.off("show-typing-indicator");
-      socket.off("stop-typing-indicator");
-
-      if (typingTimerRef.current) {
-        clearTimeout(typingTimerRef.current);
-        typingTimerRef.current = null;
-      }
-    };
-  }, [socket]);
+  const socket = useTypingIndicator(setUsersTyping);
 
   const handleMessageSubmit = async () => {
     try {
