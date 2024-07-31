@@ -1,20 +1,15 @@
 "use client";
 
 import { UserType } from "@/types/user";
-import { TypingDots, AttachmentPlus, UploadFile } from "../svgs";
+import { TypingDots } from "../svgs";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import Image from "next/image";
 import { sendMessage } from "@/lib/actions/sendMessage";
 import { useParams } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { v4 as uuidv4 } from "uuid";
 import { useTypingIndicator } from "@/hooks/useTypingIndicator";
 import PreviewImagesList from "./PreviewImagesList";
+import UploadFileDropdown from "./UploadFileDropdown";
 
 type DmMessageBoxType = {
   recipient?: UserType;
@@ -36,17 +31,15 @@ export default function DmMessageBox({
   type,
 }: DmMessageBoxType) {
   const [message, setMessage] = useState("");
+  const [open, setOpen] = useState(false);
   const [usersTyping, setUsersTyping] = useState<
     { displayName: string; userId: string }[]
   >([]);
-
-  const { channelId } = useParams();
-
-  const [open, setOpen] = useState(false);
   const [previewImages, setPreviewImages] = useState<PreviewImageType[]>([]);
   const [filesToUpload, setFilesToUpload] = useState<FileList | null>(null);
 
   const socket = useTypingIndicator(setUsersTyping);
+  const { channelId } = useParams();
 
   const handleMessageSubmit = async () => {
     try {
@@ -138,46 +131,11 @@ export default function DmMessageBox({
           ) : null}
 
           <div className="pl-4 rounded-lg flex items-center">
-            <DropdownMenu open={open} onOpenChange={toggleDropdownMenu}>
-              <DropdownMenuTrigger asChild>
-                <button
-                  aria-label="Upload a file or send invites"
-                  className="-ml-4 rounded-[3px] px-4 py-2.5 h-[44px] flex items-center text-interactive-normal hover:text-interactive-hover border-0 focus-visible:border-2"
-                  type="button"
-                >
-                  <AttachmentPlus />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                aria-label="Channel Actions"
-                className="shadow-elevation-high min-w-[200px] max-w-0 shadow-elevation-high rounded bg-background-floating"
-              >
-                <DropdownMenuItem
-                  className="text-interactive-normal flex items-center bg-background-floating min-h-[32px] p-0 my-0.5 rounded-sm text-sm leading-[18px] hover:text-white hover:bg-brand-500 focus:text-white focus:bg-brand-500 cursor-pointer py-1.5 px-2"
-                  onSelect={(e) => e.preventDefault()}
-                >
-                  <div className="flex items-center">
-                    <label
-                      htmlFor="upload-file"
-                      className="flex items-center grow"
-                    >
-                      <UploadFile />
-                    </label>
-                    <span className="ml-2">Upload a File</span>
-                  </div>
-                  <input
-                    type="file"
-                    className="absolute w-full h-full opacity-0 left-0"
-                    id="upload-file"
-                    accept=".jpg,.jpeg,.png,.gif"
-                    onChange={handleFileChange}
-                    onClick={(e) => console.log("TEST", e.currentTarget.files)}
-                    name="upload-file"
-                    multiple={true}
-                  />
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UploadFileDropdown
+              open={open}
+              toggleDropdownMenu={toggleDropdownMenu}
+              onFileChange={handleFileChange}
+            />
             <div className="bg-transparent grow relative h-[44px]">
               <textarea
                 className="border-0 outline-0 py-[11px] resize-none w-full h-full bg-channel-text-area overflow-hidden placeholder:text-channel-text-area-placeholder"
