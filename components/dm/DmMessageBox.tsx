@@ -1,8 +1,8 @@
 "use client";
 
 import { UserType } from "@/types/user";
-import { TypingDots, AttachmentPlus, UploadFile, Trash } from "../svgs";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { TypingDots, AttachmentPlus, UploadFile } from "../svgs";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import Image from "next/image";
 import { sendMessage } from "@/lib/actions/sendMessage";
 import { useParams } from "next/navigation";
@@ -12,9 +12,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ActionTooltip from "../tooltip/ActionTooltip";
 import { v4 as uuidv4 } from "uuid";
 import { useTypingIndicator } from "@/hooks/useTypingIndicator";
+import PreviewImagesList from "./PreviewImagesList";
 
 type DmMessageBoxType = {
   recipient?: UserType;
@@ -144,54 +144,10 @@ export default function DmMessageBox({
       <div className="bg-background-primary">
         <div className="overflow-hidden bg-channel-text-area rounded-lg mb-6">
           {previewImages.length ? (
-            <>
-              <ul className="flex gap-6 mb-0.5 ml-1.5 p-2.5 pt-5 overflow-x-auto">
-                {previewImages.map((previewImage) => {
-                  return (
-                    <li
-                      key={previewImage.id}
-                      className="flex flex-col rounded bg-background-secondary p-2 min-w-[200px] max-w-[200px] min-h-[200px] max-h-[200px] relative"
-                    >
-                      <div className="overflow-hidden bg-spoiler mt-auto">
-                        <Image
-                          src={previewImage.url}
-                          alt=""
-                          width={200}
-                          height={112.5}
-                          className="max-w-full object-contain rounded-[3px] aspect-video h-full"
-                        />
-                      </div>
-                      <div className="mt-auto">
-                        <div className="overflow-hidden truncate text-sm">
-                          {previewImage.name}
-                        </div>
-                      </div>
-
-                      <div
-                        aria-label="Upload Attachment Utilities"
-                        className="absolute right-0 translate-x-[25%] translate-y-[-25%] z-50"
-                      >
-                        <div className="shadow-elevation-low bg-background-primary h-8 rounded flex items-center transition duration-100 overflow-hidden hover:shadow-elevation-high">
-                          <ActionTooltip content="Remove Attachment">
-                            <button
-                              aria-label="Remove Attachment"
-                              type="button"
-                              className="text-status-danger p-1 min-w-[24px] w-8 flex items-center justify-center h-8 cursor-pointer border-0 leading-4 hover:bg-background-modifier-hover duration-100"
-                              onClick={() =>
-                                handleRemovePreviewImage(previewImage.id)
-                              }
-                            >
-                              <Trash className="w-5 h-5" />
-                            </button>
-                          </ActionTooltip>
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-              <div className="h-0 pointer-events-none border-background-modifier-accent border-[1px]" />
-            </>
+            <PreviewImagesList
+              previewImages={previewImages}
+              onRemovePreviewImage={handleRemovePreviewImage}
+            />
           ) : null}
 
           <div className="pl-4 rounded-lg flex items-center">
