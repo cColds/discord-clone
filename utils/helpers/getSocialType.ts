@@ -28,8 +28,6 @@ export const getSocialType = (
     case "Blocked":
       return { type: "Blocked", targetSocial: social.blocked };
 
-    // I have a condition that doesn't render this component if the tab is 'Add Friend'
-    // but I don't know how to tell TypeScript.
     default:
       console.log("No cases matched. Probably Add Friend tab.");
       return { type: "unknown", targetSocial: [] };

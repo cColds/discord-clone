@@ -50,11 +50,6 @@ export default function DmMessageBox({
 
   const handleMessageSubmit = async () => {
     try {
-      console.log("Message to send:", message);
-
-      // May need to pass FileList of files to form data and replace message with that
-      // still need to figure how to upload multiple img to cloudinary
-
       const form = new FormData();
       form.append("message", message);
       if (filesToUpload) {
@@ -88,7 +83,7 @@ export default function DmMessageBox({
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevent default to avoid newline on Enter.
+      e.preventDefault();
       handleMessageSubmit();
     }
   };
@@ -110,11 +105,7 @@ export default function DmMessageBox({
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     toggleDropdownMenu();
 
-    // Store and loop through all image blobs
-
     const files = e.currentTarget.files;
-
-    console.log("Files to upload: ", files);
 
     if (!files) return;
 
@@ -123,8 +114,6 @@ export default function DmMessageBox({
     });
 
     setFilesToUpload(files);
-
-    // Set preview images to the blobs
 
     setPreviewImages((prevState) => [...prevState, ...newFiles]);
   };
@@ -135,8 +124,6 @@ export default function DmMessageBox({
     );
 
     setPreviewImages(filteredImages);
-
-    // todo update mongodb schema to include image urls
   };
 
   return (

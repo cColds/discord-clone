@@ -30,8 +30,8 @@ export async function sendMessage(
       console.log("Uploading images...");
       for (let file of files) {
         if (file instanceof File) {
-          const buffer = await file.arrayBuffer(); // Convert file to arrayBuffer
-          const base64Img = Buffer.from(buffer).toString("base64"); // Convert Buffer to Base64
+          const buffer = await file.arrayBuffer();
+          const base64Img = Buffer.from(buffer).toString("base64");
           const res = await uploadToCloudinary(
             `data:${file.type};base64,${base64Img}`,
             file.name

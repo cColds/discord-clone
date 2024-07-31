@@ -5,6 +5,5 @@ export const sendMessageSchema = z.object({
     .string()
     .min(1)
     .max(500, { message: "Max message length is 5000" }),
-  //   images: z.instanceof(FileList).optional(),
   images: z.any(),
 });

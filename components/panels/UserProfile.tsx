@@ -104,7 +104,7 @@ const UserProfile = ({ user, onClose, handleUserUpdate }: UserProfileProps) => {
                             placeholder={user.username}
                             onKeyDown={(e) => {
                               if (e.key === "Enter") {
-                                e.preventDefault(); // Prevent form submission on enter
+                                e.preventDefault();
                               }
                             }}
                           />

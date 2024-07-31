@@ -14,10 +14,9 @@ type UserContextType = {
   setUser: Dispatch<SetStateAction<UserType | null>>;
 };
 
-// Provide a default context value matching UserContextType structure
 const defaultContextValue: UserContextType = {
   user: null,
-  setUser: () => {}, // Placeholder function, will be overridden by actual useState hook
+  setUser: () => {},
 };
 
 const UserContext = createContext<UserContextType>(defaultContextValue);
