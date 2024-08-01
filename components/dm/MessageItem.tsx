@@ -110,7 +110,7 @@ export default function MessageItem({
             </span>
           )}
           <div className="text-text-normal overflow-hidden leading-[1.375rem]">
-            <span>{msg.message}</span>
+            <span className="whitespace-pre-wrap">{msg.message}</span>
             {msg.edited && (
               <ActionTooltip content={editedDate}>
                 <span className="text-xs text-text-muted leading-[1.375rem] select-none">
