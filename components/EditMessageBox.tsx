@@ -1,4 +1,5 @@
 import Image from "next/image";
+import TextareaAutosize from "react-textarea-autosize";
 
 type EditMessageBoxType = {
   message: string;
@@ -19,11 +20,11 @@ const EditMessageBox = ({
     <div>
       <div className="mt-2 min-h-[44px] text-text-normal leading-[1.375rem]">
         <div className="flex bg-channel-text-area rounded-lg">
-          <textarea
-            className="border-0 outline-0 pl-4 pr-2.5 py-[11px] resize-none w-full bg-channel-text-area overflow-hidden rounded-lg h-[44px]"
+          <TextareaAutosize
+            className="border-0 outline-0 pl-4 pr-2.5 py-[11px] resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto rounded-lg h-[44px] max-h-[300px]"
             value={editedMessage === null ? message : editedMessage}
             onChange={(e) => updateEditedMessage(e.target.value)}
-          ></textarea>
+          ></TextareaAutosize>
 
           <div className="flex">
             <button className="p-1 mx-1">
