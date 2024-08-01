@@ -140,6 +140,10 @@ module.exports = {
         "url('/images/background/wumpus-cant-unblock.svg')",
     },
 
+    maxHeight: {
+      "1/2": "50vh",
+    },
+
     screens: {
       "max-940": { max: "940px" },
     },

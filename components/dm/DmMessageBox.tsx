@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useTypingIndicator } from "@/hooks/useTypingIndicator";
 import PreviewImagesList from "./PreviewImagesList";
 import UploadFileDropdown from "./UploadFileDropdown";
+import TextareaAutosize from "react-textarea-autosize";
 
 type DmMessageBoxType = {
   recipient?: UserType;
@@ -130,22 +131,22 @@ export default function DmMessageBox({
             />
           ) : null}
 
-          <div className="pl-4 rounded-lg flex items-center">
+          <div className="pl-4 rounded-lg flex items-start">
             <UploadFileDropdown
               open={open}
               toggleDropdownMenu={toggleDropdownMenu}
               onFileChange={handleFileChange}
             />
-            <div className="bg-transparent grow relative h-[44px]">
-              <textarea
-                className="border-0 outline-0 py-[11px] resize-none w-full h-full bg-channel-text-area overflow-hidden placeholder:text-channel-text-area-placeholder"
+            <div className="bg-transparent grow relative min-h-[44px] max-h-1/2">
+              <TextareaAutosize
+                className={`border-0 outline-0 py-[11px] max-h-1/2 resize-none w-full h-full min-h-[44px] bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
                 placeholder={`Message ${
                   recipient ? `@${recipient?.displayName}` : `#${channelName}`
                 }`}
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
                 value={message}
-              ></textarea>
+              ></TextareaAutosize>
             </div>
             <div className="flex">
               <button className="p-1 mx-1" type="button">
