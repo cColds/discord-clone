@@ -16,16 +16,17 @@ export async function sendMessage(
     images: formData.get("file") || undefined,
   };
 
-  await dbConnect();
+  const { message } = data;
+  const files = formData.getAll("file[]");
 
-  const message = data.message;
+  const invalidMessage = !message && !files.length;
 
-  console.log("message data: ", message);
+  if (invalidMessage) return;
 
   try {
+    await dbConnect();
     const imageUrls = [];
 
-    const files = formData.getAll("file[]");
     if (files.length > 0) {
       console.log("Uploading images...");
       for (let file of files) {
@@ -66,6 +67,8 @@ export async function sendMessage(
         { strict: false }
       );
     }
+
+    console.log("success");
   } catch (err) {
     console.error(err);
   }
