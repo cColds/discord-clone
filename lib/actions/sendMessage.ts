@@ -19,7 +19,7 @@ export async function sendMessage(
   const { message } = data;
   const files = formData.getAll("file[]");
 
-  const invalidMessage = !message && !files.length;
+  const invalidMessage = !message?.toString().trim() && !files.length;
 
   if (invalidMessage) return;
 
@@ -54,7 +54,7 @@ export async function sendMessage(
 
     const messageDoc = new Message({
       sender,
-      message,
+      message: message?.toString().trim() || "",
       channelId,
       images: imageUrls,
     });
@@ -67,8 +67,6 @@ export async function sendMessage(
         { strict: false }
       );
     }
-
-    console.log("success");
   } catch (err) {
     console.error(err);
   }
