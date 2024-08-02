@@ -137,28 +137,30 @@ export default function DmMessageBox({
               toggleDropdownMenu={toggleDropdownMenu}
               onFileChange={handleFileChange}
             />
-            <div className="bg-transparent grow relative min-h-[44px] max-h-1/2">
+            <div className="bg-transparent grow relative max-h-1/2 flex items-center min-h-[44px]">
               <TextareaAutosize
-                className={`border-0 outline-0 py-[11px] max-h-1/2 resize-none w-full h-full min-h-[44px] bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
+                className={`border-0 outline-0 max-h-1/2   resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
                 placeholder={`Message ${
                   recipient ? `@${recipient?.displayName}` : `#${channelName}`
                 }`}
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
                 value={message}
-              ></TextareaAutosize>
+              />
             </div>
             <div className="flex">
-              <button className="p-1 mx-1" type="button">
-                <Image
-                  src="/images/emojis/slightly_smiling_face.png"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="select-none"
-                  draggable={false}
-                />
-              </button>
+              <div className="flex items-center h-11 w-10">
+                <button className="p-1 mx-1 border-0" type="button">
+                  <Image
+                    src="/images/emojis/slightly_smiling_face.png"
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="select-none"
+                    draggable={false}
+                  />
+                </button>
+              </div>
             </div>
           </div>
           {usersTyping.length > 0 && (
