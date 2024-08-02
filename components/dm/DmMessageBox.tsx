@@ -139,7 +139,7 @@ export default function DmMessageBox({
             />
             <div className="bg-transparent grow relative max-h-1/2 flex items-center min-h-[44px]">
               <TextareaAutosize
-                className={`border-0 outline-0 max-h-1/2   resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
+                className={`border-0 outline-0 max-h-1/2 h-[24px] py-2.5 resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
                 placeholder={`Message ${
                   recipient ? `@${recipient?.displayName}` : `#${channelName}`
                 }`}
