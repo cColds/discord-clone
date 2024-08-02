@@ -76,6 +76,15 @@ export default function DmMessageBox({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    const isValidMessage = message.trim() || filesToUpload?.length;
+
+    const hitEnter = e.key === "Enter" && !e.shiftKey;
+
+    if (hitEnter && !isValidMessage) {
+      e.preventDefault();
+      return;
+    }
+
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleMessageSubmit();
