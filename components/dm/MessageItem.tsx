@@ -14,6 +14,7 @@ import { editMessage } from "@/lib/db/editMessage";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { useParams } from "next/navigation";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
+import ImageExpanded from "../modals/channel/ImageExpanded";
 
 type MessageItemType = {
   msg: MessageType;
@@ -129,14 +130,16 @@ export default function MessageItem({
               {msg.images?.map((img) => {
                 return (
                   <div className="overflow-hidden" key={img.id}>
-                    <Image
-                      key={img.id}
-                      src={img.url}
-                      alt=""
-                      width={200}
-                      height={200}
-                      className="object-cover min-w-full min-h-full max-w-full h-full rounded-sm cursor-pointer"
-                    />
+                    <ImageExpanded imgUrl={img.url}>
+                      <Image
+                        key={img.id}
+                        src={img.url}
+                        alt=""
+                        width={200}
+                        height={200}
+                        className="object-cover min-w-full min-h-full max-w-full h-full rounded-sm cursor-pointer"
+                      />
+                    </ImageExpanded>
                   </div>
                 );
               })}
