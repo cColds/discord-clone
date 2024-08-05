@@ -10,20 +10,13 @@ import ChannelMembersList from "./ChannelMembersList";
 import { useState } from "react";
 
 type ChannelProps = {
-  channelId: string;
   channel: TextOrVoiceChannel;
   user: UserType;
   messages: MessageType[];
   members: Member[];
 };
 
-const Channel = ({
-  channelId,
-  channel,
-  user,
-  messages,
-  members,
-}: ChannelProps) => {
+const Channel = ({ channel, user, messages, members }: ChannelProps) => {
   const [membersListOpen, setMembersListOpen] = useState(false);
 
   const toggleMembersList = () => setMembersListOpen(!membersListOpen);

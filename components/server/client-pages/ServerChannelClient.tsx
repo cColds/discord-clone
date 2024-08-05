@@ -98,7 +98,6 @@ const ServerChannelClient = ({
 
       {channelId && currentChannel ? (
         <Channel
-          channelId={channelId}
           messages={messages}
           channel={currentChannel}
           user={user}
