@@ -127,10 +127,20 @@ export default function MessageItem({
           </div>
           <div className="grid h-fit grid-flow-row gap-1 grid-cols-auto-fill min-h-0 min-w-0 py-0.5">
             <div className="flex gap-1">
-              {msg.images?.map((img) => {
+              {msg.images?.map((img, index) => {
+                const imagesWithIndex = msg.images.map((img, index) => ({
+                  ...img,
+                  index,
+                }));
+
+                const defaultImage = { ...img, index };
+
                 return (
                   <div className="overflow-hidden" key={img.id}>
-                    <ImageExpanded imgUrl={img.url}>
+                    <ImageExpanded
+                      images={imagesWithIndex}
+                      defaultImage={defaultImage}
+                    >
                       <Image
                         key={img.id}
                         src={img.url}
