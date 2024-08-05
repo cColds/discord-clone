@@ -4,7 +4,7 @@ import { MessageType } from "@/types/message";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
 
-import MessageList from "../message/MessageList";
+import MessageList from "../message/item/MessageList";
 
 export default function DmMainChat({ messages }: { messages: MessageType[] }) {
   const { user } = useUser();

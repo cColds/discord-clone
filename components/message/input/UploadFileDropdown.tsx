@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AttachmentPlus, UploadFile } from "../svgs";
+import { AttachmentPlus, UploadFile } from "../../svgs";
 import { ChangeEvent } from "react";
 
 type UploadFileDropdownType = {

@@ -3,7 +3,7 @@ import { EditPen, Hash } from "../svgs";
 import { UserType } from "@/types/user";
 import { MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
-import MessageList from "../message/MessageList";
+import MessageList from "../message/item/MessageList";
 
 type ChannelMainChatProps = {
   channel: TextOrVoiceChannel;

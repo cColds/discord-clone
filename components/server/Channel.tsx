@@ -5,7 +5,7 @@ import ChannelHeader from "./ChannelHeader";
 import ChannelMainChat from "./ChannelMainChat";
 import { UserType } from "@/types/user";
 import { MessageType } from "@/types/message";
-import MessageBox from "../message/MessageBox";
+import MessageBox from "../message/input/MessageBox";
 import ChannelMembersList from "./ChannelMembersList";
 import { useState } from "react";
 

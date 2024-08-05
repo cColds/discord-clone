@@ -1,7 +1,7 @@
 "use client";
 
 import { UserType } from "@/types/user";
-import { TypingDots } from "../svgs";
+import { TypingDots } from "../../svgs";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import Image from "next/image";
 import { sendMessage } from "@/lib/actions/sendMessage";

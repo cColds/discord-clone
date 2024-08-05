@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ActionTooltip from "../tooltip/ActionTooltip";
+import ActionTooltip from "../../tooltip/ActionTooltip";
 import { format } from "date-fns";
 import { MessageType } from "@/types/message";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";

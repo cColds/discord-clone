@@ -5,7 +5,7 @@ import { MessageType } from "@/types/message";
 import DmHeader from "./DmHeader";
 import DmNewChatHeader from "./DmNewChatHeader";
 import DmMainChat from "./DmMainChat";
-import MessageBox from "../message/MessageBox";
+import MessageBox from "../message/input/MessageBox";
 import { useEffect, useRef, useState } from "react";
 
 type DmChannelType = {

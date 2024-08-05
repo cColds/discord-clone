@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Trash } from "../svgs";
-import ActionTooltip from "../tooltip/ActionTooltip";
+import { Trash } from "../../svgs";
+import ActionTooltip from "../../tooltip/ActionTooltip";
 
 type PreviewImagesListType = {
   previewImages: { name: string; id: string; url: string }[];

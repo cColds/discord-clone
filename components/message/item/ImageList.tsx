@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ImageExpanded from "../modals/channel/ImageExpanded";
+import ImageExpanded from "../../modals/channel/ImageExpanded";
 import { MessageImage } from "@/types/message";
 
 type ImageListProps = {
