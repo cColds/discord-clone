@@ -130,7 +130,7 @@ export default function MessageItem({
               {msg.images?.map((img) => {
                 return (
                   <div className="overflow-hidden" key={img.id}>
-                    <ImageExpanded images={msg.images}>
+                    <ImageExpanded imgUrl={img.url}>
                       <Image
                         key={img.id}
                         src={img.url}
