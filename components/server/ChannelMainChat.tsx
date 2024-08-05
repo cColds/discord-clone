@@ -10,7 +10,7 @@ import {
   isToday,
   isYesterday,
 } from "date-fns";
-import MessageItem from "../dm/MessageItem";
+import MessageItem from "../message/MessageItem";
 import { cn } from "@/lib/utils";
 
 type ChannelMainChatProps = {

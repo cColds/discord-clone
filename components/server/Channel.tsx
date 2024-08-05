@@ -5,7 +5,7 @@ import ChannelHeader from "./ChannelHeader";
 import ChannelMainChat from "./ChannelMainChat";
 import { UserType } from "@/types/user";
 import { MessageType } from "@/types/message";
-import DmMessageBox from "../dm/DmMessageBox";
+import MessageBox from "../message/MessageBox";
 import ChannelMembersList from "./ChannelMembersList";
 import { useState } from "react";
 
@@ -44,7 +44,7 @@ const Channel = ({
               user={user}
               messages={messages}
             />
-            <DmMessageBox
+            <MessageBox
               sender={user}
               channelName={channel.name}
               type="server"

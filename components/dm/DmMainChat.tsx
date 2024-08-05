@@ -1,7 +1,7 @@
 "use client";
 
 import { MessageType } from "@/types/message";
-import MessageItem from "./MessageItem";
+import MessageItem from "../message/MessageItem";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
 import {

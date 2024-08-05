@@ -5,7 +5,7 @@ import { MessageType } from "@/types/message";
 import DmHeader from "./DmHeader";
 import DmNewChatHeader from "./DmNewChatHeader";
 import DmMainChat from "./DmMainChat";
-import DmMessageBox from "./DmMessageBox";
+import MessageBox from "../message/MessageBox";
 import { useEffect, useRef, useState } from "react";
 
 type DmChannelType = {
@@ -53,7 +53,7 @@ export default function DmChannel({
           </div>
         </div>
 
-        <DmMessageBox sender={user} recipient={recipient} type="dm" />
+        <MessageBox sender={user} recipient={recipient} type="dm" />
       </div>
     </div>
   );
