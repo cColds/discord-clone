@@ -65,18 +65,22 @@ const ImageExpanded = ({
               Open in Browser
             </a>
           </div>
-          <button
-            onClick={() => handleCarouselChange(-1)}
-            className="flex items-center justify-center rounded-full  w-8 h-8 cursor-pointer absolute -left-8 top-[50%] -translate-x-[50%] -translate-y-[50%] bg-background hover:bg-accent duration-150 transition ease-in-out border border-input"
-          >
-            <ArrowLeftIcon className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => handleCarouselChange(1)}
-            className="flex items-center justify-center rounded-full w-8 h-8 cursor-pointer absolute -right-8 top-[50%] translate-x-[50%] -translate-y-[50%] bg-background hover:bg-accent duration-150 transition ease-in-out border border-input"
-          >
-            <ArrowRightIcon className="h-4 w-4" />
-          </button>
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={() => handleCarouselChange(-1)}
+                className="flex items-center justify-center rounded-full  w-8 h-8 cursor-pointer absolute -left-8 top-[50%] -translate-x-[50%] -translate-y-[50%] bg-background hover:bg-accent duration-150 transition ease-in-out border border-input"
+              >
+                <ArrowLeftIcon className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => handleCarouselChange(1)}
+                className="flex items-center justify-center rounded-full w-8 h-8 cursor-pointer absolute -right-8 top-[50%] translate-x-[50%] -translate-y-[50%] bg-background hover:bg-accent duration-150 transition ease-in-out border border-input"
+              >
+                <ArrowRightIcon className="h-4 w-4" />
+              </button>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>
