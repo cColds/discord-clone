@@ -1,8 +1,8 @@
 "use client";
 
-import EditMessageBox from "@/components/EditMessageBox";
+import EditMessageBox from "@/components/message/input/EditMessageBox";
 import MessageActions from "@/components/tooltip/MessageActions";
-import DateDivider from "@/components/DateDivider";
+import DateDivider from "@/components/message/item/DateDivider";
 import { MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
 import { UserType } from "@/types/user";
