@@ -8,19 +8,19 @@ import TypingIndicator from "./TypingIndicator";
 import EmojiPicker from "./EmojiPicker";
 import useMessageHandler from "@/hooks/useMessageHandler";
 
-type DmMessageBoxType = {
+type MessageBoxType = {
   recipient?: UserType;
   sender: UserType;
   channelName?: string;
   type: "dm" | "server";
 };
 
-export default function DmMessageBox({
+export default function MessageBox({
   recipient,
   sender,
   channelName,
   type,
-}: DmMessageBoxType) {
+}: MessageBoxType) {
   const {
     message,
     open,
