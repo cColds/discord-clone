@@ -9,6 +9,7 @@ type MessageDetailsProps = {
   shouldMergeMessages: boolean;
   formatted: string;
   editedDate: string;
+  isEditActive: boolean;
 };
 
 const MessageDetails = ({
@@ -16,6 +17,7 @@ const MessageDetails = ({
   shouldMergeMessages,
   formatted,
   editedDate,
+  isEditActive,
 }: MessageDetailsProps) => {
   const transformation = "c_fill,h_80,w_80";
 
@@ -37,6 +39,7 @@ const MessageDetails = ({
             height={40}
             className="rounded-full overflow-hidden cursor-pointer mt-0.5 select-none absolute left-4"
           />
+
           <h3 className="min-h-[1.375rem] leading-[1.375rem]">
             <span className="leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline">
               {msg.sender.displayName}
@@ -56,21 +59,23 @@ const MessageDetails = ({
           </time>
         </span>
       )}
-      <div className="text-text-normal overflow-hidden leading-[1.375rem]">
-        <span className="whitespace-pre-wrap">{msg.message}</span>
-        {msg.edited && (
-          <ActionTooltip content={editedDate}>
-            <span className="text-xs text-text-muted leading-[1.375rem] select-none">
-              <time
-                aria-label={formatted}
-                dateTime={msg.edited.toString() || msg.updatedAt}
-              >
-                <span> (edited)</span>
-              </time>
-            </span>
-          </ActionTooltip>
-        )}
-      </div>
+      {!isEditActive && (
+        <div className="text-text-normal overflow-hidden leading-[1.375rem]">
+          <span className="whitespace-pre-wrap">{msg.message}</span>
+          {msg.edited && (
+            <ActionTooltip content={editedDate}>
+              <span className="text-xs text-text-muted leading-[1.375rem] select-none">
+                <time
+                  aria-label={formatted}
+                  dateTime={msg.edited.toString() || msg.updatedAt}
+                >
+                  <span> (edited)</span>
+                </time>
+              </span>
+            </ActionTooltip>
+          )}
+        </div>
+      )}
     </div>
   );
 };

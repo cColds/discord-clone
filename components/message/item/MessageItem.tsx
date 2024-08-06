@@ -32,6 +32,7 @@ export default function MessageItem({
 }: MessageItemType) {
   const [editMessageId, setEditMessageId] = useState<null | string>(null);
   const [editedMessage, setEditedMessage] = useState<null | string>(null);
+  const isEditActive = editMessageId === msg._id;
 
   const { socket } = useSocket();
   const { channelId } = useParams();
@@ -67,6 +68,7 @@ export default function MessageItem({
             {
               "m-0": shouldMergeMessages,
               "min-h-[1.375rem]": shouldMergeMessages,
+              "bg-background-message-hover": isEditActive,
             }
           )}
         >
@@ -75,11 +77,12 @@ export default function MessageItem({
             shouldMergeMessages={shouldMergeMessages}
             formatted={formatted}
             editedDate={editedDate}
+            isEditActive={isEditActive}
           />
 
-          <ImageList images={msg.images} />
+          {!isEditActive && <ImageList images={msg.images} />}
 
-          {editMessageId === msg._id && (
+          {isEditActive && (
             <EditMessageBox
               message={msg.message}
               onEditMessage={handleEditMessage}
@@ -88,7 +91,7 @@ export default function MessageItem({
               editedMessage={editedMessage}
             />
           )}
-          {editMessageId !== msg._id && (
+          {!isEditActive && (
             <MessageActions
               isYourMessage={user.id === msg.sender._id}
               onEditMessage={handleEditMessage}
