@@ -1,10 +1,10 @@
 import { ChevronDown } from "lucide-react";
 import { DMPlus } from "../svgs";
-import { ServerCategory } from "@/types/server";
+import { ServerCategory as ServerCategoryType } from "@/types/server";
 import CreateChannelModal from "@/components/modals/server/CreateChannelModal";
 
 type ServerCategoryProps = {
-  category: ServerCategory;
+  category: ServerCategoryType;
   serverId: string;
 };
 
