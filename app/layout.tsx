@@ -10,6 +10,7 @@ import { authConfig } from "@/auth.config";
 import { SocketProvider } from "./providers/SocketProvider";
 import { UserProvider } from "./providers/UserProvider";
 import { getUser } from "@/lib/db/getUser";
+import { MessageProvider } from "./providers/MessageProvider";
 
 const ggSans = localFont({
   src: "../public/fonts/gg-sans.woff2",
@@ -36,12 +37,14 @@ export default async function RootLayout({
         <SvgMasks />
         <UserProvider userProp={user}>
           <SocketProvider userId={data?.user.id}>
-            <SessionProvider>
-              <div className="flex h-full w-full scroller">
-                {data && <ServerNav />}
-                <main className="w-full overflow-hidden">{children}</main>
-              </div>
-            </SessionProvider>
+            <MessageProvider>
+              <SessionProvider>
+                <div className="flex h-full w-full scroller">
+                  {data && <ServerNav />}
+                  <main className="w-full overflow-hidden">{children}</main>
+                </div>
+              </SessionProvider>
+            </MessageProvider>
           </SocketProvider>
         </UserProvider>
       </body>

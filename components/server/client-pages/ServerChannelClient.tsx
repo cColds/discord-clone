@@ -12,19 +12,19 @@ import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { getServer } from "@/lib/db/getServer";
+import { useMessages } from "@/app/providers/MessageProvider";
 
 type ServerChannelClientProps = {
   server: ServerType;
   channelId?: string;
-  initialMessages: MessageType[];
 };
 
 const ServerChannelClient = ({
   server,
   channelId,
-  initialMessages,
 }: ServerChannelClientProps) => {
-  const [messages, setMessages] = useState(initialMessages);
+  const { messages, setMessages } = useMessages();
+
   const [serverState, setServerState] = useState(server);
 
   const { user, setUser } = useUser();
