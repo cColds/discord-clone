@@ -1,5 +1,5 @@
-import Image from "next/image";
 import TextareaAutosize from "react-textarea-autosize";
+import EmojiPicker from "./EmojiPicker";
 
 type EditMessageBoxType = {
   message: string;
@@ -26,18 +26,7 @@ const EditMessageBox = ({
             onChange={(e) => updateEditedMessage(e.target.value)}
           ></TextareaAutosize>
 
-          <div className="flex">
-            <button className="p-1 mx-1">
-              <Image
-                src="/images/emojis/slightly_smiling_face.png"
-                alt=""
-                width={24}
-                height={24}
-                className="select-none"
-                draggable={false}
-              />
-            </button>
-          </div>
+          <EmojiPicker />
         </div>
       </div>
 
