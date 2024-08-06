@@ -20,6 +20,9 @@ export default function DmChannel({
   messages,
 }: DmChannelType) {
   const [isReadyToShow, setIsReadyToShow] = useState(false);
+  const [lastMessageId, setLastMessageId] = useState(
+    messages.length > 0 ? messages[messages.length - 1]._id : null
+  );
 
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -29,9 +32,21 @@ export default function DmChannel({
 
       setIsReadyToShow(true);
     }
-    // probably should only scroll for the first time and remove messages dep
-    //and scroll after messaging with sockets so editing doesn't scroll (maybe make another socket event for editing msg instead of send msg)
-    // possibly only auto scroll msgs u send unless ur at the bottom then u can auto scroll friend
+  }, []);
+
+  useEffect(() => {
+    if (messages.length === 0) {
+      setLastMessageId(null);
+      return;
+    }
+
+    const latestMessage = messages[messages.length - 1];
+    if (lastMessageId !== latestMessage._id) {
+      if (scrollerRef.current) {
+        scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
+      }
+      setLastMessageId(latestMessage._id);
+    }
   }, [messages]);
 
   return (
