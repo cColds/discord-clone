@@ -3,6 +3,7 @@
 import Message from "@/models/Message";
 import dbConnect from "./dbConnect";
 import { MessageType } from "@/types/message";
+import { revalidatePath } from "next/cache";
 
 export async function getMessages(messagesAmount: number, channelId: string) {
   await dbConnect();
@@ -16,6 +17,8 @@ export async function getMessages(messagesAmount: number, channelId: string) {
   const serializedMessages = JSON.parse(
     JSON.stringify(messages)
   ) as MessageType[];
+
+  revalidatePath(`/channels/dms/${channelId}`);
 
   return serializedMessages;
 }
