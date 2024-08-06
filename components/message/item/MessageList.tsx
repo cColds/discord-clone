@@ -9,6 +9,7 @@ import {
 } from "date-fns";
 import MessageItem from "./MessageItem";
 import { UserType } from "@/types/user";
+import { useState } from "react";
 
 type MessageListProps = {
   messages: MessageType[];
@@ -16,7 +17,13 @@ type MessageListProps = {
 };
 
 const MessageList = ({ messages, user }: MessageListProps) => {
+  const [editMessageId, setEditMessageId] = useState<string | null>(null);
+
   let prevMessage: null | MessageType = null;
+
+  const handleEditMessageId = (messageId: string | null) => {
+    setEditMessageId(messageId);
+  };
 
   return (
     <>
@@ -55,6 +62,8 @@ const MessageList = ({ messages, user }: MessageListProps) => {
 
         prevMessage = msg;
 
+        const isEditActive = editMessageId === msg._id;
+
         return (
           <MessageItem
             msg={msg}
@@ -64,6 +73,9 @@ const MessageList = ({ messages, user }: MessageListProps) => {
             shouldMergeMessages={shouldMergeMessages}
             formatted={formatted}
             key={msg._id}
+            isEditActive={isEditActive}
+            onEditToggle={handleEditMessageId}
+            editMessageId={editMessageId}
           />
         );
       })}

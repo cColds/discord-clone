@@ -20,6 +20,9 @@ type MessageItemType = {
   showDateDivider: boolean;
   shouldMergeMessages: boolean;
   formatted: string;
+  isEditActive: boolean;
+  onEditToggle: (id: string | null) => void;
+  editMessageId: string | null;
 };
 
 export default function MessageItem({
@@ -29,16 +32,17 @@ export default function MessageItem({
   showDateDivider,
   shouldMergeMessages,
   formatted,
+  isEditActive,
+  onEditToggle,
+  editMessageId,
 }: MessageItemType) {
-  const [editMessageId, setEditMessageId] = useState<null | string>(null);
   const [editedMessage, setEditedMessage] = useState<null | string>(null);
-  const isEditActive = editMessageId === msg._id;
 
   const { socket } = useSocket();
   const { channelId } = useParams();
 
   const handleEditMessage = (messageId: string | null) => {
-    setEditMessageId(messageId);
+    onEditToggle(messageId);
     setEditedMessage(null);
   };
 
