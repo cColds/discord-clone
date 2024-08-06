@@ -38,5 +38,5 @@ export type UserNormal = {
     recipient: string;
     open: boolean;
     id: string;
-  };
+  }[];
 };
