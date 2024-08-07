@@ -1,30 +1,31 @@
 "use client";
-
 import { UserType } from "@/types/user";
 import UserPanel from "@/components/panels/UserPanel";
 import PrivateChannels from "@/components/sidebars/PrivateChannels";
 import DmChannel from "./DmChannel";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
+import { MessageType } from "@/types/message";
 import { useSocket } from "@/app/providers/SocketProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
-import { useMessages } from "@/app/providers/MessageProvider";
 
 type DmPageClientType = {
   recipient: UserType;
   pendingRequests: number;
+  initialMessages: MessageType[];
   channelId: string;
 };
 
 export default function DmPageClient({
   pendingRequests,
   recipient,
+  initialMessages,
   channelId,
 }: DmPageClientType) {
-  const { messages, setMessages } = useMessages();
+  const [messages, setMessages] = useState(initialMessages);
 
   const { user, setUser } = useUser();
   if (!user) redirect("/");
