@@ -7,16 +7,21 @@ import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
 import { MessageType } from "@/types/message";
 import { useSocket } from "@/app/providers/SocketProvider";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
+import useOptimistic from "@/hooks/useOptimistic";
 
 type DmPageClientType = {
   recipient: UserType;
   pendingRequests: number;
   initialMessages: MessageType[];
   channelId: string;
+};
+
+type OptimisticMessage = MessageType & {
+  pending?: boolean;
 };
 
 export default function DmPageClient({
@@ -26,12 +31,20 @@ export default function DmPageClient({
   channelId,
 }: DmPageClientType) {
   const [messages, setMessages] = useState(initialMessages);
+  const [optimisticMessages, setOptimisticMessages] =
+    useOptimistic<OptimisticMessage[]>(messages);
 
   const { user, setUser } = useUser();
   if (!user) redirect("/");
 
   const dms = sortOpenDms(user.dms);
   const { socket } = useSocket();
+
+  const addOptimisticMessage = (msg: MessageType) => {
+    startTransition(() => {
+      setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
+    });
+  };
 
   useEffect(() => {
     if (!socket) return;
@@ -65,7 +78,7 @@ export default function DmPageClient({
 
       setMessages(updatedMessages);
 
-      console.log("success state change");
+      console.log(updatedMessages[updatedMessages.length - 1]);
     });
 
     socket.on("scroll-to-bottom-chat", () => {
@@ -96,7 +109,12 @@ export default function DmPageClient({
         />
       </div>
 
-      <DmChannel user={user} recipient={recipient} messages={messages} />
+      <DmChannel
+        user={user}
+        recipient={recipient}
+        messages={optimisticMessages}
+        addOptimisticMessage={addOptimisticMessage}
+      />
     </div>
   );
 }

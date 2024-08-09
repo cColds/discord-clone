@@ -3,7 +3,8 @@ import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { useTypingIndicator } from "./useTypingIndicator";
 import { useParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { UserType } from "@/types/user";
+import { UserNormal, UserType } from "@/types/user";
+import { MessageType } from "@/types/message";
 
 type PreviewImageType = {
   name: string;
@@ -15,12 +16,14 @@ type useMessageHandlerProps = {
   sender: UserType;
   recipient?: UserType;
   type: "dm" | "server";
+  addOptimisticMessage: (msg: MessageType) => void;
 };
 
 const useMessageHandler = ({
   sender,
   recipient,
   type,
+  addOptimisticMessage,
 }: useMessageHandlerProps) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -31,7 +34,7 @@ const useMessageHandler = ({
   const [filesToUpload, setFilesToUpload] = useState<FileList | null>(null);
 
   const socket = useTypingIndicator(setUsersTyping);
-  const { channelId } = useParams();
+  const { channelId } = useParams<{ channelId: string }>();
 
   const handleMessageSubmit = async () => {
     try {
@@ -42,6 +45,42 @@ const useMessageHandler = ({
           form.append("file[]", filesToUpload[i]);
         }
       }
+
+      const senderNormal: UserNormal = {
+        _id: sender.id,
+        username: sender.username,
+        displayName: sender.displayName,
+        email: sender.email,
+        avatar: sender.avatar,
+        status: sender.status,
+        servers: [],
+        social: {
+          friends: [],
+          pending: [],
+          blocked: [],
+        },
+        dms: sender.dms.map((dm) => ({
+          channel: dm.channel._id,
+          recipient: dm.recipient.id,
+          open: dm.open,
+          id: dm.id,
+        })),
+      };
+
+      const timestamp = new Date().toISOString();
+
+      const optimisticMsg = {
+        message: message,
+        _id: uuidv4(),
+        channelId,
+        images: [],
+        sender: senderNormal,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+        pending: true,
+      };
+
+      addOptimisticMessage(optimisticMsg);
 
       await sendMessage(
         sender.id,

@@ -5,7 +5,7 @@ import { MessageType } from "@/types/message";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 
 type MessageDetailsProps = {
-  msg: MessageType;
+  msg: MessageType & { pending?: boolean };
   shouldMergeMessages: boolean;
   formatted: string;
   editedDate: string;
@@ -61,7 +61,12 @@ const MessageDetails = ({
       )}
       {!isEditActive && (
         <div className="text-text-normal overflow-hidden leading-[1.375rem]">
-          <span className="whitespace-pre-wrap">{msg.message}</span>
+          <span
+            className="whitespace-pre-wrap"
+            style={{ opacity: msg.pending ? 0.5 : undefined }}
+          >
+            {msg.message}
+          </span>
           {msg.edited && (
             <ActionTooltip content={editedDate}>
               <span className="text-xs text-text-muted leading-[1.375rem] select-none">

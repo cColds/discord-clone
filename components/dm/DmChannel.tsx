@@ -12,12 +12,14 @@ type DmChannelType = {
   user: UserType;
   recipient: UserType;
   messages: MessageType[];
+  addOptimisticMessage: (msg: MessageType) => void;
 };
 
 export default function DmChannel({
   user,
   recipient,
   messages,
+  addOptimisticMessage,
 }: DmChannelType) {
   const [isReadyToShow, setIsReadyToShow] = useState(false);
   const [lastMessageId, setLastMessageId] = useState(
@@ -68,7 +70,12 @@ export default function DmChannel({
           </div>
         </div>
 
-        <MessageBox sender={user} recipient={recipient} type="dm" />
+        <MessageBox
+          sender={user}
+          recipient={recipient}
+          type="dm"
+          addOptimisticMessage={addOptimisticMessage}
+        />
       </div>
     </div>
   );
