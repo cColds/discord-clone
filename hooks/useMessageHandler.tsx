@@ -38,14 +38,6 @@ const useMessageHandler = ({
 
   const handleMessageSubmit = async () => {
     try {
-      const form = new FormData();
-      form.append("message", message);
-      if (filesToUpload) {
-        for (let i = 0; i < filesToUpload.length; i += 1) {
-          form.append("file[]", filesToUpload[i]);
-        }
-      }
-
       const senderNormal: UserNormal = {
         _id: sender.id,
         username: sender.username,
@@ -82,15 +74,23 @@ const useMessageHandler = ({
 
       addOptimisticMessage(optimisticMsg);
 
+      const form = new FormData();
+      form.append("message", message);
+      if (filesToUpload) {
+        for (let i = 0; i < filesToUpload.length; i += 1) {
+          form.append("file[]", filesToUpload[i]);
+        }
+      }
+
+      setMessage("");
+      setPreviewImages([]);
+      setFilesToUpload(null);
       await sendMessage(
         sender.id,
         form,
         Array.isArray(channelId) ? channelId[0] : channelId,
         type
       );
-      setMessage("");
-      setPreviewImages([]);
-      setFilesToUpload(null);
 
       socket.emit("send-message", channelId);
       socket.emit("stop-typing", channelId, {
