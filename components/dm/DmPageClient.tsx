@@ -7,7 +7,7 @@ import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
 import { MessageType } from "@/types/message";
 import { useSocket } from "@/app/providers/SocketProvider";
-import { startTransition, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
@@ -20,9 +20,7 @@ type DmPageClientType = {
   channelId: string;
 };
 
-type OptimisticMessage = MessageType & {
-  pending?: boolean;
-};
+type OptimisticMessage = MessageType & { pending?: boolean };
 
 export default function DmPageClient({
   pendingRequests,
@@ -41,9 +39,7 @@ export default function DmPageClient({
   const { socket } = useSocket();
 
   const addOptimisticMessage = (msg: MessageType) => {
-    startTransition(() => {
-      setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
-    });
+    setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
   };
 
   useEffect(() => {
