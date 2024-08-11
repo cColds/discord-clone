@@ -40,12 +40,15 @@ export async function sendMessage(
           console.log("Upload response:", res);
 
           if (res.success && res.result) {
-            const { original_filename, secure_url, asset_id } = res.result;
+            const { original_filename, secure_url, asset_id, width, height } =
+              res.result;
 
             imageUrls.push({
               name: original_filename,
               url: secure_url,
               id: asset_id,
+              width,
+              height,
             });
           }
         }

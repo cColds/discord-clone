@@ -14,7 +14,9 @@ const MessageSchema = new Schema<MessageType>(
     message: { type: String, maxLength: 2000 },
     channelId: { type: String, required: true },
     edited: { type: Date },
-    images: [{ id: String, url: String, name: String }],
+    images: [
+      { id: String, url: String, name: String, width: Number, height: Number },
+    ],
   },
   { timestamps: true }
 );

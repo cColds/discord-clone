@@ -4,6 +4,8 @@ export type MessageImage = {
   id: string;
   url: string;
   name: string;
+  width?: number;
+  height?: number;
 };
 
 export type MessageType = {

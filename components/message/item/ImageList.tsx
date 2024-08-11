@@ -24,14 +24,16 @@ const ImageList = ({ images }: ImageListProps) => {
                 images={imagesWithIndex}
                 defaultImage={defaultImage}
               >
-                <Image
-                  key={img.id}
-                  src={img.url}
-                  alt=""
-                  width={200}
-                  height={200}
-                  className="object-cover min-w-full min-h-full max-w-full h-full rounded-sm cursor-pointer"
-                />
+                <div className="max-w-[550px]">
+                  <Image
+                    key={img.id}
+                    src={img.url}
+                    alt=""
+                    width={img.width || 500}
+                    height={img.height || 300}
+                    className="object-cover min-w-full min-h-full max-w-full h-full rounded-sm cursor-pointer"
+                  />
+                </div>
               </ImageExpanded>
             </div>
           );
