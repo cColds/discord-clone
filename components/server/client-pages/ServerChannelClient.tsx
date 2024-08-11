@@ -6,12 +6,13 @@ import ServerSidebar from "../ServerSidebar";
 import Channel from "../Channel";
 import NoTextChannels from "../NoTextChannels";
 import { redirect } from "next/navigation";
-import { MessageType } from "@/types/message";
+import { MessageType, OptimisticMessage } from "@/types/message";
 import { useEffect, useState } from "react";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { getServer } from "@/lib/db/getServer";
+import useOptimistic from "@/hooks/useOptimistic";
 
 type ServerChannelClientProps = {
   server: ServerType;
@@ -27,10 +28,17 @@ const ServerChannelClient = ({
   const [messages, setMessages] = useState(initialMessages);
   const [serverState, setServerState] = useState(server);
 
+  const [optimisticMessages, setOptimisticMessages] =
+    useOptimistic<OptimisticMessage[]>(messages);
+
   const { user, setUser } = useUser();
   if (!user) redirect("/");
 
   const { socket } = useSocket();
+
+  const addOptimisticMessage = (msg: MessageType) => {
+    setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
+  };
 
   useEffect(() => {
     if (!socket) return;
@@ -98,10 +106,11 @@ const ServerChannelClient = ({
 
       {channelId && currentChannel ? (
         <Channel
-          messages={messages}
+          messages={optimisticMessages}
           channel={currentChannel}
           user={user}
           members={serverState.members}
+          addOptimisticMessage={addOptimisticMessage}
         />
       ) : (
         <NoTextChannels />

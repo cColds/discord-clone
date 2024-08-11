@@ -14,9 +14,16 @@ type ChannelProps = {
   user: UserType;
   messages: MessageType[];
   members: Member[];
+  addOptimisticMessage: (msg: MessageType) => void;
 };
 
-const Channel = ({ channel, user, messages, members }: ChannelProps) => {
+const Channel = ({
+  channel,
+  user,
+  messages,
+  members,
+  addOptimisticMessage,
+}: ChannelProps) => {
   const [membersListOpen, setMembersListOpen] = useState(false);
 
   const toggleMembersList = () => setMembersListOpen(!membersListOpen);
@@ -40,6 +47,7 @@ const Channel = ({ channel, user, messages, members }: ChannelProps) => {
             <MessageBox
               sender={user}
               channelName={channel.name}
+              addOptimisticMessage={addOptimisticMessage}
               type="server"
             />
           </div>

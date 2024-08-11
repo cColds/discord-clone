@@ -5,7 +5,7 @@ import PrivateChannels from "@/components/sidebars/PrivateChannels";
 import DmChannel from "./DmChannel";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
-import { MessageType } from "@/types/message";
+import { MessageType, OptimisticMessage } from "@/types/message";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { useEffect, useState } from "react";
 import { getUser } from "@/lib/db/getUser";
@@ -19,8 +19,6 @@ type DmPageClientType = {
   initialMessages: MessageType[];
   channelId: string;
 };
-
-type OptimisticMessage = MessageType & { pending?: boolean };
 
 export default function DmPageClient({
   pendingRequests,
