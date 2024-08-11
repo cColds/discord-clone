@@ -38,6 +38,14 @@ const useMessageHandler = ({
 
   const handleMessageSubmit = async () => {
     try {
+      const form = new FormData();
+      form.append("message", message);
+      if (filesToUpload) {
+        for (let i = 0; i < filesToUpload.length; i += 1) {
+          form.append("file[]", filesToUpload[i]);
+        }
+      }
+
       const senderNormal: UserNormal = {
         _id: sender.id,
         username: sender.username,
@@ -65,7 +73,15 @@ const useMessageHandler = ({
         message: message,
         _id: uuidv4(),
         channelId,
-        images: [],
+        images: filesToUpload
+          ? [
+              {
+                name: previewImages[0].name,
+                url: previewImages[0].url,
+                id: previewImages[0].id,
+              },
+            ]
+          : [],
         sender: senderNormal,
         createdAt: timestamp,
         updatedAt: timestamp,
@@ -73,14 +89,6 @@ const useMessageHandler = ({
       };
 
       addOptimisticMessage(optimisticMsg);
-
-      const form = new FormData();
-      form.append("message", message);
-      if (filesToUpload) {
-        for (let i = 0; i < filesToUpload.length; i += 1) {
-          form.append("file[]", filesToUpload[i]);
-        }
-      }
 
       setMessage("");
       setPreviewImages([]);

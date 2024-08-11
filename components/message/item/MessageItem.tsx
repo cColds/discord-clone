@@ -12,9 +12,10 @@ import { useSocket } from "@/app/providers/SocketProvider";
 import { useParams } from "next/navigation";
 import ImageList from "./ImageList";
 import MessageDetails from "./MessageDetails";
+import ProcessingImage from "./ProcessingImage";
 
 type MessageItemType = {
-  msg: MessageType;
+  msg: MessageType & { pending?: boolean };
   user: UserType;
   editedDate: string;
   showDateDivider: boolean;
@@ -60,6 +61,10 @@ export default function MessageItem({
       console.error(err);
     }
   };
+
+  if (msg.pending && msg.images.length) {
+    return <ProcessingImage />;
+  }
 
   return (
     <>
