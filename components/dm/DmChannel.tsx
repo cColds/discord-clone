@@ -53,7 +53,7 @@ export default function DmChannel({
 
   return (
     <div
-      className="flex flex-col bg-background-primary grow"
+      className="flex flex-col bg-background-primary grow overflow-hidden"
       aria-label="(channel)"
     >
       <div className="scroller grow flex flex-col justify-end h-full">
