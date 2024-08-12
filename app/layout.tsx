@@ -12,7 +12,28 @@ import { UserProvider } from "./providers/UserProvider";
 import { getUser } from "@/lib/db/getUser";
 
 const ggSans = localFont({
-  src: "../public/fonts/gg-sans.woff2",
+  src: [
+    {
+      path: "../public/fonts/gg-sans.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/gg-sans-semibold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/gg-sans-bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/gg-sans-extrabold.woff2",
+      weight: "800",
+      style: "normal",
+    },
+  ],
   display: "swap",
 });
 
