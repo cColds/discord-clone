@@ -51,10 +51,15 @@ const ImageExpanded = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         removeCloseButton={true}
-        className="p-0 gap-0 bg-transparent border-0"
+        className="p-0 gap-0 bg-transparent border-0 w-auto max-w-full"
       >
         <div className="relative">
-          <Image src={selectedImage.url} width={533} height={300} alt="" />
+          <Image
+            src={selectedImage.url}
+            width={selectedImage.width || 719}
+            height={selectedImage.height || 500}
+            alt=""
+          />
           <div>
             <a
               href={selectedImage.url}
