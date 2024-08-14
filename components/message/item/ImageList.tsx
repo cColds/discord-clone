@@ -41,7 +41,7 @@ const ImageList = ({ images }: ImageListProps) => {
                       images={imagesWithIndex}
                       defaultImage={defaultImage}
                     >
-                      <div className="h-full max-h-[300px]">
+                      <div className="h-full max-h-[350px]">
                         <Image
                           key={img.id}
                           src={img.url}
