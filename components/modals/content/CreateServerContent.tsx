@@ -107,7 +107,7 @@ const CreateServerContent = ({
             )}
             <input
               type="file"
-              accept=".jpg,.jpeg,.png,.gif"
+              accept=".jpg,.jpeg,.png,.gif,.webp"
               aria-label="Upload a Server Icon"
               className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer text-[0px]"
               form="createServer"
