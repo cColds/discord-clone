@@ -1,5 +1,6 @@
 import TextareaAutosize from "react-textarea-autosize";
 import EmojiPicker from "./EmojiPicker";
+import { KeyboardEvent, useEffect } from "react";
 
 type EditMessageBoxType = {
   message: string;
@@ -16,6 +17,32 @@ const EditMessageBox = ({
   saveMessageChange,
   updateEditedMessage,
 }: EditMessageBoxType) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    const isValidMessage = editedMessage?.trim();
+
+    const hitEnter = e.key === "Enter" && !e.shiftKey;
+
+    if (hitEnter && !isValidMessage) {
+      e.preventDefault();
+      onEditMessage(null);
+      return;
+    }
+
+    if (hitEnter) {
+      e.preventDefault();
+      saveMessageChange();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") onEditMessage(null);
+    });
+
+    return () =>
+      window.removeEventListener("keydown", (e) => onEditMessage(null));
+  }, []);
+
   return (
     <div>
       <div className="mt-2 min-h-[44px] text-text-normal leading-[1.375rem]">
@@ -24,6 +51,7 @@ const EditMessageBox = ({
             className="border-0 outline-0 pl-4 pr-2.5 py-[11px] resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto rounded-lg h-[44px] max-h-[300px]"
             value={editedMessage === null ? message : editedMessage}
             onChange={(e) => updateEditedMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
           ></TextareaAutosize>
 
           <EmojiPicker />
@@ -43,7 +71,12 @@ const EditMessageBox = ({
           className="text-text-link duration-75 cursor-pointer"
           onClick={() => {
             try {
+              const isValidMessage = editedMessage?.trim();
+
               onEditMessage(null);
+
+              if (!isValidMessage) return;
+
               saveMessageChange();
             } catch (err) {
               console.error(err);

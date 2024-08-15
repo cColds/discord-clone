@@ -57,6 +57,7 @@ export default function MessageItem({
     try {
       await editMessage(editMessageId, editedMessage);
       socket.emit("send-message", channelId);
+      onEditToggle(null);
     } catch (err) {
       console.error(err);
     }
