@@ -22,7 +22,7 @@ export default function ListItem({
   acronym,
 }: ListItemProps) {
   return (
-    <div className="flex justify-center relative w-full mb-2" key={server._id}>
+    <div className="flex justify-center w-full mb-2" key={server._id}>
       <ActionTooltip content={server.serverName} side="right">
         <Link
           href={`/channels/servers/${server._id}`}
@@ -35,6 +35,7 @@ export default function ListItem({
             acronym={acronym}
             isSelectedServer={isSelectedServer}
             serverId={server._id}
+            notifications={0}
           />
         </Link>
       </ActionTooltip>
