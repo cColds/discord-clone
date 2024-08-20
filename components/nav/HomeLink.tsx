@@ -6,7 +6,7 @@ import Link from "next/link";
 
 type HomeLinkProps = {
   hoveredServer: string;
-  serverId: string | string[];
+  serverId?: string;
   pendingRequests: number;
   setHoveredServer: (serverId: string) => void;
 };

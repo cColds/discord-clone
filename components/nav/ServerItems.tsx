@@ -2,12 +2,8 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Plus } from "../svgs";
 import { cn } from "@/lib/utils";
-import Pill from "../pill/Pill";
-import ActionTooltip from "../tooltip/ActionTooltip";
-import Link from "next/link";
 import HomeLink from "./HomeLink";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { UserType } from "@/types/user";
@@ -16,6 +12,7 @@ import CreateOrJoinServerModal from "../modals/CreateOrJoinServerModal";
 import { ServerNavItem } from "@/types/server";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 import { getServers } from "@/lib/db/getServers";
+import ListItem from "./ListItem";
 
 const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
@@ -27,7 +24,7 @@ type ServerItemsType = {
 };
 
 export default function ServerItems({ user, servers }: ServerItemsType) {
-  const params = useParams();
+  const params = useParams<{ serverId?: string }>();
   const [hoveredServer, setHoveredServer] = useState("");
   const [hoveredAddServer, setHoveredAddServer] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(
@@ -85,8 +82,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
 
         <div className="flex flex-col items-center" aria-label="Servers">
           {serversState.map((server) => {
-            const currentServerSelected: boolean =
-              params.serverId === server._id;
+            const isSelectedServer = params.serverId === server._id;
 
             const acronym = !server.icon
               ? server.serverName
@@ -104,42 +100,17 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
               : "";
 
             return (
-              <div
-                className="flex justify-center relative w-full mb-2"
+              <ListItem
+                url={url}
+                isSelectedServer={isSelectedServer}
+                acronym={acronym}
+                hoveredServer={hoveredServer}
+                onHoveredServer={(serverId: string) =>
+                  setHoveredServer(serverId)
+                }
+                server={server}
                 key={server._id}
-              >
-                <ActionTooltip content={server.serverName} side="right">
-                  <Link
-                    href={`/channels/servers/${server._id}`}
-                    className={cn(
-                      "flex justify-center w-12 h-12 items-center rounded-[50%] cursor-pointer hover:rounded-xl overflow-clip text-text-normal hover:text-white hover:bg-brand-500 transition duration-150 ease-out bg-background-primary",
-                      { "rounded-xl": params.serverId === server._id }
-                    )}
-                    aria-label={server.serverName}
-                    onMouseOver={() => setHoveredServer(server._id)}
-                    onMouseLeave={() => setHoveredServer("")}
-                  >
-                    {server?.icon ? (
-                      <Image
-                        src={url}
-                        alt=""
-                        width={48}
-                        height={48}
-                        className="aspect-square min-w-[48px] min-h-[48px] object-cover"
-                        aria-label="hidden"
-                      />
-                    ) : (
-                      <div className="leading-[1.2em] font-semibold whitespace-nowrap w-12 h-12 flex items-center justify-center">
-                        {acronym}
-                      </div>
-                    )}
-                  </Link>
-                </ActionTooltip>
-
-                {(hoveredServer === server._id || currentServerSelected) && (
-                  <Pill selected={currentServerSelected} />
-                )}
-              </div>
+              />
             );
           })}
         </div>
