@@ -86,6 +86,7 @@ const useMessageHandler = ({
         createdAt: timestamp,
         updatedAt: timestamp,
         pending: true,
+        readBy: [sender.id],
       };
 
       addOptimisticMessage(optimisticMsg);

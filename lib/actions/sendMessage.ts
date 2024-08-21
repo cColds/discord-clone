@@ -60,6 +60,7 @@ export async function sendMessage(
       message: message?.toString().trim() || "",
       channelId,
       images: imageUrls,
+      readBy: [sender],
     });
     await messageDoc.save();
 

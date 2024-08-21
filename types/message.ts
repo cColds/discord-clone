@@ -17,6 +17,7 @@ export type MessageType = {
   edited?: Date;
   createdAt: string;
   updatedAt: string;
+  readBy: string[];
 };
 
 export type OptimisticMessage = MessageType & { pending?: boolean };

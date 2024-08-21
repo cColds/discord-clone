@@ -6,6 +6,7 @@ export interface MessageType extends Document {
   channelId: string;
   edited?: Date;
   images: { id: string; url: string; name: string }[];
+  readBy: Types.ObjectId[];
 }
 
 const MessageSchema = new Schema<MessageType>(
@@ -17,7 +18,9 @@ const MessageSchema = new Schema<MessageType>(
     images: [
       { id: String, url: String, name: String, width: Number, height: Number },
     ],
+    readBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
+
   { timestamps: true }
 );
 
