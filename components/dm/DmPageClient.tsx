@@ -12,6 +12,7 @@ import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
 import useOptimistic from "@/hooks/useOptimistic";
+import { readMessages } from "@/lib/db/readMessages";
 
 type DmPageClientType = {
   recipient: UserType;
@@ -39,6 +40,14 @@ export default function DmPageClient({
   const addOptimisticMessage = (msg: MessageType) => {
     setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
   };
+
+  useEffect(() => {
+    const updateReadMessages = async () => {
+      await readMessages(user.id, channelId);
+    };
+
+    updateReadMessages();
+  }, [messages]);
 
   useEffect(() => {
     if (!socket) return;
