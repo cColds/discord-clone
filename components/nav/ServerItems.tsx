@@ -13,6 +13,7 @@ import { ServerNavItem } from "@/types/server";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 import { getServers } from "@/lib/db/getServers";
 import ListItem from "./ListItem";
+import UnreadDMs from "./UnreadDMs";
 
 const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
@@ -78,8 +79,8 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
           setHoveredServer={setHoveredServer}
         />
 
+        {user && <UnreadDMs userId={user.id} channels={user.dms} />}
         <div className="h-0.5 w-8 bg-background-modifier-accent mb-2 mx-auto"></div>
-
         <div className="flex flex-col items-center" aria-label="Servers">
           {serversState.map((server) => {
             const isSelectedServer = params.serverId === server._id;
@@ -114,7 +115,6 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
             );
           })}
         </div>
-
         <div className="flex justify-center">
           <CreateOrJoinServerModal>
             <button

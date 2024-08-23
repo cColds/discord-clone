@@ -23,9 +23,6 @@ export default async function DmPage({
   if (dm == null) redirect("/");
 
   const initialMessages = await getMessages(25, params.channelId);
-  console.log(
-    initialMessages.map((msg) => ({ id: msg._id, createdAt: msg.createdAt }))
-  );
 
   const recipient =
     dm.members[0].id === user.id ? dm.members[1] : dm.members[0];
