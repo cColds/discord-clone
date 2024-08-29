@@ -1,37 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { UserDms } from "@/types/user";
-import { getUnreadMessages } from "@/lib/db/getUnreadMessages";
 import UserLinkIcon from "./UserLinkIcon";
 
 interface UnreadDMsProps {
-  userId: string;
+  unreadCounts: Record<string, number>;
   channels: UserDms["dms"];
 }
 
-const UnreadDMs: React.FC<UnreadDMsProps> = ({ userId, channels }) => {
-  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
-
-  useEffect(() => {
-    const fetchUnreadCounts = async () => {
-      try {
-        console.log("Running with userId:", userId);
-        const results = await getUnreadMessages(userId);
-        console.log("Query results:", results);
-
-        const counts = results.reduce<Record<string, number>>((acc, item) => {
-          acc[item.channelId] = item.unreadCount;
-          return acc;
-        }, {});
-
-        setUnreadCounts(counts);
-      } catch (error) {
-        console.error("Error fetching unread message counts:", error);
-      }
-    };
-
-    fetchUnreadCounts();
-  }, [userId, channels]);
-
+const UnreadDMs: React.FC<UnreadDMsProps> = ({ unreadCounts, channels }) => {
   return (
     <>
       {channels.map((channel) => {

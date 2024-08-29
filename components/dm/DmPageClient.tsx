@@ -42,12 +42,17 @@ export default function DmPageClient({
   };
 
   useEffect(() => {
+    if (!socket) return;
+
     const updateReadMessages = async () => {
       await readMessages(user.id, channelId);
+      socket.emit("mark-messages-as-read", user.id);
     };
 
     updateReadMessages();
-  }, [messages]);
+
+    return () => socket.off("mark-messages-as-read");
+  }, [socket, messages]);
 
   useEffect(() => {
     if (!socket) return;
@@ -81,7 +86,7 @@ export default function DmPageClient({
 
       setMessages(updatedMessages);
 
-      console.log(updatedMessages[updatedMessages.length - 1]);
+      console.log("Updated messages... ", updatedMessages);
     });
 
     socket.on("scroll-to-bottom-chat", () => {

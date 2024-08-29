@@ -14,6 +14,8 @@ import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 import { getServers } from "@/lib/db/getServers";
 import ListItem from "./ListItem";
 import UnreadDMs from "./UnreadDMs";
+import { getUnreadMessages } from "@/lib/db/getUnreadMessages";
+import { readMessages } from "@/lib/db/readMessages";
 
 const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
@@ -25,13 +27,34 @@ type ServerItemsType = {
 };
 
 export default function ServerItems({ user, servers }: ServerItemsType) {
-  const params = useParams<{ serverId?: string }>();
+  const params = useParams<{ channelId: string; serverId?: string }>();
   const [hoveredServer, setHoveredServer] = useState("");
   const [hoveredAddServer, setHoveredAddServer] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(
     getPendingRequests(user)
   );
   const [serversState, setServersState] = useState(servers);
+  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
+
+  const fetchUnreadCounts = async () => {
+    try {
+      const results = await getUnreadMessages(user.id);
+
+      const counts = results.reduce<Record<string, number>>((acc, item) => {
+        acc[item.channelId] = item.unreadCount;
+        return acc;
+      }, {});
+
+      // todo: Should probably return the count and set it after
+      setUnreadCounts(counts);
+    } catch (error) {
+      console.error("Error fetching unread message counts:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnreadCounts();
+  }, []);
 
   const { socket } = useSocket();
 
@@ -63,6 +86,19 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
       }
     });
 
+    socket.on("receive-unread-messages", async () => {
+      console.log("Receive notification");
+
+      fetchUnreadCounts();
+    });
+
+    socket.on("message-read-confirmation", async () => {
+      console.log("Marking messages as read..");
+
+      await readMessages(user.id, params.channelId);
+      fetchUnreadCounts();
+    });
+
     return () => socket.disconnect();
   }, [socket]);
 
@@ -79,7 +115,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
           setHoveredServer={setHoveredServer}
         />
 
-        {user && <UnreadDMs userId={user.id} channels={user.dms} />}
+        {user && <UnreadDMs channels={user.dms} unreadCounts={unreadCounts} />}
         <div className="h-0.5 w-8 bg-background-modifier-accent mb-2 mx-auto"></div>
         <div className="flex flex-col items-center" aria-label="Servers">
           {serversState.map((server) => {

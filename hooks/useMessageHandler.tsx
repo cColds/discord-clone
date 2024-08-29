@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { UserNormal, UserType } from "@/types/user";
 import { MessageType } from "@/types/message";
+import { getServer } from "@/lib/db/getServer";
+import { getDm } from "@/lib/db/getDm";
 
 type PreviewImageType = {
   name: string;
@@ -34,7 +36,10 @@ const useMessageHandler = ({
   const [filesToUpload, setFilesToUpload] = useState<FileList | null>(null);
 
   const socket = useTypingIndicator(setUsersTyping);
-  const { channelId } = useParams<{ channelId: string }>();
+  const { serverId, channelId } = useParams<{
+    channelId: string;
+    serverId?: string;
+  }>();
 
   const handleMessageSubmit = async () => {
     try {
@@ -101,7 +106,27 @@ const useMessageHandler = ({
         type
       );
 
-      socket.emit("send-message", channelId);
+      let membersIds: string[] = [];
+
+      if (serverId) {
+        const server = await getServer(serverId);
+
+        const serverMembers = server?.members
+          .filter((member) => member._id !== sender.id)
+          .map((member) => member._id);
+
+        membersIds = serverMembers || [];
+      } else {
+        const dm = await getDm(channelId);
+
+        const dmMembers = dm?.members
+          .filter((member) => member.id !== sender.id)
+          .map((member) => member.id);
+
+        membersIds = dmMembers || [];
+      }
+
+      socket.emit("send-message", channelId, membersIds);
       socket.emit("stop-typing", channelId, {
         userId: sender.id,
         displayName: sender.displayName,
