@@ -13,10 +13,11 @@ import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { getServer } from "@/lib/db/getServer";
 import useOptimistic from "@/hooks/useOptimistic";
+import { readMessages } from "@/lib/db/readMessages";
 
 type ServerChannelClientProps = {
   server: ServerType;
-  channelId?: string;
+  channelId: string;
   initialMessages: MessageType[];
 };
 
@@ -39,6 +40,19 @@ const ServerChannelClient = ({
   const addOptimisticMessage = (msg: MessageType) => {
     setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
   };
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const updateReadMessages = async () => {
+      await readMessages(user.id, channelId);
+      socket.emit("mark-messages-as-read", user.id);
+    };
+
+    updateReadMessages();
+
+    return () => socket.off("mark-messages-as-read");
+  }, [socket, messages]);
 
   useEffect(() => {
     if (!socket) return;
