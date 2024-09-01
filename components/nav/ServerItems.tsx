@@ -16,6 +16,7 @@ import ListItem from "./ListItem";
 import UnreadDMs from "./UnreadDMs";
 import { getUnreadMessages } from "@/lib/db/getUnreadMessages";
 import { readMessages } from "@/lib/db/readMessages";
+import { UnreadCount } from "@/types/UnreadCount";
 
 const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
@@ -34,26 +35,27 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
     getPendingRequests(user)
   );
   const [serversState, setServersState] = useState(servers);
-  const [unreadCounts, setUnreadCounts] = useState<Record<string, number>>({});
+  const [unreadCounts, setUnreadCounts] = useState<UnreadCount[]>([]);
 
   const fetchUnreadCounts = async () => {
     try {
       const results = await getUnreadMessages(user.id);
 
-      const counts = results.reduce<Record<string, number>>((acc, item) => {
-        acc[item.channelId] = item.unreadCount;
-        return acc;
-      }, {});
+      const counts = results.map((item) => ({
+        count: item.unreadCount,
+        channelId: item.channelId,
+      }));
 
-      // todo: Should probably return the count and set it after
-      setUnreadCounts(counts);
+      return counts;
     } catch (error) {
       console.error("Error fetching unread message counts:", error);
     }
   };
 
   useEffect(() => {
-    fetchUnreadCounts();
+    fetchUnreadCounts().then((updatedUnreadCounts) => {
+      if (updatedUnreadCounts) setUnreadCounts(updatedUnreadCounts);
+    });
   }, []);
 
   const { socket } = useSocket();
@@ -89,14 +91,18 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
     socket.on("receive-unread-messages", async () => {
       console.log("Receive notification");
 
-      fetchUnreadCounts();
+      const updatedUnreadCounts = await fetchUnreadCounts();
+
+      if (updatedUnreadCounts) setUnreadCounts(updatedUnreadCounts);
     });
 
     socket.on("message-read-confirmation", async () => {
       console.log("Marking messages as read..");
 
       await readMessages(user.id, params.channelId);
-      fetchUnreadCounts();
+      const updatedUnreadCounts = await fetchUnreadCounts();
+
+      if (updatedUnreadCounts) setUnreadCounts(updatedUnreadCounts);
     });
 
     return () => socket.disconnect();

@@ -1,19 +1,31 @@
 import React from "react";
 import { UserDms } from "@/types/user";
 import UserLinkIcon from "./UserLinkIcon";
+import { UnreadCount } from "@/types/UnreadCount";
 
 interface UnreadDMsProps {
-  unreadCounts: Record<string, number>;
+  unreadCounts: UnreadCount[];
   channels: UserDms["dms"];
 }
 
 const UnreadDMs: React.FC<UnreadDMsProps> = ({ unreadCounts, channels }) => {
+  const sortedChannels = [...channels].sort((a, b) => {
+    const aIndex = unreadCounts.findIndex((u) => u.channelId === a.channel._id);
+    const bIndex = unreadCounts.findIndex((u) => u.channelId === b.channel._id);
+
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+
+    return aIndex - bIndex;
+  });
+
   return (
     <>
-      {channels.map((channel) => {
+      {sortedChannels.map((channel) => {
         const channelId = channel.channel._id;
 
-        const count = unreadCounts[channelId] || 0;
+        const count =
+          unreadCounts.find((u) => u.channelId === channelId)?.count || 0;
 
         if (count === 0) return;
 
