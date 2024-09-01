@@ -73,12 +73,12 @@ const ServerChannelClient = ({
 
     socket.on("update-friends-online-status", async (isOnline: boolean) => {
       const updatedUser = await getUser(user.id);
+      const updatedServer = await getServer(server._id);
 
       if (updatedUser) {
         setUser(updatedUser);
-      } else {
-        console.error("failed to update user");
       }
+      if (updatedServer) setServerState(updatedServer);
     });
 
     socket.on("received-message", async () => {
