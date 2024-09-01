@@ -13,6 +13,7 @@ export const getServers = async (userId: string) => {
     ).populate({
       path: "servers",
       select: "_id serverName icon",
+      options: { sort: { _id: -1 } },
     });
 
     return JSON.parse(JSON.stringify(userDoc?.servers)) || [];
