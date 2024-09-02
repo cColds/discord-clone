@@ -11,7 +11,7 @@ export async function getMessages(messagesAmount: number, channelId: string) {
   const messages = await Message.find(
     { channelId },
     "sender message channelId _id createdAt updatedAt edited images readBy"
-  ).populate({ path: "sender", select: "-password" });
+  ).populate({ path: "sender", select: "-password -social -dms -servers -id" });
 
   const serializedMessages = JSON.parse(
     JSON.stringify(messages)

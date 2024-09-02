@@ -38,8 +38,6 @@ export default function DmPageClient({
   const { socket } = useSocket();
 
   const addOptimisticMessage = (msg: MessageType) => {
-    console.log("Test", msg);
-
     setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
   };
 
