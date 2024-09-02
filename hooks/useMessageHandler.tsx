@@ -58,18 +58,6 @@ const useMessageHandler = ({
         email: sender.email,
         avatar: sender.avatar,
         status: sender.status,
-        servers: [],
-        social: {
-          friends: [],
-          pending: [],
-          blocked: [],
-        },
-        dms: sender.dms.map((dm) => ({
-          channel: dm.channel._id,
-          recipient: dm.recipient.id,
-          open: dm.open,
-          id: dm.id,
-        })),
       };
 
       const timestamp = new Date().toISOString();

@@ -26,17 +26,4 @@ export type UserNormal = {
   email: string;
   avatar: string;
   status: Status;
-  servers: [];
-  social: {
-    friends: string[];
-    pending: string[];
-    blocked: string[];
-  };
-
-  dms: {
-    channel: string;
-    recipient: string;
-    open: boolean;
-    id: string;
-  }[];
 };
