@@ -17,6 +17,9 @@ import UnreadDMs from "./UnreadDMs";
 import { getUnreadMessages } from "@/lib/db/getUnreadMessages";
 import { readMessages } from "@/lib/db/readMessages";
 import { UnreadCount } from "@/types/UnreadCount";
+import { useMotionValue } from "framer-motion";
+import { useFlubber } from "@/hooks/useFlubber";
+import { circle, roundedCircle } from "@/utils/constants/svgPaths";
 
 const getPendingRequests = (user: UserType) =>
   user.social.pending.filter((pending) => pending.request === "Incoming")
@@ -27,9 +30,13 @@ type ServerItemsType = {
   servers: ServerNavItem[];
 };
 
+const paths = [circle, roundedCircle];
+
 export default function ServerItems({ user, servers }: ServerItemsType) {
   const params = useParams<{ channelId: string; serverId?: string }>();
   const [hoveredServer, setHoveredServer] = useState("");
+
+  const [lastHoveredServer, setLastHoveredServer] = useState("");
   const [hoveredAddServer, setHoveredAddServer] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(
     getPendingRequests(user)
@@ -49,6 +56,13 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
       return counts;
     } catch (error) {
       console.error("Error fetching unread message counts:", error);
+    }
+  };
+
+  const handleHoveredServer = (serverId: string) => {
+    setHoveredServer(serverId);
+    if (serverId !== "") {
+      setLastHoveredServer(serverId);
     }
   };
 
@@ -108,6 +122,9 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
     return () => socket.disconnect();
   }, [socket]);
 
+  const progress = useMotionValue(0);
+  const path = useFlubber(progress, paths);
+
   return (
     <nav
       className="min-w-[72px] bg-background-tertiary h-full overflow-auto hide-scroller"
@@ -121,7 +138,14 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
           setHoveredServer={setHoveredServer}
         />
 
-        {user && <UnreadDMs channels={user.dms} unreadCounts={unreadCounts} />}
+        {user && (
+          <UnreadDMs
+            channels={user.dms}
+            unreadCounts={unreadCounts}
+            onHoveredServer={handleHoveredServer}
+            options={{ progress, path }}
+          />
+        )}
         <div className="h-0.5 w-8 bg-background-modifier-accent mb-2 mx-auto"></div>
         <div className="flex flex-col items-center" aria-label="Servers">
           {serversState.map((server) => {
@@ -142,17 +166,23 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
               ? transformCloudinaryUrl(server.icon, transformation)
               : "";
 
+            if (params.serverId === server._id) {
+              console.log(
+                "Server should be selected and rounded circle: ",
+                server.serverName
+              );
+            }
+
             return (
               <ListItem
                 url={url}
                 isSelectedServer={isSelectedServer}
                 acronym={acronym}
                 hoveredServer={hoveredServer}
-                onHoveredServer={(serverId: string) =>
-                  setHoveredServer(serverId)
-                }
+                onHoveredServer={handleHoveredServer}
                 server={server}
                 key={server._id}
+                options={{ progress, path }}
               />
             );
           })}

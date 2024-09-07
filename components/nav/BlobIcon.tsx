@@ -1,6 +1,9 @@
 import Image from "next/image";
-import { useState } from "react";
 import Notification from "../badges/Notification";
+import { animate, motion, MotionValue } from "framer-motion";
+import { FramerMotionOptions } from "@/types/FramerMotionOptions";
+import { circle, roundedCircle } from "@/utils/constants/svgPaths";
+import { useState } from "react";
 
 type BlobIconProps = {
   url: string;
@@ -8,14 +11,11 @@ type BlobIconProps = {
   isSelectedServer: boolean;
   serverId: string;
   notifications: number;
+  options: FramerMotionOptions;
+  onHoveredServer: (serverId: string) => void;
 };
 
-const paths = {
-  circle:
-    "M48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24Z",
-  roundedCircle:
-    "M0 24C0 16.5449 0 12.8174 1.21793 9.87706C2.84183 5.95662 5.95662 2.84183 9.87706 1.21793C12.8174 0 16.5449 0 24 0C31.4551 0 35.1826 0 38.1229 1.21793C42.0434 2.84183 45.1582 5.95662 46.7821 9.87706C48 12.8174 48 16.5449 48 24C48 31.4551 48 35.1826 46.7821 38.1229C45.1582 42.0434 42.0434 45.1582 38.1229 46.7821C35.1826 48 31.4551 48 24 48C16.5449 48 12.8174 48 9.87706 46.7821C5.95662 45.1582 2.84183 42.0434 1.21793 38.1229C0 35.1826 0 31.4551 0 24Z",
-};
+const paths = [circle, roundedCircle];
 
 function BlobIcon({
   url,
@@ -23,27 +23,53 @@ function BlobIcon({
   isSelectedServer,
   serverId,
   notifications,
+  options,
+  onHoveredServer,
 }: BlobIconProps) {
-  const [pathDefinition, setPathDefinition] = useState(
-    isSelectedServer ? paths.circle : paths.roundedCircle
-  );
+  let motionPath: string | MotionValue<string> = paths[0];
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  if (isSelectedServer) {
+    motionPath = paths[1];
+  } else if (isAnimating) {
+    motionPath = options.path;
+  }
+
+  const handleHoverStart = () => {
+    onHoveredServer(serverId);
+    setIsAnimating(true);
+
+    options.progress.stop();
+
+    animate(options.progress, 1, {
+      duration: 0.2,
+      ease: "linear",
+    });
+  };
+
+  const handleHoverEnd = () => {
+    onHoveredServer("");
+
+    animate(options.progress, 0, {
+      duration: 0.2,
+      ease: "linear",
+    }).then(() => {
+      setIsAnimating(false);
+    });
+  };
 
   return (
     <div className="w-12 h-12 cursor-pointer relative">
-      <svg
+      <motion.svg
         width={48}
         height={48}
         viewBox="0 0 48 48"
         className="w-12 h-12"
-        onMouseOver={() => setPathDefinition(paths.roundedCircle)}
-        onMouseLeave={() => {
-          if (!isSelectedServer) {
-            setPathDefinition(paths.circle);
-          }
-        }}
+        onHoverStart={handleHoverStart}
+        onHoverEnd={handleHoverEnd}
       >
         <defs>
-          <path d={`${pathDefinition}`} id={`${serverId}-blob_mask`}></path>
+          <motion.path d={motionPath} id={`${serverId}-blob_mask`} />
 
           {notifications && (
             <rect
@@ -88,7 +114,7 @@ function BlobIcon({
             </div>
           )}
         </foreignObject>
-      </svg>
+      </motion.svg>
 
       {notifications > 0 && (
         <Notification
