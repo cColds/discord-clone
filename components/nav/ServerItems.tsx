@@ -135,7 +135,8 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
           pendingRequests={pendingRequests}
           serverId={params.serverId}
           hoveredServer={hoveredServer}
-          setHoveredServer={setHoveredServer}
+          options={{ progress, path }}
+          onHoveredServer={handleHoveredServer}
         />
 
         {user && (

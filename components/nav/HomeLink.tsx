@@ -3,37 +3,79 @@ import Notification from "../badges/Notification";
 import Pill from "../pill/Pill";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import Link from "next/link";
+import { FramerMotionOptions } from "@/types/FramerMotionOptions";
+import { animate, MotionValue, motion, useMotionValue } from "framer-motion";
+import { circle, roundedCircle } from "@/utils/constants/svgPaths";
+import { useState } from "react";
 
 type HomeLinkProps = {
   hoveredServer: string;
   serverId?: string;
   pendingRequests: number;
-  setHoveredServer: (serverId: string) => void;
+  options: FramerMotionOptions;
+  onHoveredServer: (serverId: string) => void;
 };
+
+const paths = [circle, roundedCircle];
 
 export default function HomeLink({
   hoveredServer,
   serverId,
   pendingRequests,
-  setHoveredServer,
+  options,
+  onHoveredServer,
 }: HomeLinkProps) {
+  const [isAnimating, setIsAnimating] = useState(false);
+  let motionPath: string | MotionValue<string> = paths[0];
+
+  const isHomeSelected = hoveredServer === "/" || serverId === undefined;
+  if (isHomeSelected) {
+    motionPath = paths[1];
+  } else if (isAnimating) {
+    motionPath = options.path;
+  }
+
+  const handleHoverStart = () => {
+    onHoveredServer("/");
+    setIsAnimating(true);
+
+    options.progress.stop();
+
+    animate(options.progress, 1, {
+      duration: 0.2,
+      ease: "linear",
+    });
+  };
+
+  const handleHoverEnd = () => {
+    onHoveredServer("");
+
+    animate(options.progress, 0, {
+      duration: 0.2,
+      ease: "linear",
+    }).then(() => {
+      setIsAnimating(false);
+    });
+  };
+
   return (
     <div className="flex justify-center relative">
-      {(hoveredServer === "/" || serverId === undefined) && (
-        <Pill selected={!serverId} />
-      )}
+      {isHomeSelected && <Pill selected={!serverId} />}
       <div className="flex justify-center mb-2 w-12 h-12 relative">
         <ActionTooltip content="Direct Messages" side="right">
-          <svg width="48" height="48" viewBox="0 0 48 48" overflow="visible">
+          <motion.svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            overflow="visible"
+            onHoverStart={handleHoverStart}
+            onHoverEnd={handleHoverEnd}
+          >
             <defs>
-              <path
-                d={
-                  serverId === undefined || hoveredServer === "/"
-                    ? "M0 24C0 16.5449 0 12.8174 1.21793 9.87706C2.84183 5.95662 5.95662 2.84183 9.87706 1.21793C12.8174 0 16.5449 0 24 0C31.4551 0 35.1826 0 38.1229 1.21793C42.0434 2.84183 45.1582 5.95662 46.7821 9.87706C48 12.8174 48 16.5449 48 24C48 31.4551 48 35.1826 46.7821 38.1229C45.1582 42.0434 42.0434 45.1582 38.1229 46.7821C35.1826 48 31.4551 48 24 48C16.5449 48 12.8174 48 9.87706 46.7821C5.95662 45.1582 2.84183 42.0434 1.21793 38.1229C0 35.1826 0 31.4551 0 24Z"
-                    : "M48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24Z"
-                }
+              <motion.path
+                d={motionPath}
                 id="768bde72-aaab-4d1d-b8c9-adf60835f8c5-blob_mask"
-              ></path>
+              ></motion.path>
               <rect
                 id="768bde72-aaab-4d1d-b8c9-adf60835f8c5-upper_badge_masks"
                 x="28"
@@ -94,11 +136,9 @@ export default function HomeLink({
                 <Link
                   href="/"
                   className={cn(
-                    "flex justify-center w-12 h-12 items-center transition-all duration-100 bg-dark-700 hover:cursor-pointer hover:bg-primary",
-                    { "bg-primary": serverId === undefined }
+                    "flex justify-center w-12 h-12 items-center transition-all duration-100 bg-dark-700 hover:cursor-pointer",
+                    { "bg-primary": serverId === undefined || isAnimating }
                   )}
-                  onMouseOver={() => setHoveredServer("/")}
-                  onMouseLeave={() => setHoveredServer("")}
                 >
                   <svg
                     aria-hidden="true"
@@ -117,7 +157,7 @@ export default function HomeLink({
                 </Link>
               </div>
             </foreignObject>
-          </svg>
+          </motion.svg>
         </ActionTooltip>
 
         {pendingRequests > 0 && (
