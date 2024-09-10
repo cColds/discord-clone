@@ -17,7 +17,9 @@ export type UserDms = {
   }[];
 };
 
-export type UserType = SessionUser & SocialPopulated & UserDms;
+export type UserType = SessionUser &
+  SocialPopulated &
+  UserDms & { createdAt: string; updatedAt: string };
 
 export type UserNormal = {
   username: string;

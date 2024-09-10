@@ -70,6 +70,8 @@ module.exports = {
         "interactive-active": "oklab(0.999994 0.0000455678 0.0000200868)",
         "modal-footer": "oklab(0.296332 -0.000731647 -0.00768477)",
         "surface-overlay": "oklab(0.182455 -0.000417277 -0.0043847)",
+        "border-subtle":
+          "color-mix( in oklab, hsl(0 calc(1 * 0%) 100% / 0.08) 100%, hsl(0 0% 0% / 0.08) 0% )",
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

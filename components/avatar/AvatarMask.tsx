@@ -1,6 +1,7 @@
 import { STATUS } from "@/utils/constants/status";
 import { Status } from "@/types/status";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 type AvatarMaskProps = {
   avatar: string;
@@ -16,6 +17,7 @@ type AvatarMaskProps = {
   rectX?: number;
   rectY?: number;
   maskSize?: 32 | 80;
+  clickable?: boolean;
 };
 
 export default function AvatarMask({
@@ -32,7 +34,10 @@ export default function AvatarMask({
   rectX = 22,
   rectY = 22,
   maskSize = 32,
+  clickable = false,
 }: AvatarMaskProps) {
+  // todo: add avatar size preset so u dont need a million params
+
   return (
     <svg
       width={svgWidth}
@@ -55,7 +60,12 @@ export default function AvatarMask({
             alt={`${username}, ${status}`}
             width={imgWidth}
             height={imgHeight}
-            className={`rounded-full object-cover`}
+            className={cn(
+              "rounded-full object-cover transition-opacity duration-200",
+              {
+                "group-hover:opacity-50": clickable,
+              }
+            )}
             draggable={false}
           />
         </div>

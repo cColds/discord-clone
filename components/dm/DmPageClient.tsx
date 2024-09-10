@@ -85,12 +85,6 @@ export default function DmPageClient({
       const updatedMessages = await getMessages(25, channelId);
 
       setMessages(updatedMessages);
-
-      console.log("Updated messages... ", updatedMessages);
-    });
-
-    socket.on("scroll-to-bottom-chat", () => {
-      console.log("this should scroll to bottom!");
     });
 
     socket.on("update-dms-list", async () => {
