@@ -16,7 +16,7 @@ type AvatarMaskProps = {
   rectHeight?: number;
   rectX?: number;
   rectY?: number;
-  maskSize?: 32 | 80;
+  maskSize?: 32 | 80 | 120;
   clickable?: boolean;
 };
 

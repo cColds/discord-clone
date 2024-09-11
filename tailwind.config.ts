@@ -72,6 +72,8 @@ module.exports = {
         "surface-overlay": "oklab(0.182455 -0.000417277 -0.0043847)",
         "border-subtle":
           "color-mix( in oklab, hsl(0 calc(1 * 0%) 100% / 0.08) 100%, hsl(0 0% 0% / 0.08) 0% )",
+        "mod-faint": "oklab(0.431938 0.00109309 -0.0132537 / 0.3)",
+        "border-faint": "oklab(0.999994 0.0000455678 0.0000200868 / 0.03)",
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

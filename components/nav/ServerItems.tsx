@@ -167,13 +167,6 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
               ? transformCloudinaryUrl(server.icon, transformation)
               : "";
 
-            if (params.serverId === server._id) {
-              console.log(
-                "Server should be selected and rounded circle: ",
-                server.serverName
-              );
-            }
-
             return (
               <ListItem
                 url={url}

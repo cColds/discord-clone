@@ -1,10 +1,15 @@
-export function Message() {
+type MessageProps = {
+  width?: number;
+  height?: number;
+};
+
+export function Message({ width = 20, height = 20 }: MessageProps) {
   return (
     <svg
       aria-hidden="true"
       role="img"
-      width="20"
-      height="20"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       fill="none"
     >
