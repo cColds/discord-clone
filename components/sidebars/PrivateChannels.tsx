@@ -55,7 +55,7 @@ export default function PrivateChannels({
                 key={dm.channel._id}
                 id={dm.channel._id}
                 username={recipient.username}
-                status={recipient.status}
+                status={recipient.online ? recipient.status : "Offline"}
                 avatar={recipient.avatar}
               />
             );
