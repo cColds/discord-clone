@@ -19,6 +19,7 @@ function DmSidebar({ recipient }: DmSidebarProps) {
             <ProfileBanner
               viewBox="0 0 340 120"
               className="min-w-[340px] min-h-[120px]"
+              url={recipient.avatar}
             />
             <UserProfileModal user={recipient}>
               <button className="w-20 h-20 absolute top-[82px] left-[22px] rounded-full border-0 group">

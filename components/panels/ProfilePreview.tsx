@@ -25,6 +25,7 @@ export default function ProfilePreview({
             className="min-w-[300px] min-h-[100px] z-0"
             viewBox="0 0 300 105"
             previewProfile={true}
+            url={user.avatar}
           />
           <div className="absolute top-[61px] left-4">
             <AvatarMask

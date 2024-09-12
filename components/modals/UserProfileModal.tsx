@@ -51,6 +51,7 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
               viewBox="0 0 600 210"
               className="min-h-[210px] min-w-[600px]"
               userProfile={true}
+              url={user.avatar}
             />
 
             <div className="flex px-4 pt-4 relative min-h-[38px]">

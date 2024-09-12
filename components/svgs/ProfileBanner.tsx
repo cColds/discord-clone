@@ -1,10 +1,13 @@
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import Vibrant from "node-vibrant";
 
 type ProfileBannerProps = {
   className?: string;
   viewBox: "0 0 300 105" | "0 0 660 100" | "0 0 340 120" | "0 0 600 210";
   previewProfile?: boolean;
   userProfile?: boolean;
+  url: string;
 };
 
 export const ProfileBanner = ({
@@ -12,8 +15,23 @@ export const ProfileBanner = ({
   viewBox,
   previewProfile = false,
   userProfile = false,
+  url,
 }: ProfileBannerProps) => {
   const uuid = uuidv4();
+  const [imgColor, setImgColor] = useState("#020617");
+
+  useEffect(() => {
+    if (url) {
+      Vibrant.from(url)
+        .getPalette()
+        .then((palette) => {
+          if (palette.LightVibrant) {
+            setImgColor(palette.LightVibrant.hex);
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [url]);
 
   return (
     <svg className={className} viewBox={viewBox}>
@@ -38,9 +56,9 @@ export const ProfileBanner = ({
         overflow="visible"
         mask={`url(#${uuid})`}
       >
-        {/* todo: add color thief  or node vibrant to get img color*/}
         <div
-          className={`bg-[#2B5269] ${userProfile ? "h-[210px]" : "h-[105px]"}`}
+          className={`${userProfile ? "h-[210px]" : "h-[105px]"}`}
+          style={{ backgroundColor: imgColor }}
         />
       </foreignObject>
     </svg>
