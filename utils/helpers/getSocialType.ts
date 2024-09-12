@@ -19,8 +19,15 @@ export const getSocialType = (
 
       return { type: "Online", targetSocial: onlineFriends };
 
-    case "All":
-      return { type: "All", targetSocial: social.friends };
+    case "All": {
+      const sorted = [...social.friends].sort((a, b) => {
+        const aOnline = a.online && a.status !== "Invisible";
+        const bOnline = b.online && b.status !== "Invisible";
+        return aOnline ? -1 : bOnline ? 1 : 0;
+      });
+
+      return { type: "All", targetSocial: sorted };
+    }
 
     case "Pending":
       return { type: "Pending", targetSocial: social.pending };
