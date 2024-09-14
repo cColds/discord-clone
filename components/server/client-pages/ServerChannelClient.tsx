@@ -83,7 +83,7 @@ const ServerChannelClient = ({
 
     socket.on("received-message", async () => {
       if (channelId) {
-        const updatedMessages = await getMessages(25, channelId);
+        const updatedMessages = await getMessages(channelId);
 
         setMessages(updatedMessages);
       }

@@ -82,8 +82,9 @@ export default function DmPageClient({
     });
 
     socket.on("received-message", async () => {
-      const updatedMessages = await getMessages(25, channelId);
+      const updatedMessages = await getMessages(channelId);
 
+      console.log("test", updatedMessages);
       setMessages(updatedMessages);
     });
 

@@ -5,13 +5,16 @@ import dbConnect from "./dbConnect";
 import { MessageType } from "@/types/message";
 import { revalidatePath } from "next/cache";
 
-export async function getMessages(messagesAmount: number, channelId: string) {
+export async function getMessages(channelId: string) {
   await dbConnect();
 
   const messages = await Message.find(
     { channelId },
     "sender message channelId _id createdAt updatedAt edited images readBy"
-  ).populate({ path: "sender", select: "-password -social -dms -servers -id" });
+  )
+    .limit(50)
+    .populate({ path: "sender", select: "-password -social -dms -servers -id" })
+    .sort({ createdAt: -1 });
 
   const serializedMessages = JSON.parse(
     JSON.stringify(messages)
@@ -19,5 +22,5 @@ export async function getMessages(messagesAmount: number, channelId: string) {
 
   revalidatePath(`/channels/dms/${channelId}`);
 
-  return serializedMessages;
+  return serializedMessages.toReversed();
 }

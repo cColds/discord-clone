@@ -11,7 +11,7 @@ export default async function ServerChannelPage({
   const server = await getServer(params.serverId);
   if (!server) redirect("/");
 
-  const initialMessages = await getMessages(25, params.channelId);
+  const initialMessages = await getMessages(params.channelId);
 
   return (
     <ServerChannelClient

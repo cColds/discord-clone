@@ -22,7 +22,7 @@ export default async function DmPage({
 
   if (dm == null) redirect("/");
 
-  const initialMessages = await getMessages(25, params.channelId);
+  const initialMessages = await getMessages(params.channelId);
 
   const recipient =
     dm.members[0].id === user.id ? dm.members[1] : dm.members[0];
