@@ -24,12 +24,6 @@ export default function DmMainChat({
   const { user } = useUser();
   if (!user) redirect("/");
 
-  const fetchMessages = async ({ pageParam }: { pageParam: number }) => {
-    const updatedMessages = await getMessages(channelId, pageParam);
-
-    return updatedMessages;
-  };
-
   const firstMessageRef = useRef<HTMLDivElement>(null);
   const scrollPositionRef = useRef({
     previousScrollHeight: 0,
@@ -44,17 +38,12 @@ export default function DmMainChat({
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: ["messages", channelId],
-      queryFn: fetchMessages,
+      queryFn: ({ pageParam }) => getMessages(channelId, pageParam),
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
-        if (!lastPage.length) return;
-
-        return allPages.length + 1;
+        if (lastPage.length) return allPages.length + 1;
       },
-      initialData: {
-        pages: [messages],
-        pageParams: [0],
-      },
+      initialData: { pages: [messages], pageParams: [0] },
     });
 
   useEffect(() => {
@@ -71,25 +60,21 @@ export default function DmMainChat({
   }, [entry]);
 
   useEffect(() => {
-    if (isFetchingNextPage === false) {
-      const container = scrollerRef.current;
-      if (container) {
-        const newScrollHeight = container.scrollHeight;
+    const container = scrollerRef.current;
+    if (isFetchingNextPage || !container) return;
 
-        const heightDifference =
-          newScrollHeight - scrollPositionRef.current.previousScrollHeight;
+    const { previousScrollHeight, previousScrollTop } =
+      scrollPositionRef.current;
 
-        container.scrollTop =
-          scrollPositionRef.current.previousScrollTop + heightDifference;
-      }
-    }
+    const heightDifference = container.scrollHeight - previousScrollHeight;
+    container.scrollTop = previousScrollTop + heightDifference;
   }, [isFetchingNextPage]);
 
   const flatPageMessages = data.pages.toReversed().flatMap((page) => page);
 
   return (
     <ol className="mb-[30px] min-h-[150px] overflow-hidden">
-      <div ref={ref} id="container-intersection"></div>
+      <div ref={ref} id="container-intersection" />
       {isFetchingNextPage ? "Loading messages..." : null}
       <MessageList messages={flatPageMessages} user={user} />
     </ol>
