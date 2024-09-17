@@ -10,6 +10,7 @@ import { authConfig } from "@/auth.config";
 import { SocketProvider } from "./providers/SocketProvider";
 import { UserProvider } from "./providers/UserProvider";
 import { getUser } from "@/lib/db/getUser";
+import { QueryProvider } from "./providers/QueryProvider";
 
 const ggSans = localFont({
   src: [
@@ -58,10 +59,12 @@ export default async function RootLayout({
         <UserProvider userProp={user}>
           <SocketProvider userId={data?.user.id}>
             <SessionProvider>
-              <div className="flex h-full w-full scroller">
-                {data && <ServerNav />}
-                <main className="w-full overflow-hidden">{children}</main>
-              </div>
+              <QueryProvider>
+                <div className="flex h-full w-full scroller">
+                  {data && <ServerNav />}
+                  <main className="w-full overflow-hidden">{children}</main>
+                </div>
+              </QueryProvider>
             </SessionProvider>
           </SocketProvider>
         </UserProvider>

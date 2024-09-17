@@ -5,7 +5,7 @@ import dbConnect from "./dbConnect";
 import { MessageType } from "@/types/message";
 import { revalidatePath } from "next/cache";
 
-export async function getMessages(channelId: string) {
+export async function getMessages(channelId: string, pages?: number) {
   await dbConnect();
 
   const messages = await Message.find(
@@ -14,7 +14,8 @@ export async function getMessages(channelId: string) {
   )
     .limit(50)
     .populate({ path: "sender", select: "-password -social -dms -servers -id" })
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .skip((pages || 0) * 50);
 
   const serializedMessages = JSON.parse(
     JSON.stringify(messages)

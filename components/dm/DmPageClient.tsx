@@ -84,7 +84,6 @@ export default function DmPageClient({
     socket.on("received-message", async () => {
       const updatedMessages = await getMessages(channelId);
 
-      console.log("test", updatedMessages);
       setMessages(updatedMessages);
     });
 
@@ -117,6 +116,7 @@ export default function DmPageClient({
         recipient={recipient}
         messages={optimisticMessages}
         addOptimisticMessage={addOptimisticMessage}
+        channelId={channelId}
       />
     </div>
   );

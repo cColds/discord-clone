@@ -14,6 +14,7 @@ type DmChannelType = {
   recipient: UserType;
   messages: MessageType[];
   addOptimisticMessage: (msg: MessageType) => void;
+  channelId: string;
 };
 
 export default function DmChannel({
@@ -21,6 +22,7 @@ export default function DmChannel({
   recipient,
   messages,
   addOptimisticMessage,
+  channelId,
 }: DmChannelType) {
   const [isReadyToShow, setIsReadyToShow] = useState(false);
   const [lastMessageId, setLastMessageId] = useState(
@@ -77,7 +79,11 @@ export default function DmChannel({
             >
               <div className="flex flex-col min-h-full items-stretch justify-end">
                 <DmNewChatHeader user={user} recipient={recipient} />
-                <DmMainChat messages={messages} />
+                <DmMainChat
+                  messages={messages}
+                  channelId={channelId}
+                  scrollerRef={scrollerRef}
+                />
               </div>
             </div>
             <MessageBox
