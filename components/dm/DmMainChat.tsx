@@ -43,7 +43,7 @@ export default function DmMainChat({
 
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useInfiniteQuery({
-      queryKey: ["messages"],
+      queryKey: ["messages", channelId],
       queryFn: fetchMessages,
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
