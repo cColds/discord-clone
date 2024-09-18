@@ -41,7 +41,7 @@ export default function DmMainChat({
       queryFn: ({ pageParam }) => getMessages(channelId, pageParam),
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
-        if (lastPage.length) return allPages.length + 1;
+        if (lastPage.length) return allPages.length;
       },
       initialData: { pages: [messages], pageParams: [0] },
     });
