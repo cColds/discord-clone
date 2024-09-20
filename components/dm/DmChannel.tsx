@@ -8,7 +8,7 @@ import DmMainChat from "./DmMainChat";
 import MessageBox from "../message/input/MessageBox";
 import { useEffect, useRef, useState } from "react";
 import DmSidebar from "./DmSidebar";
-import { FetchNextPageType, QueryMessages } from "@/types/tanstack-query";
+import { FetchNextPageType } from "@/types/tanstack-query";
 
 type DmChannelType = {
   user: UserType;

@@ -19,8 +19,8 @@ export const useCreateMessage = () => {
       console.log("error creating msg");
     },
     onSettled: async () => {
-      console.log("Settled msg");
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
     },
+    mutationKey: ["messages"],
   });
 };

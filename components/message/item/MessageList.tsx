@@ -12,6 +12,7 @@ import {
 import MessageItem from "./MessageItem";
 import { UserType } from "@/types/user";
 import { useState } from "react";
+import MessagePreviewList from "./MessagePreviewList";
 
 type MessageListProps = {
   messages: MessageType[];
@@ -81,6 +82,8 @@ const MessageList = ({ messages, user }: MessageListProps) => {
           />
         );
       })}
+
+      <MessagePreviewList />
     </>
   );
 };
