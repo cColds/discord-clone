@@ -5,21 +5,27 @@ import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
 
 import MessageList from "../message/item/MessageList";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getMessages } from "@/lib/db/getMessages";
+
 import { useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
+import { FetchNextPageType } from "@/types/tanstack-query";
 
 type DmMainChatProps = {
   messages: MessageType[];
   channelId: string;
   scrollerRef: React.RefObject<HTMLDivElement>;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  fetchNextPage: FetchNextPageType;
 };
 
 export default function DmMainChat({
   channelId,
   messages,
   scrollerRef,
+  hasNextPage,
+  fetchNextPage,
+  isFetchingNextPage,
 }: DmMainChatProps) {
   const { user } = useUser();
   if (!user) redirect("/");
@@ -34,17 +40,6 @@ export default function DmMainChat({
     root: firstMessageRef.current,
     threshold: 1,
   });
-
-  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
-    useInfiniteQuery({
-      queryKey: ["messages", channelId],
-      queryFn: ({ pageParam }) => getMessages(channelId, pageParam),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages) => {
-        if (lastPage.length) return allPages.length;
-      },
-      initialData: { pages: [messages], pageParams: [0] },
-    });
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -70,13 +65,11 @@ export default function DmMainChat({
     container.scrollTop = previousScrollTop + heightDifference;
   }, [isFetchingNextPage]);
 
-  const flatPageMessages = data.pages.toReversed().flatMap((page) => page);
-
   return (
     <ol className="mb-[30px] min-h-[150px] overflow-hidden">
       <div ref={ref} id="container-intersection" />
       {isFetchingNextPage ? "Loading messages..." : null}
-      <MessageList messages={flatPageMessages} user={user} />
+      <MessageList messages={messages} user={user} />
     </ol>
   );
 }

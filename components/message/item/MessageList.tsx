@@ -1,3 +1,5 @@
+"use client";
+
 import { MessageType } from "@/types/message";
 import {
   differenceInMinutes,

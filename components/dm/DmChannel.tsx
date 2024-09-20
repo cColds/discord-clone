@@ -8,6 +8,7 @@ import DmMainChat from "./DmMainChat";
 import MessageBox from "../message/input/MessageBox";
 import { useEffect, useRef, useState } from "react";
 import DmSidebar from "./DmSidebar";
+import { FetchNextPageType, QueryMessages } from "@/types/tanstack-query";
 
 type DmChannelType = {
   user: UserType;
@@ -15,6 +16,9 @@ type DmChannelType = {
   messages: MessageType[];
   addOptimisticMessage: (msg: MessageType) => void;
   channelId: string;
+  fetchNextPage: FetchNextPageType;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
 };
 
 export default function DmChannel({
@@ -23,6 +27,9 @@ export default function DmChannel({
   messages,
   addOptimisticMessage,
   channelId,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
 }: DmChannelType) {
   const [isReadyToShow, setIsReadyToShow] = useState(false);
   const [lastMessageId, setLastMessageId] = useState(
@@ -83,6 +90,9 @@ export default function DmChannel({
                   messages={messages}
                   channelId={channelId}
                   scrollerRef={scrollerRef}
+                  fetchNextPage={fetchNextPage}
+                  hasNextPage={hasNextPage}
+                  isFetchingNextPage={isFetchingNextPage}
                 />
               </div>
             </div>

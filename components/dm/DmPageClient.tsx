@@ -7,12 +7,13 @@ import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
 import { MessageType, OptimisticMessage } from "@/types/message";
 import { useSocket } from "@/app/providers/SocketProvider";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
 import useOptimistic from "@/hooks/useOptimistic";
 import { readMessages } from "@/lib/db/readMessages";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 type DmPageClientType = {
   recipient: UserType;
@@ -27,15 +28,26 @@ export default function DmPageClient({
   initialMessages,
   channelId,
 }: DmPageClientType) {
-  const [messages, setMessages] = useState(initialMessages);
   const [optimisticMessages, setOptimisticMessages] =
-    useOptimistic<OptimisticMessage[]>(messages);
+    useOptimistic<OptimisticMessage[]>(initialMessages);
 
   const { user, setUser } = useUser();
   if (!user) redirect("/");
 
   const dms = sortOpenDms(user.dms);
   const { socket } = useSocket();
+  const queryClient = useQueryClient();
+
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["messages", channelId],
+      queryFn: ({ pageParam }) => getMessages(channelId, pageParam),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.length) return allPages.length;
+      },
+      initialData: { pages: [initialMessages], pageParams: [0] },
+    });
 
   const addOptimisticMessage = (msg: MessageType) => {
     setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
@@ -52,7 +64,7 @@ export default function DmPageClient({
     updateReadMessages();
 
     return () => socket.off("mark-messages-as-read");
-  }, [socket, messages]);
+  }, [socket, data]);
 
   useEffect(() => {
     if (!socket) return;
@@ -82,9 +94,9 @@ export default function DmPageClient({
     });
 
     socket.on("received-message", async () => {
-      const updatedMessages = await getMessages(channelId);
-
-      setMessages(updatedMessages);
+      await queryClient.invalidateQueries({
+        queryKey: ["messages"],
+      });
     });
 
     socket.on("update-dms-list", async () => {
@@ -97,6 +109,8 @@ export default function DmPageClient({
 
     return () => socket.disconnect();
   }, [socket]);
+
+  const messages = data.pages.toReversed().flatMap((page) => page);
 
   return (
     <div className="flex h-full">
@@ -114,9 +128,12 @@ export default function DmPageClient({
       <DmChannel
         user={user}
         recipient={recipient}
-        messages={optimisticMessages}
+        messages={messages}
+        fetchNextPage={fetchNextPage}
         addOptimisticMessage={addOptimisticMessage}
         channelId={channelId}
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
       />
     </div>
   );

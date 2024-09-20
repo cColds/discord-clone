@@ -7,6 +7,10 @@ import { UserNormal, UserType } from "@/types/user";
 import { MessageType } from "@/types/message";
 import { getServer } from "@/lib/db/getServer";
 import { getDm } from "@/lib/db/getDm";
+import {
+  CreateMessageVariables,
+  useCreateMessage,
+} from "@/lib/services/mutations";
 
 type PreviewImageType = {
   name: string;
@@ -40,6 +44,8 @@ const useMessageHandler = ({
     channelId: string;
     serverId?: string;
   }>();
+
+  const createMessageMutation = useCreateMessage();
 
   const handleMessageSubmit = async () => {
     try {
@@ -82,17 +88,28 @@ const useMessageHandler = ({
         readBy: [sender.id],
       };
 
-      addOptimisticMessage(optimisticMsg);
-
       setMessage("");
       setPreviewImages([]);
       setFilesToUpload(null);
-      await sendMessage(
-        sender.id,
-        form,
-        Array.isArray(channelId) ? channelId[0] : channelId,
-        type
-      );
+
+      const messageParams: CreateMessageVariables = {
+        sender: sender.id,
+        formData: form,
+        channelId,
+        type,
+      };
+
+      if (type === "server") {
+        await sendMessage(
+          sender.id,
+          form,
+          Array.isArray(channelId) ? channelId[0] : channelId,
+          type
+        );
+        addOptimisticMessage(optimisticMsg);
+      } else {
+        createMessageMutation.mutate(messageParams);
+      }
 
       let membersIds: string[] = [];
 
