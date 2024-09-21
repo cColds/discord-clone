@@ -9,6 +9,8 @@ import MessageBox from "../message/input/MessageBox";
 import { useEffect, useRef, useState } from "react";
 import DmSidebar from "./DmSidebar";
 import { FetchNextPageType } from "@/types/tanstack-query";
+import { useMutationState } from "@tanstack/react-query";
+import { MessageMutation } from "@/types/MessageMutation";
 
 type DmChannelType = {
   user: UserType;
@@ -32,12 +34,12 @@ export default function DmChannel({
   isFetchingNextPage,
 }: DmChannelType) {
   const [isReadyToShow, setIsReadyToShow] = useState(false);
-  const [lastMessageId, setLastMessageId] = useState(
-    messages.length > 0 ? messages[messages.length - 1]._id : null
-  );
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const messagesMutation = useMutationState({
+    filters: { mutationKey: ["messages"], status: "pending" },
+    select: (mutation) => mutation.state as MessageMutation,
+  });
 
   useEffect(() => {
     if (scrollerRef.current) {
@@ -48,19 +50,10 @@ export default function DmChannel({
   }, []);
 
   useEffect(() => {
-    if (messages.length === 0) {
-      setLastMessageId(null);
-      return;
+    if (messagesMutation.length > 0 && scrollerRef.current) {
+      scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
     }
-
-    const latestMessage = messages[messages.length - 1];
-    if (lastMessageId !== latestMessage._id) {
-      if (scrollerRef.current) {
-        scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
-      }
-      setLastMessageId(latestMessage._id);
-    }
-  }, [messages]);
+  }, [messagesMutation]);
 
   const toggleSidebarOpen = () => {
     setSidebarOpen(!sidebarOpen);

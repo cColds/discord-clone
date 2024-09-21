@@ -1,14 +1,10 @@
-import { CreateMessageVariables } from "@/lib/services/mutations";
-import { MutationState, useMutationState } from "@tanstack/react-query";
-
-interface MessageMutationState extends MutationState {
-  variables: CreateMessageVariables;
-}
+import { MessageMutation } from "@/types/MessageMutation";
+import { useMutationState } from "@tanstack/react-query";
 
 function MessagePreviewList() {
   const messagesMutation = useMutationState({
     filters: { mutationKey: ["messages"], status: "pending" },
-    select: (mutation) => mutation.state as MessageMutationState,
+    select: (mutation) => mutation.state as MessageMutation,
   });
 
   return messagesMutation
