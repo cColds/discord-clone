@@ -28,7 +28,6 @@ const ChannelMainChat = ({
   fetchNextPage,
 }: ChannelMainChatProps) => {
   const [isReadyToShow, setIsReadyToShow] = useState(false);
-  const firstMessageRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const messagesMutation = useMutationState({
@@ -37,7 +36,7 @@ const ChannelMainChat = ({
   });
 
   const { ref, entry } = useIntersection({
-    root: firstMessageRef.current,
+    root: scrollerRef.current,
     threshold: 1,
   });
   const scrollPositionRef = useRef({

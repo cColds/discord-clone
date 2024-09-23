@@ -28,14 +28,13 @@ export default function DmMainChat({
   const { user } = useUser();
   if (!user) redirect("/");
 
-  const firstMessageRef = useRef<HTMLDivElement>(null);
   const scrollPositionRef = useRef({
     previousScrollHeight: 0,
     previousScrollTop: 0,
   });
 
   const { ref, entry } = useIntersection({
-    root: firstMessageRef.current,
+    root: scrollerRef.current,
     threshold: 1,
   });
 
