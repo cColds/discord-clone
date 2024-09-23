@@ -7,6 +7,8 @@ import MessageList from "../message/item/MessageList";
 import { FetchNextPageType } from "@/types/tanstack-query";
 import { useEffect, useRef, useState } from "react";
 import { useIntersection } from "@mantine/hooks";
+import { useMutationState } from "@tanstack/react-query";
+import { MessageMutation } from "@/types/MessageMutation";
 
 type ChannelMainChatProps = {
   channel: TextOrVoiceChannel;
@@ -29,6 +31,11 @@ const ChannelMainChat = ({
   const firstMessageRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
+  const messagesMutation = useMutationState({
+    filters: { mutationKey: ["messages"], status: "pending" },
+    select: (mutation) => mutation.state as MessageMutation,
+  });
+
   const { ref, entry } = useIntersection({
     root: firstMessageRef.current,
     threshold: 1,
@@ -47,6 +54,12 @@ const ChannelMainChat = ({
       setIsReadyToShow(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (messagesMutation.length > 0 && scrollerRef.current) {
+      scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
+    }
+  }, [messagesMutation]);
 
   return (
     <div
