@@ -16,7 +16,6 @@ type DmChannelType = {
   user: UserType;
   recipient: UserType;
   messages: MessageType[];
-  addOptimisticMessage: (msg: MessageType) => void;
   channelId: string;
   fetchNextPage: FetchNextPageType;
   hasNextPage: boolean;
@@ -27,7 +26,6 @@ export default function DmChannel({
   user,
   recipient,
   messages,
-  addOptimisticMessage,
   channelId,
   fetchNextPage,
   hasNextPage,
@@ -89,12 +87,7 @@ export default function DmChannel({
                 />
               </div>
             </div>
-            <MessageBox
-              sender={user}
-              recipient={recipient}
-              type="dm"
-              addOptimisticMessage={addOptimisticMessage}
-            />
+            <MessageBox sender={user} recipient={recipient} type="dm" />
           </div>
         </div>
 

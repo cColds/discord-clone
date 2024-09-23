@@ -5,13 +5,12 @@ import PrivateChannels from "@/components/sidebars/PrivateChannels";
 import DmChannel from "./DmChannel";
 import { useUser } from "@/app/providers/UserProvider";
 import { redirect } from "next/navigation";
-import { MessageType, OptimisticMessage } from "@/types/message";
+import { MessageType } from "@/types/message";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { useEffect } from "react";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { sortOpenDms } from "@/utils/helpers/sortOpenDms";
-import useOptimistic from "@/hooks/useOptimistic";
 import { readMessages } from "@/lib/db/readMessages";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -28,9 +27,6 @@ export default function DmPageClient({
   initialMessages,
   channelId,
 }: DmPageClientType) {
-  const [optimisticMessages, setOptimisticMessages] =
-    useOptimistic<OptimisticMessage[]>(initialMessages);
-
   const { user, setUser } = useUser();
   if (!user) redirect("/");
 
@@ -48,10 +44,6 @@ export default function DmPageClient({
       },
       initialData: { pages: [initialMessages], pageParams: [0] },
     });
-
-  const addOptimisticMessage = (msg: MessageType) => {
-    setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
-  };
 
   useEffect(() => {
     if (!socket) return;
@@ -130,7 +122,6 @@ export default function DmPageClient({
         recipient={recipient}
         messages={messages}
         fetchNextPage={fetchNextPage}
-        addOptimisticMessage={addOptimisticMessage}
         channelId={channelId}
         isFetchingNextPage={isFetchingNextPage}
         hasNextPage={hasNextPage}

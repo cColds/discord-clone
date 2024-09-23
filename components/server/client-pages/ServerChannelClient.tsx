@@ -6,13 +6,12 @@ import ServerSidebar from "../ServerSidebar";
 import Channel from "../Channel";
 import NoTextChannels from "../NoTextChannels";
 import { redirect } from "next/navigation";
-import { MessageType, OptimisticMessage } from "@/types/message";
+import { MessageType } from "@/types/message";
 import { useEffect, useState } from "react";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
 import { getMessages } from "@/lib/db/getMessages";
 import { getServer } from "@/lib/db/getServer";
-import useOptimistic from "@/hooks/useOptimistic";
 import { readMessages } from "@/lib/db/readMessages";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -27,20 +26,12 @@ const ServerChannelClient = ({
   channelId,
   initialMessages,
 }: ServerChannelClientProps) => {
-  // const [messages, setMessages] = useState(initialMessages);
   const [serverState, setServerState] = useState(server);
-
-  const [optimisticMessages, setOptimisticMessages] =
-    useOptimistic<OptimisticMessage[]>(initialMessages);
 
   const { user, setUser } = useUser();
   if (!user) redirect("/");
 
   const { socket } = useSocket();
-
-  const addOptimisticMessage = (msg: MessageType) => {
-    setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
-  };
 
   const queryClient = useQueryClient();
 
@@ -96,12 +87,6 @@ const ServerChannelClient = ({
     });
 
     socket.on("received-message", async () => {
-      // if (channelId) {
-      //   const updatedMessages = await getMessages(channelId);
-
-      //   setMessages(updatedMessages);
-      // }
-
       await queryClient.invalidateQueries({
         queryKey: ["messages"],
       });
@@ -144,7 +129,6 @@ const ServerChannelClient = ({
           channel={currentChannel}
           user={user}
           members={serverState.members}
-          addOptimisticMessage={addOptimisticMessage}
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
           hasNextPage={hasNextPage}

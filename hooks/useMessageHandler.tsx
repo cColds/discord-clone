@@ -1,10 +1,8 @@
-import { sendMessage } from "@/lib/actions/sendMessage";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { useTypingIndicator } from "./useTypingIndicator";
 import { useParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { UserNormal, UserType } from "@/types/user";
-import { MessageType } from "@/types/message";
+import { UserType } from "@/types/user";
 import { getServer } from "@/lib/db/getServer";
 import { getDm } from "@/lib/db/getDm";
 import {
@@ -22,14 +20,12 @@ type useMessageHandlerProps = {
   sender: UserType;
   recipient?: UserType;
   type: "dm" | "server";
-  addOptimisticMessage: (msg: MessageType) => void;
 };
 
 const useMessageHandler = ({
   sender,
   recipient,
   type,
-  addOptimisticMessage,
 }: useMessageHandlerProps) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");

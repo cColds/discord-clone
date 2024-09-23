@@ -15,7 +15,6 @@ type ChannelProps = {
   user: UserType;
   messages: MessageType[];
   members: Member[];
-  addOptimisticMessage: (msg: MessageType) => void;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: FetchNextPageType;
@@ -26,7 +25,6 @@ const Channel = ({
   user,
   messages,
   members,
-  addOptimisticMessage,
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
@@ -57,7 +55,6 @@ const Channel = ({
             <MessageBox
               sender={user}
               channelName={channel.name}
-              addOptimisticMessage={addOptimisticMessage}
               type="server"
             />
           </div>
