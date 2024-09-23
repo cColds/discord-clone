@@ -40,12 +40,23 @@ const ChannelMainChat = ({
     root: firstMessageRef.current,
     threshold: 1,
   });
+  const scrollPositionRef = useRef({
+    previousScrollHeight: 0,
+    previousScrollTop: 0,
+  });
 
   useEffect(() => {
     if (entry?.isIntersecting) {
+      const container = scrollerRef.current;
+
+      if (container) {
+        scrollPositionRef.current.previousScrollHeight = container.scrollHeight;
+        scrollPositionRef.current.previousScrollTop = container.scrollTop;
+      }
+
       if (hasNextPage) fetchNextPage();
     }
-  }, [entry]);
+  }, [entry]); // Fetch next page and track scroll position
 
   useEffect(() => {
     if (scrollerRef.current) {
@@ -53,13 +64,24 @@ const ChannelMainChat = ({
 
       setIsReadyToShow(true);
     }
-  }, []);
+  }, []); // Scrolls to bottom on initial load
 
   useEffect(() => {
     if (messagesMutation.length > 0 && scrollerRef.current) {
       scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
     }
-  }, [messagesMutation]);
+  }, [messagesMutation]); // Autoscroll on message change (might break on edit msg)
+
+  useEffect(() => {
+    const container = scrollerRef.current;
+    if (isFetchingNextPage || !container) return;
+
+    const { previousScrollHeight, previousScrollTop } =
+      scrollPositionRef.current;
+
+    const heightDifference = container.scrollHeight - previousScrollHeight;
+    container.scrollTop = previousScrollTop + heightDifference;
+  }, [isFetchingNextPage]); // Update scroll height to calculated previous height before messages fetched (so you are at the bottom of the new messages)
 
   return (
     <div
