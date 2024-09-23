@@ -42,14 +42,14 @@ export default function MessageItem({
   const { socket } = useSocket();
   const { channelId } = useParams();
 
-  const handleEditMessage = (messageId: string | null) => {
+  const toggleEditMessageBox = (messageId: string | null) => {
     onEditToggle(messageId);
     setEditedMessage(null);
   };
 
-  const updateEditedMessage = (message: string) => setEditedMessage(message);
+  const handleMessageChange = (message: string) => setEditedMessage(message);
 
-  const saveMessageChange = async () => {
+  const handleEditMessage = async () => {
     if (!editedMessage || !editMessageId) {
       throw new Error("Message id cannot be null");
     }
@@ -95,16 +95,16 @@ export default function MessageItem({
           {isEditActive && (
             <EditMessageBox
               message={msg.message}
+              toggleEditMessageBox={toggleEditMessageBox}
               onEditMessage={handleEditMessage}
-              saveMessageChange={saveMessageChange}
-              updateEditedMessage={updateEditedMessage}
+              onMessageChange={handleMessageChange}
               editedMessage={editedMessage}
             />
           )}
           {!isEditActive && (
             <MessageActions
               isYourMessage={user.id === msg.sender._id}
-              onEditMessage={handleEditMessage}
+              toggleEditMessageBox={toggleEditMessageBox}
               messageId={msg._id}
             />
           )}

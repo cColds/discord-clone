@@ -5,17 +5,17 @@ import { KeyboardEvent, useEffect } from "react";
 type EditMessageBoxType = {
   message: string;
   editedMessage: string | null;
-  onEditMessage: (messageId: string | null) => void;
-  saveMessageChange: () => void;
-  updateEditedMessage: (message: string) => void;
+  toggleEditMessageBox: (messageId: string | null) => void;
+  onEditMessage: () => void;
+  onMessageChange: (message: string) => void;
 };
 
 const EditMessageBox = ({
   message,
   editedMessage,
+  toggleEditMessageBox,
   onEditMessage,
-  saveMessageChange,
-  updateEditedMessage,
+  onMessageChange,
 }: EditMessageBoxType) => {
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     const isValidMessage = editedMessage?.trim();
@@ -24,23 +24,23 @@ const EditMessageBox = ({
 
     if (hitEnter && !isValidMessage) {
       e.preventDefault();
-      onEditMessage(null);
+      toggleEditMessageBox(null);
       return;
     }
 
     if (hitEnter) {
       e.preventDefault();
-      saveMessageChange();
+      onEditMessage();
     }
   };
 
   useEffect(() => {
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") onEditMessage(null);
+      if (e.key === "Escape") toggleEditMessageBox(null);
     });
 
     return () =>
-      window.removeEventListener("keydown", (e) => onEditMessage(null));
+      window.removeEventListener("keydown", () => toggleEditMessageBox(null));
   }, []);
 
   return (
@@ -50,7 +50,7 @@ const EditMessageBox = ({
           <TextareaAutosize
             className="border-0 outline-0 pl-4 pr-2.5 py-[11px] resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto rounded-lg h-[44px] max-h-[300px]"
             value={editedMessage === null ? message : editedMessage}
-            onChange={(e) => updateEditedMessage(e.target.value)}
+            onChange={(e) => onMessageChange(e.target.value)}
             onKeyDown={handleKeyDown}
           ></TextareaAutosize>
 
@@ -62,7 +62,7 @@ const EditMessageBox = ({
         escape to
         <button
           className="text-text-link duration-75 cursor-pointer"
-          onClick={() => onEditMessage(null)}
+          onClick={() => toggleEditMessageBox(null)}
         >
           cancel
         </button>
@@ -73,11 +73,11 @@ const EditMessageBox = ({
             try {
               const isValidMessage = editedMessage?.trim();
 
-              onEditMessage(null);
+              toggleEditMessageBox(null);
 
               if (!isValidMessage) return;
 
-              saveMessageChange();
+              onEditMessage();
             } catch (err) {
               console.error(err);
             }

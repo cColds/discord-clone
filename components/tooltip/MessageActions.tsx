@@ -27,13 +27,13 @@ const MessageActionButton = ({
 
 type MessageActionsType = {
   isYourMessage: boolean;
-  onEditMessage: (messageId: null | string) => void;
+  toggleEditMessageBox: (messageId: null | string) => void;
   messageId: string;
 };
 
 const MessageActions = ({
   isYourMessage,
-  onEditMessage,
+  toggleEditMessageBox,
   messageId,
 }: MessageActionsType) => {
   return (
@@ -50,7 +50,7 @@ const MessageActions = ({
           {isYourMessage ? (
             <MessageActionButton
               content="Edit"
-              onClick={() => onEditMessage(messageId)}
+              onClick={() => toggleEditMessageBox(messageId)}
             >
               <Edit className="w-5 h-5" />
             </MessageActionButton>
