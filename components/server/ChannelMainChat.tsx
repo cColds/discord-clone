@@ -4,14 +4,40 @@ import { UserType } from "@/types/user";
 import { MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
 import MessageList from "../message/item/MessageList";
+import { FetchNextPageType } from "@/types/tanstack-query";
+import { useEffect, useRef } from "react";
+import { useIntersection } from "@mantine/hooks";
 
 type ChannelMainChatProps = {
   channel: TextOrVoiceChannel;
   user: UserType;
   messages: MessageType[];
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  fetchNextPage: FetchNextPageType;
 };
 
-const ChannelMainChat = ({ channel, user, messages }: ChannelMainChatProps) => {
+const ChannelMainChat = ({
+  channel,
+  user,
+  messages,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+}: ChannelMainChatProps) => {
+  const firstMessageRef = useRef<HTMLDivElement>(null);
+
+  const { ref, entry } = useIntersection({
+    root: firstMessageRef.current,
+    threshold: 1,
+  });
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      if (hasNextPage) fetchNextPage();
+    }
+  }, [entry]);
+
   return (
     <div
       className="flex flex-col grow bg-background-primary overflow-y-scroll overflow-x-hidden"
@@ -47,6 +73,8 @@ const ChannelMainChat = ({ channel, user, messages }: ChannelMainChatProps) => {
           </div>
         </div>
 
+        <div ref={ref} id="container-intersection" />
+        {isFetchingNextPage ? "Loading messages..." : null}
         <MessageList user={user} messages={messages} />
       </ol>
     </div>

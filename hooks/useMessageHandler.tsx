@@ -57,37 +57,6 @@ const useMessageHandler = ({
         }
       }
 
-      const senderNormal: UserNormal = {
-        _id: sender.id,
-        username: sender.username,
-        displayName: sender.displayName,
-        email: sender.email,
-        avatar: sender.avatar,
-        status: sender.status,
-      };
-
-      const timestamp = new Date().toISOString();
-
-      const optimisticMsg = {
-        message: message,
-        _id: uuidv4(),
-        channelId,
-        images: filesToUpload
-          ? [
-              {
-                name: previewImages[0].name,
-                url: previewImages[0].url,
-                id: previewImages[0].id,
-              },
-            ]
-          : [],
-        sender: senderNormal,
-        createdAt: timestamp,
-        updatedAt: timestamp,
-        pending: true,
-        readBy: [sender.id],
-      };
-
       setMessage("");
       setPreviewImages([]);
       setFilesToUpload(null);
@@ -99,17 +68,7 @@ const useMessageHandler = ({
         type,
       };
 
-      if (type === "server") {
-        await sendMessage(
-          sender.id,
-          form,
-          Array.isArray(channelId) ? channelId[0] : channelId,
-          type
-        );
-        addOptimisticMessage(optimisticMsg);
-      } else {
-        createMessageMutation.mutate(messageParams);
-      }
+      createMessageMutation.mutate(messageParams);
 
       let membersIds: string[] = [];
 

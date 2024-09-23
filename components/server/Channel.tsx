@@ -8,6 +8,7 @@ import { MessageType } from "@/types/message";
 import MessageBox from "../message/input/MessageBox";
 import ChannelMembersList from "./ChannelMembersList";
 import { useState } from "react";
+import { FetchNextPageType } from "@/types/tanstack-query";
 
 type ChannelProps = {
   channel: TextOrVoiceChannel;
@@ -15,6 +16,9 @@ type ChannelProps = {
   messages: MessageType[];
   members: Member[];
   addOptimisticMessage: (msg: MessageType) => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  fetchNextPage: FetchNextPageType;
 };
 
 const Channel = ({
@@ -23,6 +27,9 @@ const Channel = ({
   messages,
   members,
   addOptimisticMessage,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
 }: ChannelProps) => {
   const [membersListOpen, setMembersListOpen] = useState(false);
 
@@ -43,6 +50,9 @@ const Channel = ({
               channel={channel}
               user={user}
               messages={messages}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              hasNextPage={hasNextPage}
             />
             <MessageBox
               sender={user}

@@ -14,6 +14,7 @@ import { getMessages } from "@/lib/db/getMessages";
 import { getServer } from "@/lib/db/getServer";
 import useOptimistic from "@/hooks/useOptimistic";
 import { readMessages } from "@/lib/db/readMessages";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 
 type ServerChannelClientProps = {
   server: ServerType;
@@ -26,11 +27,11 @@ const ServerChannelClient = ({
   channelId,
   initialMessages,
 }: ServerChannelClientProps) => {
-  const [messages, setMessages] = useState(initialMessages);
+  // const [messages, setMessages] = useState(initialMessages);
   const [serverState, setServerState] = useState(server);
 
   const [optimisticMessages, setOptimisticMessages] =
-    useOptimistic<OptimisticMessage[]>(messages);
+    useOptimistic<OptimisticMessage[]>(initialMessages);
 
   const { user, setUser } = useUser();
   if (!user) redirect("/");
@@ -40,6 +41,19 @@ const ServerChannelClient = ({
   const addOptimisticMessage = (msg: MessageType) => {
     setOptimisticMessages((prevMessages) => [...prevMessages, msg]);
   };
+
+  const queryClient = useQueryClient();
+
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["messages", channelId],
+      queryFn: ({ pageParam }) => getMessages(channelId, pageParam),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.length) return allPages.length;
+      },
+      initialData: { pages: [initialMessages], pageParams: [0] },
+    });
 
   useEffect(() => {
     if (!socket) return;
@@ -52,7 +66,7 @@ const ServerChannelClient = ({
     updateReadMessages();
 
     return () => socket.off("mark-messages-as-read");
-  }, [socket, messages]);
+  }, [socket, data]);
 
   useEffect(() => {
     if (!socket) return;
@@ -82,11 +96,15 @@ const ServerChannelClient = ({
     });
 
     socket.on("received-message", async () => {
-      if (channelId) {
-        const updatedMessages = await getMessages(channelId);
+      // if (channelId) {
+      //   const updatedMessages = await getMessages(channelId);
 
-        setMessages(updatedMessages);
-      }
+      //   setMessages(updatedMessages);
+      // }
+
+      await queryClient.invalidateQueries({
+        queryKey: ["messages"],
+      });
     });
 
     socket.on("create-channel", async () => {
@@ -114,17 +132,22 @@ const ServerChannelClient = ({
     }
   }
 
+  const messages = data.pages.toReversed().flatMap((page) => page);
+
   return (
     <div className="flex grow overflow-hidden h-full">
       <ServerSidebar server={serverState} user={user} />
 
       {channelId && currentChannel ? (
         <Channel
-          messages={optimisticMessages}
+          messages={messages}
           channel={currentChannel}
           user={user}
           members={serverState.members}
           addOptimisticMessage={addOptimisticMessage}
+          fetchNextPage={fetchNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          hasNextPage={hasNextPage}
         />
       ) : (
         <NoTextChannels />
