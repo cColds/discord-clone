@@ -5,7 +5,7 @@ import { MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
 import MessageList from "../message/item/MessageList";
 import { FetchNextPageType } from "@/types/tanstack-query";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useIntersection } from "@mantine/hooks";
 
 type ChannelMainChatProps = {
@@ -25,7 +25,9 @@ const ChannelMainChat = ({
   isFetchingNextPage,
   fetchNextPage,
 }: ChannelMainChatProps) => {
+  const [isReadyToShow, setIsReadyToShow] = useState(false);
   const firstMessageRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
   const { ref, entry } = useIntersection({
     root: firstMessageRef.current,
@@ -38,10 +40,20 @@ const ChannelMainChat = ({
     }
   }, [entry]);
 
+  useEffect(() => {
+    if (scrollerRef.current) {
+      scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
+
+      setIsReadyToShow(true);
+    }
+  }, []);
+
   return (
     <div
       className="flex flex-col grow bg-background-primary overflow-y-scroll overflow-x-hidden"
       aria-label={`${channel.name} (channel)`}
+      ref={scrollerRef}
+      style={{ visibility: isReadyToShow ? "visible" : "hidden" }}
     >
       <ol
         className={cn("mb-4", {
