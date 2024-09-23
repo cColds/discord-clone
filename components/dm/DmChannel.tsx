@@ -16,7 +16,6 @@ type DmChannelType = {
   user: UserType;
   recipient: UserType;
   messages: MessageType[];
-  channelId: string;
   fetchNextPage: FetchNextPageType;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -26,7 +25,6 @@ export default function DmChannel({
   user,
   recipient,
   messages,
-  channelId,
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
@@ -79,7 +77,6 @@ export default function DmChannel({
                 <DmNewChatHeader user={user} recipient={recipient} />
                 <DmMainChat
                   messages={messages}
-                  channelId={channelId}
                   scrollerRef={scrollerRef}
                   fetchNextPage={fetchNextPage}
                   hasNextPage={hasNextPage}

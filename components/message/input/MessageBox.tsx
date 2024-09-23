@@ -7,14 +7,12 @@ import TextareaAutosize from "react-textarea-autosize";
 import TypingIndicator from "./TypingIndicator";
 import EmojiPicker from "./EmojiPicker";
 import useMessageHandler from "@/hooks/useMessageHandler";
-import { MessageType } from "@/types/message";
 
 type MessageBoxType = {
   recipient?: UserType;
   sender: UserType;
   channelName?: string;
   type: "dm" | "server";
-  addOptimisticMessage: (msg: MessageType) => void;
 };
 
 export default function MessageBox({
@@ -22,7 +20,6 @@ export default function MessageBox({
   sender,
   channelName,
   type,
-  addOptimisticMessage,
 }: MessageBoxType) {
   const {
     message,
@@ -34,7 +31,7 @@ export default function MessageBox({
     handleKeyDown,
     handleRemovePreviewImage,
     toggleDropdownMenu,
-  } = useMessageHandler({ sender, recipient, type, addOptimisticMessage });
+  } = useMessageHandler({ sender, recipient, type });
 
   return (
     <form className="px-4 shrink-0 -mt-2 z-10 relative">

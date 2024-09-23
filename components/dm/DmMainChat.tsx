@@ -12,7 +12,6 @@ import { FetchNextPageType } from "@/types/tanstack-query";
 
 type DmMainChatProps = {
   messages: MessageType[];
-  channelId: string;
   scrollerRef: React.RefObject<HTMLDivElement>;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
@@ -20,7 +19,6 @@ type DmMainChatProps = {
 };
 
 export default function DmMainChat({
-  channelId,
   messages,
   scrollerRef,
   hasNextPage,

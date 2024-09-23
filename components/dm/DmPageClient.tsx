@@ -122,7 +122,6 @@ export default function DmPageClient({
         recipient={recipient}
         messages={messages}
         fetchNextPage={fetchNextPage}
-        channelId={channelId}
         isFetchingNextPage={isFetchingNextPage}
         hasNextPage={hasNextPage}
       />
