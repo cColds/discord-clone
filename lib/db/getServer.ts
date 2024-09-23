@@ -10,10 +10,13 @@ export const getServer = async (serverId: string) => {
   try {
     const server = await Server.findById(serverId).populate({
       path: "members",
-      select: "displayName avatar _id status online username",
+      select: "displayName avatar id status online username",
     });
 
-    return (JSON.parse(JSON.stringify(server)) as ServerType) || null;
+    const serializedServer =
+      (JSON.parse(JSON.stringify(server)) as ServerType) || null;
+
+    return serializedServer;
   } catch (error) {
     console.error("Failed to fetch server:", error);
     return null;

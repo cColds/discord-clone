@@ -66,27 +66,15 @@ const useMessageHandler = ({
 
       createMessageMutation.mutate(messageParams);
 
-      let membersIds: string[] = [];
-
-      if (serverId) {
-        const server = await getServer(serverId);
-
-        const serverMembers = server?.members
-          .filter((member) => member._id !== sender.id)
-          .map((member) => member._id);
-
-        membersIds = serverMembers || [];
-      } else {
-        const dm = await getDm(channelId);
-
-        const dmMembers = dm?.members
+      const serverOrDm = serverId
+        ? await getServer(serverId)
+        : await getDm(channelId);
+      const memberIds =
+        serverOrDm?.members
           .filter((member) => member.id !== sender.id)
-          .map((member) => member.id);
+          .map((member) => member.id) || [];
 
-        membersIds = dmMembers || [];
-      }
-
-      socket.emit("send-message", channelId, membersIds);
+      socket.emit("send-message", channelId, memberIds);
       socket.emit("stop-typing", channelId, {
         userId: sender.id,
         displayName: sender.displayName,

@@ -44,7 +44,7 @@ export type ServerType = {
 };
 
 export type Member = {
-  _id: string;
+  id: string;
   displayName: string;
   avatar: string;
   status: Status;
