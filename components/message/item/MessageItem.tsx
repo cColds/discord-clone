@@ -12,7 +12,7 @@ import { useParams } from "next/navigation";
 import ImageList from "./ImageList";
 import MessageDetails from "./MessageDetails";
 import ProcessingImage from "./ProcessingImage";
-import { useEditMessage } from "@/lib/services/mutations";
+import { useDeleteMessage, useEditMessage } from "@/lib/services/mutations";
 
 type MessageItemType = {
   msg: MessageType & { pending?: boolean };
@@ -42,6 +42,7 @@ export default function MessageItem({
   const { socket } = useSocket();
   const { channelId } = useParams();
   const editMessageMutation = useEditMessage();
+  const deleteMessageMutation = useDeleteMessage();
 
   const toggleEditMessageBox = (messageId: string | null) => {
     onEditToggle(messageId);
@@ -63,6 +64,15 @@ export default function MessageItem({
 
       socket.emit("send-message", channelId);
       onEditToggle(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteMessage = async () => {
+    try {
+      deleteMessageMutation.mutate({ messageId: msg._id, userId: user.id });
+      socket.emit("send-message", channelId);
     } catch (err) {
       console.error(err);
     }
@@ -111,6 +121,7 @@ export default function MessageItem({
               isYourMessage={user.id === msg.sender._id}
               toggleEditMessageBox={toggleEditMessageBox}
               messageId={msg._id}
+              onDeleteMessage={handleDeleteMessage}
             />
           )}
         </div>

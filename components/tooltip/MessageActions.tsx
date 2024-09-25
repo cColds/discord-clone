@@ -1,4 +1,4 @@
-import { Edit, Menu, Reaction, Reply } from "../svgs";
+import { Edit, Menu, Reaction, Reply, Trash } from "../svgs";
 import ActionTooltip from "./ActionTooltip";
 
 type MessageActionButtonType = {
@@ -29,12 +29,14 @@ type MessageActionsType = {
   isYourMessage: boolean;
   toggleEditMessageBox: (messageId: null | string) => void;
   messageId: string;
+  onDeleteMessage: () => void;
 };
 
 const MessageActions = ({
   isYourMessage,
   toggleEditMessageBox,
   messageId,
+  onDeleteMessage,
 }: MessageActionsType) => {
   return (
     <div className="absolute top-0 right-0">
@@ -43,10 +45,18 @@ const MessageActions = ({
         role="group"
       >
         <div className="grid grid-flow-col bg-background-primary shadow-elevation-low h-8 select-none duration-100 relative">
-          <MessageActionButton content="Add Reaction">
-            <Reaction className="w-5 h-5" />
-          </MessageActionButton>
-
+          {isYourMessage ? (
+            <MessageActionButton
+              content="Delete Message"
+              onClick={onDeleteMessage}
+            >
+              <Trash className="w-5 h-5" />
+            </MessageActionButton>
+          ) : (
+            <MessageActionButton content="Add Reaction">
+              <Reaction className="w-5 h-5" />
+            </MessageActionButton>
+          )}
           {isYourMessage ? (
             <MessageActionButton
               content="Edit"
