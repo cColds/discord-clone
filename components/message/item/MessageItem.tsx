@@ -57,7 +57,7 @@ export default function MessageItem({
     }
 
     try {
-      editMessageMutation.mutate({
+      await editMessageMutation.mutateAsync({
         messageId: editMessageId,
         updatedMessage: editedMessage,
       });
@@ -71,7 +71,10 @@ export default function MessageItem({
 
   const handleDeleteMessage = async () => {
     try {
-      deleteMessageMutation.mutate({ messageId: msg._id, userId: user.id });
+      await deleteMessageMutation.mutateAsync({
+        messageId: msg._id,
+        userId: user.id,
+      });
       socket.emit("send-message", channelId);
     } catch (err) {
       console.error(err);

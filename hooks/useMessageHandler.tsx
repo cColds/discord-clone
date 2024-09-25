@@ -64,7 +64,7 @@ const useMessageHandler = ({
         type,
       };
 
-      createMessageMutation.mutate(messageParams);
+      await createMessageMutation.mutateAsync(messageParams);
 
       const serverOrDm = serverId
         ? await getServer(serverId)
