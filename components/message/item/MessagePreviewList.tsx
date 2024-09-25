@@ -10,8 +10,13 @@ function MessagePreviewList() {
   return messagesMutation
     .filter((messageMutation) => messageMutation?.status === "pending")
     .map((mutation) => {
-      const message =
-        mutation.variables.formData.get("message")?.toString() || "Placeholder";
+      let message = "";
+
+      if ("formData" in mutation.variables) {
+        message = mutation.variables.formData.get("message")?.toString() || "";
+      }
+
+      if (!message) return null;
 
       return (
         <li

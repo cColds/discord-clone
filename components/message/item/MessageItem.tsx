@@ -7,12 +7,12 @@ import { MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
 import { UserType } from "@/types/user";
 import { useState } from "react";
-import { editMessage } from "@/lib/db/editMessage";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { useParams } from "next/navigation";
 import ImageList from "./ImageList";
 import MessageDetails from "./MessageDetails";
 import ProcessingImage from "./ProcessingImage";
+import { useEditMessage } from "@/lib/services/mutations";
 
 type MessageItemType = {
   msg: MessageType & { pending?: boolean };
@@ -41,6 +41,7 @@ export default function MessageItem({
 
   const { socket } = useSocket();
   const { channelId } = useParams();
+  const editMessageMutation = useEditMessage();
 
   const toggleEditMessageBox = (messageId: string | null) => {
     onEditToggle(messageId);
@@ -55,7 +56,11 @@ export default function MessageItem({
     }
 
     try {
-      await editMessage(editMessageId, editedMessage);
+      editMessageMutation.mutate({
+        messageId: editMessageId,
+        updatedMessage: editedMessage,
+      });
+
       socket.emit("send-message", channelId);
       onEditToggle(null);
     } catch (err) {

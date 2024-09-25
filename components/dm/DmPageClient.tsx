@@ -86,9 +86,7 @@ export default function DmPageClient({
     });
 
     socket.on("received-message", async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["messages"],
-      });
+      await queryClient.invalidateQueries({ queryKey: ["messages"] });
     });
 
     socket.on("update-dms-list", async () => {
