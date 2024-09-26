@@ -28,4 +28,6 @@ export type UserNormal = {
   email: string;
   avatar: string;
   status: Status;
+  createdAt: string;
+  updatedAt: string;
 };

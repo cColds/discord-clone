@@ -3,6 +3,8 @@ import ActionTooltip from "../../tooltip/ActionTooltip";
 import { format } from "date-fns";
 import { MessageType } from "@/types/message";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
+import UserProfileModal from "@/components/modals/UserProfileModal";
+import { UserNormal } from "@/types/user";
 
 type MessageDetailsProps = {
   msg: MessageType & { pending?: boolean };
@@ -10,6 +12,7 @@ type MessageDetailsProps = {
   formatted: string;
   editedDate: string;
   isEditActive: boolean;
+  user: UserNormal;
 };
 
 const MessageDetails = ({
@@ -18,6 +21,7 @@ const MessageDetails = ({
   formatted,
   editedDate,
   isEditActive,
+  user,
 }: MessageDetailsProps) => {
   const transformation = "c_fill,h_80,w_80";
 
@@ -32,18 +36,23 @@ const MessageDetails = ({
     <div>
       {!shouldMergeMessages ? (
         <>
-          <Image
-            src={transformedAvatar}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full overflow-hidden cursor-pointer mt-0.5 select-none absolute left-4"
-          />
+          <UserProfileModal user={user}>
+            <Image
+              src={transformedAvatar}
+              alt=""
+              width={40}
+              height={40}
+              className="rounded-full overflow-hidden cursor-pointer mt-0.5 select-none absolute left-4"
+            />
+          </UserProfileModal>
 
           <h3 className="min-h-[1.375rem] leading-[1.375rem]">
-            <span className="leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline">
-              {msg.sender.displayName}
-            </span>
+            <UserProfileModal user={user}>
+              <button className="border-0 leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline">
+                {msg.sender.displayName}
+              </button>
+            </UserProfileModal>
+
             <time
               dateTime={msg.createdAt}
               className="text-xs leading-[1.375rem] text-text-muted ml-[0.25rem] overflow-hidden"

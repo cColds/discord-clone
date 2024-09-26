@@ -33,8 +33,6 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
           </header>
 
           <div className="min-w-0 grow pr-2">
-            {" "}
-            {/*todo: add custom scrollbar (may need to remove pr-2) and add overflow*/}
             <ul className="" aria-label="Channels">
               <li className="py-[1px] group mt-3">
                 <div className="min-h-[32px] cursor-pointer py-1.5 px-2 ml-2 rounded-sm flex justify-center items-center hover:bg-background-modifier-hover transition duration-100">

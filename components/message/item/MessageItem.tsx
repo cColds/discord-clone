@@ -106,6 +106,7 @@ export default function MessageItem({
             formatted={formatted}
             editedDate={editedDate}
             isEditActive={isEditActive}
+            user={msg.sender}
           />
 
           {!isEditActive && <ImageList images={msg.images} />}

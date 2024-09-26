@@ -1,6 +1,7 @@
 import { Member } from "@/types/server";
 import AvatarMask from "../avatar/AvatarMask";
 import { cn } from "@/lib/utils";
+import UserProfileModal from "../modals/UserProfileModal";
 
 type ChannelMembersListProps = {
   members: Member[];
@@ -21,28 +22,30 @@ const MemberItem = ({ member, type }: MemberItemProps) => {
       )}
       role="listitem"
     >
-      <button className="flex items-center rounded h-[42px] px-2 py-[1px] border-0 hover:bg-background-modifier-hover w-full transition-none">
-        <div className="flex justify-center items-center shrink-0 w-8 h-8 mr-3">
-          <div
-            className="w-8 h-8 rounded-[50%]"
-            aria-label={`${member.username}, ${member.status}`}
-            role="img"
-          >
-            <AvatarMask
-              avatar={member.avatar}
-              username={member.displayName}
-              status={member.status}
-              removeMask={type === "Offline"}
-            />
+      <UserProfileModal user={member}>
+        <button className="flex items-center rounded h-[42px] px-2 py-[1px] border-0 hover:bg-background-modifier-hover w-full transition-none">
+          <div className="flex justify-center items-center shrink-0 w-8 h-8 mr-3">
+            <div
+              className="w-8 h-8 rounded-[50%]"
+              aria-label={`${member.username}, ${member.status}`}
+              role="img"
+            >
+              <AvatarMask
+                avatar={member.avatar}
+                username={member.displayName}
+                status={member.status}
+                removeMask={type === "Offline"}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="grow overflow-hidden">
-          <div className="flex items-center">
-            <p className="truncate">{member.displayName}</p>
+          <div className="grow overflow-hidden">
+            <div className="flex items-center">
+              <p className="truncate">{member.displayName}</p>
+            </div>
           </div>
-        </div>
-      </button>
+        </button>
+      </UserProfileModal>
     </div>
   );
 };
@@ -78,7 +81,7 @@ const ChannelMembersList = ({
           </h3>
 
           {onlineMembers.map((member) => (
-            <MemberItem member={member} key={member._id} type="Online" />
+            <MemberItem member={member} key={member.id} type="Online" />
           ))}
 
           {offlineMembers && (
@@ -93,7 +96,7 @@ const ChannelMembersList = ({
           )}
 
           {offlineMembers.map((member) => (
-            <MemberItem member={member} key={member._id} type="Offline" />
+            <MemberItem member={member} key={member.id} type="Offline" />
           ))}
         </ul>
       </div>

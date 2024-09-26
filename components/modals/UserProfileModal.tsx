@@ -1,12 +1,13 @@
-import { UserType } from "@/types/user";
+import { UserNormal, UserType } from "@/types/user";
 import AvatarMask from "../avatar/AvatarMask";
 import { Message, ProfileBanner } from "../svgs";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { Member } from "@/types/server";
 
 type UserProfileModalProps = {
-  user: UserType;
+  user: UserType | UserNormal | Member;
   children: React.ReactNode;
 };
 
@@ -37,7 +38,6 @@ const UserProfileTabItem = ({ selected, label }: UserProfileTabItemProps) => {
 
 function UserProfileModal({ user, children }: UserProfileModalProps) {
   const userJoinDate = format(new Date(user.createdAt), "LLL d, y");
-
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>

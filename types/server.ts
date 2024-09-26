@@ -50,4 +50,5 @@ export type Member = {
   status: Status;
   username: string;
   online: boolean;
+  createdAt: string;
 };
