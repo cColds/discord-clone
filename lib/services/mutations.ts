@@ -23,7 +23,7 @@ export const useCreateMessage = () => {
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
     },
-    mutationKey: ["messages"],
+    mutationKey: ["messages", "create-message"],
   });
 };
 
@@ -42,6 +42,7 @@ export const useEditMessage = () => {
     onError: () => {
       console.error("Error editing message");
     },
+
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
       console.log("Successfully edited message");
@@ -61,7 +62,6 @@ export const useDeleteMessage = () => {
   return useMutation({
     mutationFn: (v: DeleteMessageVariables) =>
       deleteMessage(v.userId, v.messageId),
-
     onError: () => {
       console.error("Error deleting message");
     },

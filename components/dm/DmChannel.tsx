@@ -33,7 +33,7 @@ export default function DmChannel({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const messagesMutation = useMutationState({
-    filters: { mutationKey: ["messages"], status: "pending" },
+    filters: { mutationKey: ["messages", "create-message"], status: "pending" },
     select: (mutation) => mutation.state as MessageMutation,
   });
 
