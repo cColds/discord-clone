@@ -3,20 +3,15 @@ import { useMutationState } from "@tanstack/react-query";
 
 function MessagePreviewList() {
   const messagesMutation = useMutationState({
-    filters: { mutationKey: ["messages"], status: "pending" },
+    filters: { mutationKey: ["messages", "create-message"], status: "pending" },
     select: (mutation) => mutation.state as MessageMutation,
   });
 
   return messagesMutation
     .filter((messageMutation) => messageMutation?.status === "pending")
     .map((mutation) => {
-      let message = "";
-
-      if ("formData" in mutation.variables) {
-        message = mutation.variables.formData.get("message")?.toString() || "";
-      }
-
-      if (!message) return null;
+      const message =
+        mutation.variables.formData.get("message")?.toString() || "";
 
       return (
         <li
