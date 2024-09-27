@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CreateInvite, Hash, Volume, Settings } from "../svgs";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { cn } from "@/lib/utils";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import CreateInviteModal from "../modals/server/CreateInviteModal";
 import { createInvite } from "@/lib/db/createInvite";
 import { useState, MouseEvent } from "react";
@@ -20,6 +20,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   const { channelId } = useParams();
+  const router = useRouter();
 
   const handleCreateInvite = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
