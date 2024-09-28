@@ -3,7 +3,7 @@
 import EditMessageBox from "@/components/message/input/EditMessageBox";
 import MessageActions from "@/components/tooltip/MessageActions";
 import DateDivider from "@/components/message/item/DateDivider";
-import { MessageType } from "@/types/message";
+import { MessageImage, MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useSocket } from "@/app/providers/SocketProvider";
@@ -14,7 +14,10 @@ import ProcessingImage from "./ProcessingImage";
 import { useDeleteMessage, useEditMessage } from "@/lib/services/mutations";
 
 type MessageItemType = {
-  msg: MessageType & { pending?: boolean };
+  msg: MessageType & {
+    pending?: boolean;
+    previewImages?: FormDataEntryValue[];
+  };
   editedDate: string;
   showDateDivider: boolean;
   shouldMergeMessages: boolean;
@@ -80,7 +83,7 @@ export default function MessageItem({
     }
   };
 
-  if (msg.pending && msg.images.length) {
+  if (msg.pending && msg.previewImages?.length) {
     return <ProcessingImage />;
   }
 

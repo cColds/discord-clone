@@ -84,7 +84,7 @@ const MessageList = ({ messages, user }: MessageListProps) => {
         );
       })}
 
-      <MessagePreviewList />
+      <MessagePreviewList user={user} prevMessage={prevMessage} />
     </>
   );
 };
