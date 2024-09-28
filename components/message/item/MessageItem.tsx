@@ -5,7 +5,6 @@ import MessageActions from "@/components/tooltip/MessageActions";
 import DateDivider from "@/components/message/item/DateDivider";
 import { MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
-import { UserType } from "@/types/user";
 import { useState } from "react";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { useParams } from "next/navigation";
@@ -16,7 +15,6 @@ import { useDeleteMessage, useEditMessage } from "@/lib/services/mutations";
 
 type MessageItemType = {
   msg: MessageType & { pending?: boolean };
-  user: UserType;
   editedDate: string;
   showDateDivider: boolean;
   shouldMergeMessages: boolean;
@@ -24,11 +22,11 @@ type MessageItemType = {
   isEditActive: boolean;
   onEditToggle: (id: string | null) => void;
   editMessageId: string | null;
+  isYourMessage: boolean;
 };
 
 export default function MessageItem({
   msg,
-  user,
   editedDate,
   showDateDivider,
   shouldMergeMessages,
@@ -36,6 +34,7 @@ export default function MessageItem({
   isEditActive,
   onEditToggle,
   editMessageId,
+  isYourMessage,
 }: MessageItemType) {
   const [editedMessage, setEditedMessage] = useState<null | string>(null);
 
@@ -73,7 +72,7 @@ export default function MessageItem({
     try {
       await deleteMessageMutation.mutateAsync({
         messageId: msg._id,
-        userId: user.id,
+        userId: msg.sender.id,
       });
       socket.emit("send-message", channelId);
     } catch (err) {
@@ -106,7 +105,6 @@ export default function MessageItem({
             formatted={formatted}
             editedDate={editedDate}
             isEditActive={isEditActive}
-            user={msg.sender}
           />
 
           {!isEditActive && <ImageList images={msg.images} />}
@@ -122,7 +120,7 @@ export default function MessageItem({
           )}
           {!isEditActive && (
             <MessageActions
-              isYourMessage={user.id === msg.sender._id}
+              isYourMessage={isYourMessage}
               toggleEditMessageBox={toggleEditMessageBox}
               messageId={msg._id}
               onDeleteMessage={handleDeleteMessage}

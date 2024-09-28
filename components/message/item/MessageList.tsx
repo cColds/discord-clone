@@ -66,11 +66,11 @@ const MessageList = ({ messages, user }: MessageListProps) => {
         prevMessage = msg;
 
         const isEditActive = editMessageId === msg._id;
+        const isYourMessage = user.id === msg.sender.id;
 
         return (
           <MessageItem
             msg={msg}
-            user={user}
             editedDate={editedDate}
             showDateDivider={showDateDivider}
             shouldMergeMessages={shouldMergeMessages}
@@ -79,6 +79,7 @@ const MessageList = ({ messages, user }: MessageListProps) => {
             isEditActive={isEditActive}
             onEditToggle={handleEditMessageId}
             editMessageId={editMessageId}
+            isYourMessage={isYourMessage}
           />
         );
       })}

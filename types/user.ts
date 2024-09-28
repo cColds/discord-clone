@@ -22,6 +22,7 @@ export type UserType = SessionUser &
   UserDms & { createdAt: string; updatedAt: string };
 
 export type UserNormal = {
+  id: string;
   username: string;
   displayName: string;
   _id: string;

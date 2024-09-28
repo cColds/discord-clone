@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import { MessageType } from "@/types/message";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 import UserProfileModal from "@/components/modals/UserProfileModal";
-import { UserNormal } from "@/types/user";
 
 type MessageDetailsProps = {
   msg: MessageType & { pending?: boolean };
@@ -12,7 +11,6 @@ type MessageDetailsProps = {
   formatted: string;
   editedDate: string;
   isEditActive: boolean;
-  user: UserNormal;
 };
 
 const MessageDetails = ({
@@ -21,7 +19,6 @@ const MessageDetails = ({
   formatted,
   editedDate,
   isEditActive,
-  user,
 }: MessageDetailsProps) => {
   const transformation = "c_fill,h_80,w_80";
 
@@ -36,7 +33,7 @@ const MessageDetails = ({
     <div>
       {!shouldMergeMessages ? (
         <>
-          <UserProfileModal user={user}>
+          <UserProfileModal user={msg.sender}>
             <Image
               src={transformedAvatar}
               alt=""
@@ -47,7 +44,7 @@ const MessageDetails = ({
           </UserProfileModal>
 
           <h3 className="min-h-[1.375rem] leading-[1.375rem]">
-            <UserProfileModal user={user}>
+            <UserProfileModal user={msg.sender}>
               <button className="border-0 leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline">
                 {msg.sender.displayName}
               </button>
