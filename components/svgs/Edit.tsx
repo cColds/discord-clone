@@ -8,6 +8,7 @@ export function Edit({ className }: { className?: string }) {
       height="16"
       fill="none"
       viewBox="0 0 24 24"
+      className={className}
     >
       <path
         fill="currentColor"

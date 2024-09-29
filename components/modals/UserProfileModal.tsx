@@ -1,10 +1,11 @@
 import { UserNormal, UserType } from "@/types/user";
 import AvatarMask from "../avatar/AvatarMask";
-import { Message, ProfileBanner } from "../svgs";
+import { Edit, Message, ProfileBanner } from "../svgs";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Member } from "@/types/server";
+import { useUser } from "@/app/providers/UserProvider";
 
 type UserProfileModalProps = {
   user: UserType | UserNormal | Member;
@@ -38,6 +39,10 @@ const UserProfileTabItem = ({ selected, label }: UserProfileTabItemProps) => {
 
 function UserProfileModal({ user, children }: UserProfileModalProps) {
   const userJoinDate = format(new Date(user.createdAt), "LLL d, y");
+  const userCtx = useUser();
+
+  const isYourAccount = user.id === userCtx.user?.id;
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -77,10 +82,17 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
                 aria-label="Message"
                 type="button"
               >
-                <div className="truncate flex items-center gap-1">
-                  <Message width={18} height={18} />
-                  Message
-                </div>
+                {isYourAccount ? (
+                  <div className="truncate flex items-center gap-1 border-0">
+                    <Edit className="w-[18px] h-[18px]" />
+                    Edit Profile
+                  </div>
+                ) : (
+                  <div className="truncate flex items-center gap-1">
+                    <Message width={18} height={18} />
+                    Message
+                  </div>
+                )}
               </button>
             </div>
           </header>
@@ -102,8 +114,18 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
                 className="flex gap-8 mx-4 mt-4 border-b-[1px] border-background-modifier-accent"
               >
                 <UserProfileTabItem label="About Me" selected={true} />
-                <UserProfileTabItem label="Mutual Servers" selected={false} />
-                <UserProfileTabItem label="Mutual Friends" selected={false} />
+                {!isYourAccount && (
+                  <>
+                    <UserProfileTabItem
+                      label="Mutual Servers"
+                      selected={false}
+                    />
+                    <UserProfileTabItem
+                      label="Mutual Friends"
+                      selected={false}
+                    />
+                  </>
+                )}
               </div>
 
               <div className="overflow-x-hidden overflow-y-auto min-h-0 h-full flex flex-col p-4 gap-5">
