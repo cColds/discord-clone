@@ -7,6 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import TypingIndicator from "./TypingIndicator";
 import EmojiPicker from "./EmojiPicker";
 import useMessageHandler from "@/hooks/useMessageHandler";
+import { useEffect, useRef } from "react";
 
 type MessageBoxType = {
   recipient?: UserType;
@@ -32,6 +33,24 @@ export default function MessageBox({
     handleRemovePreviewImage,
     toggleDropdownMenu,
   } = useMessageHandler({ sender, recipient, type });
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (inputRef.current && document.activeElement !== inputRef.current) {
+        if (/^[a-zA-Z0-9]$/i.test(event.key)) {
+          inputRef.current.focus();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <form className="px-4 shrink-0 -mt-2 z-10 relative">
@@ -59,6 +78,7 @@ export default function MessageBox({
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
                 value={message}
+                ref={inputRef}
               />
             </div>
             <EmojiPicker />
