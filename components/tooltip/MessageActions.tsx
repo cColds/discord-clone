@@ -30,6 +30,7 @@ type MessageActionsType = {
   toggleEditMessageBox: (messageId: null | string) => void;
   messageId: string;
   onDeleteMessage: () => void;
+  messageType: "user" | "system";
 };
 
 const MessageActions = ({
@@ -37,6 +38,7 @@ const MessageActions = ({
   toggleEditMessageBox,
   messageId,
   onDeleteMessage,
+  messageType,
 }: MessageActionsType) => {
   return (
     <div className="absolute top-0 right-0">
@@ -57,7 +59,7 @@ const MessageActions = ({
               <Reaction className="w-5 h-5" />
             </MessageActionButton>
           )}
-          {isYourMessage ? (
+          {isYourMessage && messageType === "user" ? (
             <MessageActionButton
               content="Edit"
               onClick={() => toggleEditMessageBox(messageId)}

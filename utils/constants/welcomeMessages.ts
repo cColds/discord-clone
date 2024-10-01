@@ -1,0 +1,15 @@
+export const welcomeMessages = [
+  "[!!{username}!!] joined the party.",
+  "[!!{username}!!] is here.",
+  "Welcome, [!!{username}!!]. We hope you brought pizza.",
+  "A wild [!!{username}!!] appeared.",
+  "[!!{username}!!] just landed.",
+  "[!!{username}!!] just slid into the server.",
+  "[!!{username}!!] just showed up!",
+  "Welcome [!!{username}!!]. Say hi!",
+  "[!!{username}!!] hopped into the server.",
+  "Everyone welcome [!!{username}!!]!",
+  "Glad you're here, [!!{username}!!].",
+  "Good to see you, [!!{username}!!].",
+  "Yay you made it, [!!{username}!!]!",
+];

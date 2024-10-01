@@ -7,6 +7,8 @@ import Server from "@/models/Server";
 import { UserType } from "@/types/user";
 import User from "@/models/User";
 import mongoose from "mongoose";
+import Message from "@/models/Message";
+import { welcomeMessages } from "@/utils/constants/welcomeMessages";
 
 export const joinServer = async (
   formData: z.infer<typeof joinServerSchema>,
@@ -36,6 +38,16 @@ export const joinServer = async (
     const session = await mongoose.startSession();
 
     await session.withTransaction(async () => {
+      const randomWelcomeMessage =
+        welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+      const messageDoc = new Message({
+        sender: user,
+        message: randomWelcomeMessage,
+        channelId: server.categories[0].channels[0]._id,
+        images: [],
+        readBy: [],
+        type: "system",
+      });
       return await Promise.all([
         User.findByIdAndUpdate(
           user.id,
@@ -49,6 +61,7 @@ export const joinServer = async (
           },
           { session }
         ),
+        messageDoc.save(),
       ]);
     });
 

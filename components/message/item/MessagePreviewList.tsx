@@ -49,7 +49,10 @@ function MessagePreviewList({ user, prevMessage }: MessagePreviewListProps) {
       updatedAt: user.updatedAt,
     };
 
-    const message = {
+    const message: MessageType & {
+      previewImages: FormDataEntryValue[];
+      pending: boolean;
+    } = {
       _id: mutation.submittedAt.toString(),
       message: formData.get("message")?.toString() || "",
       channelId,
@@ -60,6 +63,7 @@ function MessagePreviewList({ user, prevMessage }: MessagePreviewListProps) {
       previewImages: files,
       sender: userNormal,
       pending: true,
+      type: "user",
     };
 
     let showDateDivider = false;

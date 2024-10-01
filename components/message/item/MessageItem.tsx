@@ -97,7 +97,8 @@ export default function MessageItem({
             "min-h-[2.75rem] mt-[1.0625rem] py-0.5 pl-[72px] pr-[48px] hover:bg-background-message-hover group",
             {
               "m-0": shouldMergeMessages,
-              "min-h-[1.375rem]": shouldMergeMessages,
+              "min-h-[1.375rem]": shouldMergeMessages || msg.type === "system",
+              "mt-0": msg.type === "system",
               "bg-background-message-hover": isEditActive,
             }
           )}
@@ -126,6 +127,7 @@ export default function MessageItem({
               isYourMessage={isYourMessage}
               toggleEditMessageBox={toggleEditMessageBox}
               messageId={msg._id}
+              messageType={msg.type}
               onDeleteMessage={handleDeleteMessage}
             />
           )}

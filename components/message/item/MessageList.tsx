@@ -58,7 +58,9 @@ const MessageList = ({ messages, user }: MessageListProps) => {
           shouldMergeMessages =
             differenceInMinutes(msg.createdAt, prevMessage.createdAt) <= 7 &&
             msg.sender._id === prevMessage.sender._id &&
-            sameDay;
+            sameDay &&
+            msg.type === "user" &&
+            prevMessage.type !== "system";
 
           showDateDivider = !sameDay;
         }

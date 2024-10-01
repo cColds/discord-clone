@@ -7,6 +7,7 @@ export interface MessageType extends Document {
   edited?: Date;
   images: { id: string; url: string; name: string }[];
   readBy: Types.ObjectId[];
+  type: "user" | "system";
 }
 
 const MessageSchema = new Schema<MessageType>(
@@ -19,6 +20,12 @@ const MessageSchema = new Schema<MessageType>(
       { id: String, url: String, name: String, width: Number, height: Number },
     ],
     readBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    type: {
+      type: String,
+      enum: ["user", "system"],
+      default: "user",
+      required: true,
+    },
   },
 
   { timestamps: true }

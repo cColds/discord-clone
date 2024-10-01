@@ -29,9 +29,40 @@ const MessageDetails = ({
       ? msg.sender.avatar
       : transformCloudinaryUrl(msg.sender.avatar, transformation);
 
+  const messageSplit = msg.message.split("[!!{username}!!]");
+
   return (
     <div>
-      {!shouldMergeMessages ? (
+      {msg.type === "system" ? (
+        <div>
+          <div className="left-0 absolute w-[72px] flex items-center justify-center pt-1">
+            <Image
+              alt=""
+              width={16}
+              height={16}
+              src="/images/icons/green-arrow.svg"
+              className="select-none"
+              draggable={false}
+            />
+          </div>
+          <span className="text-channels-default text-md">
+            {messageSplit[0]}
+            <UserProfileModal user={msg.sender}>
+              <button className="border-0 leading-[1.375rem] text-header-primary overflow-hidden cursor-pointer hover:underline">
+                {msg.sender.displayName}
+              </button>
+            </UserProfileModal>
+            {messageSplit[1]}
+          </span>
+
+          <time
+            dateTime={msg.createdAt}
+            className="text-xs leading-[1.375rem] text-text-muted ml-[0.25rem] overflow-hidden"
+          >
+            {formatted}
+          </time>
+        </div>
+      ) : !shouldMergeMessages ? (
         <>
           <UserProfileModal user={msg.sender}>
             <Image
@@ -65,7 +96,8 @@ const MessageDetails = ({
           </time>
         </span>
       )}
-      {!isEditActive && (
+
+      {!isEditActive && msg.type === "user" && (
         <div className="text-text-normal overflow-hidden leading-[1.375rem]">
           <span
             className="whitespace-pre-wrap"

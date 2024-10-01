@@ -13,6 +13,7 @@ type ChannelType = {
   type: "text" | "voice";
   name: string;
   messages: Types.ObjectId[];
+  _id: string;
 };
 
 type CategoryType = {

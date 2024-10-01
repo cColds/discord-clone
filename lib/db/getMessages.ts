@@ -10,7 +10,7 @@ export async function getMessages(channelId: string, pages = 0) {
 
   const messages = await Message.find(
     { channelId },
-    "sender message channelId _id createdAt updatedAt edited images readBy"
+    "sender message channelId _id createdAt updatedAt edited images readBy type"
   )
     .limit(50)
     .populate({ path: "sender", select: "-password -social -dms -servers -id" })
