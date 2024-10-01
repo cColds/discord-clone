@@ -38,7 +38,16 @@ export default function MessageBox({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (inputRef.current && document.activeElement !== inputRef.current) {
+      const { activeElement } = document;
+
+      if (
+        activeElement &&
+        ["INPUT", "TEXTAREA"].includes(activeElement.tagName)
+      ) {
+        return;
+      }
+
+      if (inputRef.current && activeElement !== inputRef.current) {
         if (/^[a-zA-Z0-9]$/i.test(event.key)) {
           inputRef.current.focus();
         }

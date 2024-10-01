@@ -52,6 +52,13 @@ const EditMessageBox = ({
             value={editedMessage === null ? message : editedMessage}
             onChange={(e) => onMessageChange(e.target.value)}
             onKeyDown={handleKeyDown}
+            autoFocus
+            onFocus={(e) => {
+              // Autofocus seems to trigger before value is set so this will put the caret at the end instead of the start
+              const { value } = e.target;
+              e.target.value = "";
+              e.target.value = value;
+            }}
           ></TextareaAutosize>
 
           <EmojiPicker />
