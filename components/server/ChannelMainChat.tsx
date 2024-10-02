@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { useIntersection } from "@mantine/hooks";
 import { useMutationState } from "@tanstack/react-query";
 import { MessageMutation } from "@/types/MessageMutation";
+import Spinner from "../spinners/Spinner";
 
 type ChannelMainChatProps = {
   channel: TextOrVoiceChannel;
@@ -120,7 +121,11 @@ const ChannelMainChat = ({
         </div>
 
         <div ref={ref} id="container-intersection" />
-        {isFetchingNextPage ? "Loading messages..." : null}
+        {isFetchingNextPage ? (
+          <div className="flex items-center gap-2 pl-5">
+            <Spinner /> <p className="opacity-80">Loading...</p>
+          </div>
+        ) : null}
         <MessageList user={user} messages={messages} />
       </ol>
     </div>

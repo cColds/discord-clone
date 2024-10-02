@@ -9,6 +9,7 @@ import MessageList from "../message/item/MessageList";
 import { useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import { FetchNextPageType } from "@/types/tanstack-query";
+import Spinner from "../spinners/Spinner";
 
 type DmMainChatProps = {
   messages: MessageType[];
@@ -65,7 +66,11 @@ export default function DmMainChat({
   return (
     <ol className="mb-[30px] min-h-[150px] overflow-hidden">
       <div ref={ref} id="container-intersection" />
-      {isFetchingNextPage ? "Loading messages..." : null}
+      {isFetchingNextPage ? (
+        <div className="flex items-center gap-2 pl-5">
+          <Spinner /> <p className="opacity-80">Loading...</p>
+        </div>
+      ) : null}
       <MessageList messages={messages} user={user} />
     </ol>
   );
