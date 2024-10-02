@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { MessageType } from "@/types/message";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 import UserProfileModal from "@/components/modals/UserProfileModal";
+import MessageTimestamp from "./MessageTimestamp";
 
 type MessageDetailsProps = {
   msg: MessageType & { pending?: boolean };
@@ -55,12 +56,10 @@ const MessageDetails = ({
             {messageSplit[1]}
           </span>
 
-          <time
+          <MessageTimestamp
             dateTime={msg.createdAt}
-            className="text-xs leading-[1.375rem] text-text-muted ml-[0.25rem] overflow-hidden"
-          >
-            {formatted}
-          </time>
+            formattedDate={formatted}
+          />
         </div>
       ) : !shouldMergeMessages ? (
         <>
@@ -81,19 +80,19 @@ const MessageDetails = ({
               </button>
             </UserProfileModal>
 
-            <time
+            <MessageTimestamp
               dateTime={msg.createdAt}
-              className="text-xs leading-[1.375rem] text-text-muted ml-[0.25rem] overflow-hidden"
-            >
-              {formatted}
-            </time>
+              formattedDate={formatted}
+            />
           </h3>
         </>
       ) : (
         <span className="absolute left-0 w-[56px] text-[11px] leading-[1.375rem] select-none text-text-muted text-right opacity-0 group-hover:opacity-100">
-          <time aria-label={formatted} dateTime={msg.createdAt}>
-            {format(msg.createdAt, "h:mm a")}
-          </time>
+          <MessageTimestamp
+            ariaLabel={formatted}
+            dateTime={msg.createdAt}
+            formattedDate={format(msg.createdAt, "h:mm a")}
+          />
         </span>
       )}
 
