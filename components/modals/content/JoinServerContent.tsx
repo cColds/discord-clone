@@ -114,7 +114,7 @@ const JoinServerContent = ({
                       {...field}
                       className="p-2.5 h-10 text-md w-full rounded-[3px] text-text-normal bg-input-background border-0 focus-visible:border-2"
                       maxLength={100}
-                      placeholder="https://discord.gg/hTKzmak"
+                      placeholder="hTKzmak"
                     />
                   </FormControl>
                   <FormMessage className="italic text-text-danger text-xs tracking-wide" />
@@ -131,13 +131,6 @@ const JoinServerContent = ({
 
           <div className="text-sm leading-[18px] text-header-primary">
             hTKzmak
-          </div>
-          <div className="text-sm leading-[18px] text-header-primary">
-            https://discord.gg/hTKzmak
-          </div>
-
-          <div className="text-sm leading-[18px] text-header-primary">
-            https://discord.gg/cool-people
           </div>
         </div>
       </div>

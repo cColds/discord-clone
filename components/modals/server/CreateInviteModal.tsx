@@ -56,7 +56,7 @@ const CreateInviteModal = ({
               name="invite"
               readOnly
               aria-label="Invite link"
-              value={`https://discord.gg/${inviteCode}`}
+              value={inviteCode}
               spellCheck={false}
               className="border-0 bg-transparent p-2.5 h-10 text rounded w-full grow"
             />
