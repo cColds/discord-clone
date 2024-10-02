@@ -2,18 +2,22 @@ import { Member } from "@/types/server";
 import AvatarMask from "../avatar/AvatarMask";
 import { cn } from "@/lib/utils";
 import UserProfileModal from "../modals/UserProfileModal";
+import { Crown } from "../svgs/Crown";
+import ActionTooltip from "../tooltip/ActionTooltip";
 
 type ChannelMembersListProps = {
   members: Member[];
   membersListOpen: boolean;
+  ownerId: string;
 };
 
 type MemberItemProps = {
   member: Member;
   type: "Online" | "Offline";
+  ownerId: string;
 };
 
-const MemberItem = ({ member, type }: MemberItemProps) => {
+const MemberItem = ({ member, type, ownerId }: MemberItemProps) => {
   return (
     <div
       className={cn(
@@ -23,7 +27,7 @@ const MemberItem = ({ member, type }: MemberItemProps) => {
       role="listitem"
     >
       <UserProfileModal user={member}>
-        <button className="flex items-center rounded h-[42px] px-2 py-[1px] border-0 hover:bg-background-modifier-hover w-full transition-none">
+        <button className="flex items-center border-0 rounded h-[42px] px-2 py-[1px] hover:bg-background-modifier-hover w-full transition-none">
           <div className="flex justify-center items-center shrink-0 w-8 h-8 mr-3">
             <div
               className="w-8 h-8 rounded-[50%]"
@@ -42,6 +46,13 @@ const MemberItem = ({ member, type }: MemberItemProps) => {
           <div className="grow overflow-hidden">
             <div className="flex items-center">
               <p className="truncate">{member.displayName}</p>
+              {member.id === ownerId && (
+                <ActionTooltip content="Server Owner">
+                  <div>
+                    <Crown className="ml-1 shrink-0 w-[14px] h-[14px] text-warning" />
+                  </div>
+                </ActionTooltip>
+              )}
             </div>
           </div>
         </button>
@@ -53,6 +64,7 @@ const MemberItem = ({ member, type }: MemberItemProps) => {
 const ChannelMembersList = ({
   members,
   membersListOpen,
+  ownerId,
 }: ChannelMembersListProps) => {
   const onlineMembers = members.filter(
     (member) => member.online && member.status !== "Invisible"
@@ -81,7 +93,12 @@ const ChannelMembersList = ({
           </h3>
 
           {onlineMembers.map((member) => (
-            <MemberItem member={member} key={member.id} type="Online" />
+            <MemberItem
+              member={member}
+              key={member.id}
+              type="Online"
+              ownerId={ownerId}
+            />
           ))}
 
           {offlineMembers && (
@@ -96,7 +113,12 @@ const ChannelMembersList = ({
           )}
 
           {offlineMembers.map((member) => (
-            <MemberItem member={member} key={member.id} type="Offline" />
+            <MemberItem
+              member={member}
+              key={member.id}
+              type="Offline"
+              ownerId={ownerId}
+            />
           ))}
         </ul>
       </div>

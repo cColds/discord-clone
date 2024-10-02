@@ -35,6 +35,7 @@ export async function createServer(formData: FormData, userId: string) {
         serverName,
         icon: iconUrl || undefined,
         members: [userId],
+        owner: userId,
         categories: [
           {
             categoryName: "Text Channels",

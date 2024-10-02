@@ -18,6 +18,7 @@ type ChannelProps = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: FetchNextPageType;
+  ownerId: string;
 };
 
 const Channel = ({
@@ -28,6 +29,7 @@ const Channel = ({
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
+  ownerId,
 }: ChannelProps) => {
   const [membersListOpen, setMembersListOpen] = useState(false);
 
@@ -61,6 +63,7 @@ const Channel = ({
           <ChannelMembersList
             members={members}
             membersListOpen={membersListOpen}
+            ownerId={ownerId}
           />
         </div>
       </div>

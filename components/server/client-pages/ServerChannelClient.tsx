@@ -129,6 +129,7 @@ const ServerChannelClient = ({
           channel={currentChannel}
           user={user}
           members={serverState.members}
+          ownerId={server.owner}
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
           hasNextPage={hasNextPage}

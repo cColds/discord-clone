@@ -55,6 +55,7 @@ const ServerSchema = new Schema(
     categories: [CategorySchema],
     members: [{ type: Schema.Types.ObjectId, ref: "User" }],
     invites: [InviteSchema],
+    owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );

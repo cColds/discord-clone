@@ -10,7 +10,7 @@ export const getServer = async (serverId: string) => {
   try {
     const server = await Server.findById(serverId).populate({
       path: "members",
-      select: "displayName avatar id status online username createdAt",
+      select: "displayName avatar id status online username createdAt owner",
     });
 
     const serializedServer =

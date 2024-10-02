@@ -39,7 +39,7 @@ export type ServerType = {
     channels: TextOrVoiceChannel[];
   }[];
   channels: TextOrVoiceChannel[];
-
+  owner: string;
   invites: ServerInvite[];
 };
 
