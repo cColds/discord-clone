@@ -22,15 +22,13 @@ type MessageListProps = {
 const MessageList = ({ messages, user }: MessageListProps) => {
   const [editMessageId, setEditMessageId] = useState<string | null>(null);
 
-  let prevMessage: null | MessageType = null;
-
   const handleEditMessageId = (messageId: string | null) => {
     setEditMessageId(messageId);
   };
 
   return (
     <>
-      {messages.map((msg) => {
+      {messages.map((msg, index) => {
         const formattedDate = format(msg.createdAt, "MM/dd/yyyy h:mm a");
         const formattedRelative = formatRelative(msg.createdAt, new Date());
 
@@ -50,6 +48,8 @@ const MessageList = ({ messages, user }: MessageListProps) => {
         let showDateDivider = false;
         let shouldMergeMessages = false;
 
+        const prevMessage = index > 0 ? messages[index - 1] : null;
+
         if (!prevMessage) {
           showDateDivider = true;
         } else {
@@ -64,8 +64,6 @@ const MessageList = ({ messages, user }: MessageListProps) => {
 
           showDateDivider = !sameDay;
         }
-
-        prevMessage = msg;
 
         const isEditActive = editMessageId === msg._id;
         const isYourMessage = user.id === msg.sender.id;
@@ -82,11 +80,15 @@ const MessageList = ({ messages, user }: MessageListProps) => {
             onEditToggle={handleEditMessageId}
             editMessageId={editMessageId}
             isYourMessage={isYourMessage}
+            prevMessage={prevMessage}
           />
         );
       })}
 
-      <MessagePreviewList user={user} prevMessage={prevMessage} />
+      <MessagePreviewList
+        user={user}
+        prevMessage={messages[messages.length - 1]}
+      />
     </>
   );
 };

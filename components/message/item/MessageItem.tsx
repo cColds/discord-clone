@@ -26,6 +26,7 @@ type MessageItemType = {
   onEditToggle: (id: string | null) => void;
   editMessageId: string | null;
   isYourMessage: boolean;
+  prevMessage: MessageType | null;
 };
 
 export default function MessageItem({
@@ -38,6 +39,7 @@ export default function MessageItem({
   onEditToggle,
   editMessageId,
   isYourMessage,
+  prevMessage,
 }: MessageItemType) {
   const [editedMessage, setEditedMessage] = useState<null | string>(null);
 
@@ -98,7 +100,9 @@ export default function MessageItem({
             {
               "m-0": shouldMergeMessages,
               "min-h-[1.375rem]": shouldMergeMessages || msg.type === "system",
-              "mt-0": msg.type === "system",
+              "mt-0": msg.type === "system" && prevMessage?.type === "system",
+              "mt-[1.0625rem]":
+                msg.type === "system" && prevMessage?.type === "user",
               "bg-background-message-hover": isEditActive,
             }
           )}

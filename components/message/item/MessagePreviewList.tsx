@@ -94,6 +94,7 @@ function MessagePreviewList({ user, prevMessage }: MessagePreviewListProps) {
         onEditToggle={() => {}}
         editMessageId={null}
         isYourMessage={true}
+        prevMessage={null}
       />
     );
   });
