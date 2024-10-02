@@ -9,15 +9,17 @@ type ActionTooltipProps = {
   children: React.ReactNode;
   content: string;
   side?: "top" | "right" | "bottom" | "left";
+  delayDuration?: number;
 };
 
 export default function ActionTooltip({
   children,
   content,
   side,
+  delayDuration = 100,
 }: ActionTooltipProps) {
   return (
-    <TooltipProvider delayDuration={100}>
+    <TooltipProvider delayDuration={delayDuration}>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
 

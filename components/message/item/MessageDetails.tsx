@@ -105,7 +105,7 @@ const MessageDetails = ({
             {msg.message}
           </span>
           {msg.edited && (
-            <ActionTooltip content={editedDate}>
+            <ActionTooltip content={editedDate} delayDuration={500}>
               <span className="text-xs text-text-muted leading-[1.375rem] select-none">
                 <time
                   aria-label={formatted}

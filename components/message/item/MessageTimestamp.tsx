@@ -13,7 +13,10 @@ export default function MessageTimestamp({
   ariaLabel,
 }: MessageTimestampProps) {
   return (
-    <ActionTooltip content={format(dateTime, "EEEE, LLLL d h:mm a")}>
+    <ActionTooltip
+      content={format(dateTime, "EEEE, LLLL d h:mm a")}
+      delayDuration={500}
+    >
       <time
         dateTime={dateTime}
         className="text-xs leading-[1.375rem] text-text-muted ml-[0.25rem] overflow-hidden"
