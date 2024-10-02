@@ -1,9 +1,10 @@
-import Link from "next/link";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import { ServerNavItem } from "@/types/server";
 import Pill from "../pill/Pill";
 import BlobIcon from "./BlobIcon";
 import { FramerMotionOptions } from "@/types/FramerMotionOptions";
+import { useRouter } from "next/navigation";
+import { getServer } from "@/lib/db/getServer";
 
 type ListItemProps = {
   server: ServerNavItem;
@@ -26,11 +27,25 @@ export default function ListItem({
 }: ListItemProps) {
   const isHovered = hoveredServer === server._id;
 
+  const router = useRouter();
+
+  const handleServerClick = async () => {
+    const targetServer = await getServer(server._id);
+
+    const topLevelChannelLink = targetServer?.categories[0].channels[0]._id;
+
+    const serverLink =
+      `/channels/servers/${server._id}/` +
+      (topLevelChannelLink ? topLevelChannelLink : "");
+
+    router.push(serverLink);
+  };
+
   return (
     <div className="flex justify-center w-full mb-2 relative" key={server._id}>
       <ActionTooltip content={server.serverName} side="right">
-        <Link
-          href={`/channels/servers/${server._id}`}
+        <button
+          onClick={handleServerClick}
           aria-label={server.serverName}
           className="cursor-auto border-0"
         >
@@ -43,7 +58,7 @@ export default function ListItem({
             options={options}
             onHoveredServer={onHoveredServer}
           />
-        </Link>
+        </button>
       </ActionTooltip>
 
       {(isHovered || isSelectedServer) && <Pill selected={isSelectedServer} />}

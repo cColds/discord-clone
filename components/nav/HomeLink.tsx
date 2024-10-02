@@ -4,7 +4,7 @@ import Pill from "../pill/Pill";
 import ActionTooltip from "../tooltip/ActionTooltip";
 import Link from "next/link";
 import { FramerMotionOptions } from "@/types/FramerMotionOptions";
-import { animate, MotionValue, motion, useMotionValue } from "framer-motion";
+import { animate, MotionValue, motion } from "framer-motion";
 import { circle, roundedCircle } from "@/utils/constants/svgPaths";
 import { useState } from "react";
 
