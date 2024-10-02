@@ -7,9 +7,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import { TextOrVoiceChannel } from "@/types/server";
 import { ServerType } from "@/types/server";
-import React from "react";
+import React, { useRef, useState } from "react";
 
 type CreateInviteModalProps = {
   children: React.ReactNode;
@@ -28,6 +29,23 @@ const CreateInviteModal = ({
   open,
   onToggleOpen,
 }: CreateInviteModalProps) => {
+  const [showCopyCode, setShowCopyCode] = useState(false);
+
+  const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleCopyCodeClick = () => {
+    setShowCopyCode(true);
+    navigator.clipboard.writeText(inviteCode);
+
+    if (timeoutIdRef.current !== null) {
+      clearTimeout(timeoutIdRef.current);
+    }
+
+    timeoutIdRef.current = setTimeout(() => {
+      setShowCopyCode(false);
+    }, 1000);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onToggleOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -61,8 +79,18 @@ const CreateInviteModal = ({
               className="border-0 bg-transparent p-2.5 h-10 text rounded w-full grow"
             />
 
-            <button className="text-white bg-brand-500 mr-1 w-[75px] min-h-[32px] min-w-[75px] h-8 transition hover:bg-brand-560 active:bg-brand-600 truncate text-sm leading-4 px-4 py-0.5">
-              Copy
+            <button
+              onClick={handleCopyCodeClick}
+              className={cn(
+                "text-white bg-brand-500 mr-1 w-[75px] min-h-[32px] min-w-[75px] h-8 transition hover:bg-brand-560 active:bg-brand-600 text-sm leading-4 px-4 py-0.5",
+                {
+                  "bg-status-positive-background": showCopyCode,
+                  "hover:bg-status-positive-background-hover": showCopyCode,
+                  "active:bg-status-positive-background-active": showCopyCode,
+                }
+              )}
+            >
+              {showCopyCode ? "Copied" : "Copy"}
             </button>
           </div>
 
