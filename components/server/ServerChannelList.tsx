@@ -84,7 +84,11 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
                   aria-label="Create Invite"
                   onClick={handleCreateInvite}
                 >
-                  <CreateInvite className="w-4 h-4 text-interactive-normal" />
+                  <ActionTooltip content="Create Invite">
+                    <div>
+                      <CreateInvite className="w-4 h-4 text-interactive-normal" />
+                    </div>
+                  </ActionTooltip>
                 </button>
               </CreateInviteModal>
 
