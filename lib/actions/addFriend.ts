@@ -14,59 +14,60 @@ export async function addFriend(
   formData: z.infer<typeof addFriendSchema>,
   yourUserId: string
 ) {
-  const validatedFields = addFriendSchema.safeParse(formData);
-  if (!validatedFields.success || yourUserId === "") return;
+  try {
+    const validatedFields = addFriendSchema.safeParse(formData);
+    if (!validatedFields.success || yourUserId === "") return;
 
-  const { friendUsername } = validatedFields.data;
-  await dbConnect();
+    const { friendUsername } = validatedFields.data;
+    await dbConnect();
 
-  const yourAccount = await User.findById(yourUserId);
+    const yourAccount = await User.findById(yourUserId);
 
-  // Handle cases where you can't add a friend.
+    // Handle cases where you can't add a friend.
 
-  if (!yourAccount) throw new Error("Your account doesn't exist");
+    if (!yourAccount) throw new Error("Your account doesn't exist");
 
-  const friendAccount = await User.findOne({
-    username: { $regex: `^${friendUsername}$`, $options: "i" },
-  });
+    const friendAccount = await User.findOne({
+      username: { $regex: `^${friendUsername}$`, $options: "i" },
+    });
 
-  if (!friendAccount)
-    throw new Error(
-      "Hm, didn't work. Double check that the username is correct."
+    if (!friendAccount)
+      throw new Error(
+        "Hm, didn't work. Double check that the username is correct."
+      );
+
+    if (yourAccount.id === friendAccount.id)
+      throw new Error("You can't friend yourself");
+
+    const { friends, pending, blocked } = yourAccount.social;
+
+    const isAlreadyFriends = isIdInArray(friends, friendAccount.id);
+    if (isAlreadyFriends)
+      throw new Error("You're already friends with that user!");
+
+    const isYourAccountBlocked = isIdInArray(
+      friendAccount.social.blocked,
+      yourAccount.id
     );
 
-  if (yourAccount.id === friendAccount.id)
-    throw new Error("You can't friend yourself");
+    if (isYourAccountBlocked)
+      throw new Error("You can't friend people that blocked you");
 
-  const { friends, pending, blocked } = yourAccount.social;
+    const haveYouSentRequest = isIdInArray(
+      pending.map((p) => p.user),
+      friendAccount.id
+    );
 
-  const isAlreadyFriends = isIdInArray(friends, friendAccount.id);
-  if (isAlreadyFriends)
-    throw new Error("You're already friends with that user!");
+    if (haveYouSentRequest)
+      throw new Error("You've already sent a friend request to that user");
+    // todo: dont throw error if other person sent just accept
 
-  const isYourAccountBlocked = isIdInArray(
-    friendAccount.social.blocked,
-    yourAccount.id
-  );
+    // Start transaction to accept friend request or send one (need to update your account and friend account's socials)
 
-  if (isYourAccountBlocked)
-    throw new Error("You can't friend people that blocked you");
+    // Accept friend request if they've sent one already (incoming pending)
+    // If you've blocked them, remove the blocked request and then send them one
+    // Otherwise, send the friend request (outgoing pending)
 
-  const haveYouSentRequest = isIdInArray(
-    pending.map((p) => p.user),
-    friendAccount.id
-  );
-
-  if (haveYouSentRequest)
-    return Promise.reject("You've already sent a friend request to that user"); // todo: dont throw error if other person sent just accept
-
-  // Start transaction to accept friend request or send one (need to update your account and friend account's socials)
-
-  // Accept friend request if they've sent one already (incoming pending)
-  // If you've blocked them, remove the blocked request and then send them one
-  // Otherwise, send the friend request (outgoing pending)
-
-  try {
     // Accepts friend request if friend sent a request
 
     const hasIncomingRequest = isIdInArray(
@@ -127,7 +128,7 @@ export async function addFriend(
         }),
       ]);
 
-      return;
+      return { success: true };
     }
 
     // Unblocks friend and then send request
@@ -158,7 +159,7 @@ export async function addFriend(
           },
         }),
       ]);
-      return;
+      return { success: true };
     }
 
     // Send an outgoing friend request
@@ -180,9 +181,9 @@ export async function addFriend(
         },
       }),
     ]);
-  } catch (err) {
-    console.error(err);
 
-    return Promise.reject(err.message);
+    return { success: true };
+  } catch (err) {
+    return { success: false, message: err.message };
   }
 }

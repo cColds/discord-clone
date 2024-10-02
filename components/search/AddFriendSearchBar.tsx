@@ -41,10 +41,18 @@ export default function AddFriendSearchBar() {
 
       try {
         const senderId = session?.user.id;
-
         if (!senderId) throw new Error("Your user id is invalid");
 
-        await addFriend(data, senderId);
+        const response = await addFriend(data, senderId);
+
+        if (!response?.success) {
+          form.setError("friendUsername", {
+            type: "manual",
+            message: response?.message || "Unknown Error",
+          });
+          return;
+        }
+
         form.reset();
         setSuccess(data.friendUsername);
 
@@ -54,12 +62,7 @@ export default function AddFriendSearchBar() {
           recipientId,
         });
       } catch (err) {
-        const errOpts = {
-          type: "manual",
-          message: err.message,
-        };
-        form.setError("friendUsername", errOpts);
-        console.log(err.message);
+        console.error(err);
       }
     });
   };
