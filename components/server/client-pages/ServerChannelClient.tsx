@@ -41,7 +41,7 @@ const ServerChannelClient = ({
       queryFn: ({ pageParam }) => getMessages(channelId, pageParam),
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
-        if (lastPage.length) return allPages.length;
+        return lastPage.length === 50 ? allPages.length : undefined;
       },
       initialData: { pages: [initialMessages], pageParams: [0] },
     });
