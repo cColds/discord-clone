@@ -96,7 +96,7 @@ export default function MessageItem({
       <li className="relative">
         <div
           className={cn(
-            "min-h-[2.75rem] mt-[1.0625rem] py-0.5 pl-[72px] pr-[48px] hover:bg-background-message-hover group",
+            "min-h-[2.75rem] mt-[1.0625rem] py-0.5 pl-[72px] pr-[48px] hover:bg-background-message-hover focus-within:bg-background-message-hover group",
             {
               "m-0": shouldMergeMessages,
               "min-h-[1.375rem]": shouldMergeMessages || msg.type === "system",

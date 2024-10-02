@@ -43,7 +43,7 @@ const MessageActions = ({
   return (
     <div className="absolute top-0 right-0">
       <div
-        className="-top-4 absolute right-0 pl-3.5 pr-8 opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+        className="-top-4 absolute right-0 pl-3.5 pr-8 opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 focus-within:opacity-100"
         role="group"
       >
         <div className="grid grid-flow-col bg-background-primary shadow-elevation-low h-8 select-none duration-100 relative">
