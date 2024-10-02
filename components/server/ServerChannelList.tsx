@@ -80,7 +80,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
                 onToggleOpen={toggleInviteModal}
               >
                 <button
-                  className="ml-1 border-0 opacity-0 group-hover:opacity-100"
+                  className="ml-1 border-0 opacity-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline group-hover:opacity-100 focus-visible:opacity-100"
                   aria-label="Create Invite"
                   onClick={handleCreateInvite}
                 >
@@ -90,7 +90,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
 
               <ActionTooltip content="Edit Channel">
                 <button
-                  className="ml-1 border-0 opacity-0 group-hover:opacity-100"
+                  className="ml-1 border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
                   aria-label="Edit Channel"
                 >
                   <Settings className="w-4 h-4 text-interactive-normal" />
