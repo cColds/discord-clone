@@ -11,6 +11,7 @@ import { SocketProvider } from "./providers/SocketProvider";
 import { UserProvider } from "./providers/UserProvider";
 import { getUser } from "@/lib/db/getUser";
 import { QueryProvider } from "./providers/QueryProvider";
+import NextTopLoader from "nextjs-toploader";
 
 const ggSans = localFont({
   src: [
@@ -64,6 +65,7 @@ export default async function RootLayout({
                   {data && <ServerNav />}
                   <main className="w-full overflow-hidden">{children}</main>
                 </div>
+                <NextTopLoader color="rgb(88, 101, 242)" showSpinner={false} />
               </QueryProvider>
             </SessionProvider>
           </SocketProvider>

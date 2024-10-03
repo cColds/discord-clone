@@ -20,7 +20,7 @@ import { joinServer } from "@/lib/actions/joinServer";
 import { cn } from "@/lib/utils";
 import { joinServerSchema } from "@/lib/validations/joinServer";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";

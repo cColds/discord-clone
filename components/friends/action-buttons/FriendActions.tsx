@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import { Message, More } from "@/components/svgs";
 import ActionButton from "@/components/tooltip/ActionButton";
 import {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import { FriendTab } from "@/types/friend-tab";
 import { SocialPopulated } from "@/types/social";
 import AvatarMask from "../avatar/AvatarMask";

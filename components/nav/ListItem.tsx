@@ -3,8 +3,9 @@ import { ServerNavItem } from "@/types/server";
 import Pill from "../pill/Pill";
 import BlobIcon from "./BlobIcon";
 import { FramerMotionOptions } from "@/types/FramerMotionOptions";
-import { useRouter } from "next/navigation";
 import { getServer } from "@/lib/db/getServer";
+import { useRouter } from "next-nprogress-bar";
+import NProgress from "nprogress";
 
 type ListItemProps = {
   server: ServerNavItem;
@@ -30,6 +31,8 @@ export default function ListItem({
   const router = useRouter();
 
   const handleServerClick = async () => {
+    NProgress.start(); // manually start it before fetching server to avoid delay
+
     const targetServer = await getServer(server._id);
 
     const topLevelChannelLink = targetServer?.categories[0].channels[0]._id;
