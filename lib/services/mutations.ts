@@ -17,9 +17,6 @@ export const useCreateMessage = () => {
     mutationFn: (v: CreateMessageVariables) =>
       sendMessage(v.sender, v.formData, v.channelId, v.type),
 
-    onError: () => {
-      console.log("error creating msg");
-    },
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
     },
@@ -39,13 +36,8 @@ export const useEditMessage = () => {
     mutationFn: (v: EditMessageVariables) =>
       editMessage(v.messageId, v.updatedMessage),
 
-    onError: () => {
-      console.error("Error editing message");
-    },
-
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
-      console.log("Successfully edited message");
     },
     mutationKey: ["messages"],
   });

@@ -58,8 +58,6 @@ const CreateChannelModal = ({
   };
 
   const onSubmit = async (data: z.infer<typeof createChannelSchema>) => {
-    console.log("Make db call to add channel", data);
-
     await createChannel(data, serverId, category._id);
 
     setOpen(false);

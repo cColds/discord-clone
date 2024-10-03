@@ -16,8 +16,6 @@ export const unblockUser = async (userId: string, friendId: string) => {
       },
       { new: true }
     );
-
-    console.log("User unblocked!", newDoc);
   } catch (err) {
     console.error(err);
   }

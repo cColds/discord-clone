@@ -36,7 +36,7 @@ export const getSocialType = (
       return { type: "Blocked", targetSocial: social.blocked };
 
     default:
-      console.log("No cases matched. Probably Add Friend tab.");
+      // Add friend tab
       return { type: "unknown", targetSocial: [] };
   }
 };

@@ -24,9 +24,9 @@ export const acceptPendingRequest = async (
     const dmExists = yourAccount.dms.find(
       (dm) => dm.recipient.toString() === friendId
     );
-    console.log("Dm Exists? ", dmExists);
 
     if (!dmExists) {
+      // Create Dm
       const dm = new Dm({
         members: [yourAccount._id, friendAccount._id],
         lastMessageTimestamp: new Date(),
@@ -56,10 +56,9 @@ export const acceptPendingRequest = async (
           },
         }),
       ]);
-
-      console.log("Created dm");
     }
 
+    // Accept friend request
     await Promise.all([
       User.findByIdAndUpdate(friendId, {
         $pull: { "social.pending": { user: userId } },
@@ -72,7 +71,6 @@ export const acceptPendingRequest = async (
         $push: { "social.friends": friendId },
       }),
     ]);
-    console.log("Accepted friend request!");
   } catch (err) {
     console.error(err);
   }

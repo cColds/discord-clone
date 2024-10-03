@@ -13,8 +13,6 @@ export async function editMessage(messageId: string, updatedMessage: string) {
       },
       { new: true }
     );
-
-    console.log("Updated edited msg: ", msg);
   } catch (err) {
     throw new Error(err);
   }

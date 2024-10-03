@@ -31,8 +31,6 @@ export const unfriendUser = async (userId: string, friendId: string) => {
         ),
       ]);
     });
-
-    console.log("Unfriended user");
   } catch (err) {
     console.error(err);
   }

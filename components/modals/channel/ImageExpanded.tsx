@@ -23,7 +23,6 @@ const ImageExpanded = ({
   const [selectedImage, setSelectedImage] = useState(defaultImage);
 
   const handleCarouselChange = (updateIndex: -1 | 1) => {
-    console.log("clicked");
     const currentIndex = selectedImage.index;
 
     const newIndex = currentIndex + updateIndex;

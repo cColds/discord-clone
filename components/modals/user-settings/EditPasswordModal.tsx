@@ -38,7 +38,6 @@ export default function EditPasswordModal({
   const { user, setUser } = useUser();
 
   const onSubmit = async (data: z.infer<typeof changePasswordSchema>) => {
-    console.log("submitting", data);
     if (!user?.id) return;
 
     const updatedDoc = await updatePassword(data, user.id);

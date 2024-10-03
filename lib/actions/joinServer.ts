@@ -30,8 +30,6 @@ export const joinServer = async (
     );
 
     if (userAlreadyInServer) {
-      console.log("Already in the server!");
-
       return;
     }
 

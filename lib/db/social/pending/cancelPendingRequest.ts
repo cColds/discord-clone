@@ -26,8 +26,6 @@ export const cancelPendingRequest = async (
         ),
       ]);
     });
-
-    console.log("Cancel request success!");
   } catch (err) {
     console.error(err);
   }

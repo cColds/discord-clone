@@ -62,28 +62,17 @@ export async function addFriend(
       throw new Error("You've already sent a friend request to that user");
     // todo: dont throw error if other person sent just accept
 
-    // Start transaction to accept friend request or send one (need to update your account and friend account's socials)
-
-    // Accept friend request if they've sent one already (incoming pending)
-    // If you've blocked them, remove the blocked request and then send them one
-    // Otherwise, send the friend request (outgoing pending)
-
-    // Accepts friend request if friend sent a request
-
     const hasIncomingRequest = isIdInArray(
       pending.map((p) => p.user),
       friendAccount.id
     );
 
     if (hasIncomingRequest) {
-      console.log("Accepting friend request");
       // Create DM if one doesn't exist yet
 
       const dmExists = yourAccount.dms.find(
         (dm) => dm.recipient.toString() === friendAccount.id
       );
-
-      console.log("Dm exists:", dmExists);
 
       if (!dmExists) {
         const dm = new Dm({
@@ -113,8 +102,7 @@ export async function addFriend(
           $push: {
             dms: recipientDMOpts,
           },
-        }),
-          console.log("Created dm");
+        });
       }
 
       await Promise.all([
@@ -136,8 +124,6 @@ export async function addFriend(
     const isFriendBlocked = isIdInArray(blocked, friendAccount.id);
 
     if (isFriendBlocked) {
-      console.log("Unblock friend and then send request");
-
       await Promise.all([
         User.findByIdAndUpdate(yourUserId, {
           $pull: {
@@ -163,8 +149,6 @@ export async function addFriend(
     }
 
     // Send an outgoing friend request
-
-    console.log("Sending an outgoing friend request");
 
     await Promise.all([
       User.findByIdAndUpdate(yourUserId, {

@@ -23,7 +23,7 @@ const UserLinkIcon = ({
   return (
     <div className="flex justify-center w-full mb-2 relative">
       <ActionTooltip content={displayName} side="right">
-        <Link href={`${process.env.NEXT_PUBLIC_URL}/channels/dms/${channelId}`}>
+        <Link href={`/channels/dms/${channelId}`}>
           <BlobIcon
             url={url}
             acronym=""

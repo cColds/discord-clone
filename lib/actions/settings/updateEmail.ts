@@ -41,7 +41,6 @@ export const updateEmail = async (
       { email },
       { new: true }
     );
-    console.log(updatedEmail);
   } catch (err) {
     console.error(err);
   }

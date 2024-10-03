@@ -14,7 +14,6 @@ export async function createServer(formData: FormData, userId: string) {
   };
 
   const validatedFields = createServerSchema.safeParse(data);
-  console.log("success: ", validatedFields.success);
 
   if (!validatedFields.success) return;
 

@@ -103,16 +103,12 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
     });
 
     socket.on("receive-unread-messages", async () => {
-      console.log("Receive notification");
-
       const updatedUnreadCounts = await fetchUnreadCounts();
 
       if (updatedUnreadCounts) setUnreadCounts(updatedUnreadCounts);
     });
 
     socket.on("message-read-confirmation", async () => {
-      console.log("Marking messages as read..");
-
       await readMessages(user.id, params.channelId);
       const updatedUnreadCounts = await fetchUnreadCounts();
 

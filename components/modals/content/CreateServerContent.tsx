@@ -124,7 +124,6 @@ const CreateServerContent = ({
                 const file = e.target.files[0];
 
                 try {
-                  console.log({ file });
                   const result = (await toBase64(file)) as string;
                   setFileSelected(result);
                   setFileObject(file);

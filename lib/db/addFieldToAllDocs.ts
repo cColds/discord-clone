@@ -8,8 +8,6 @@ export async function addFieldToAllDocs(field: Object) {
   });
   try {
     await User.updateMany({}, { $set: field });
-
-    console.log("Updated successfully!");
   } catch (err) {
     console.error("Failed to update docs", err);
   }
@@ -17,6 +15,6 @@ export async function addFieldToAllDocs(field: Object) {
   await mongoose.disconnect();
 }
 
-const field = { online: false }; // idk just change this if u need to add new fields to all docs
+const field = { online: false };
 
 addFieldToAllDocs(field);

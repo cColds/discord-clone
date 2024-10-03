@@ -62,10 +62,9 @@ const JoinServerContent = ({
           (invite) => invite.code === inviteCode
         );
 
-        const serverLink = `${process.env.NEXT_PUBLIC_URL}/channels/servers/${
-          serverToJoin._id
-        }/${channelInvite?.channel.id || ""}`;
-        console.log(serverLink);
+        const serverLink = `/channels/servers/${serverToJoin._id}/${
+          channelInvite?.channel.id || ""
+        }`;
         onToggleModal();
 
         router.push(serverLink);
