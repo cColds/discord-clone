@@ -38,6 +38,7 @@ export const joinServer = async (
     await session.withTransaction(async () => {
       const randomWelcomeMessage =
         welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+
       const messageDoc = new Message({
         sender: user,
         message: randomWelcomeMessage,
@@ -46,7 +47,7 @@ export const joinServer = async (
         readBy: [],
         type: "system",
       });
-      return await Promise.all([
+      return Promise.all([
         User.findByIdAndUpdate(
           user.id,
           { $push: { servers: server._id } },
@@ -59,7 +60,7 @@ export const joinServer = async (
           },
           { session }
         ),
-        messageDoc.save(),
+        messageDoc.save({ session }),
       ]);
     });
 
