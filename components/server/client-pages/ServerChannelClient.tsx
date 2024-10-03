@@ -92,6 +92,15 @@ const ServerChannelClient = ({
       });
     });
 
+    socket.on("user-joined-server", async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["messages"],
+      });
+      const updatedServer = await getServer(server._id);
+
+      if (updatedServer) setServerState(updatedServer);
+    });
+
     socket.on("create-channel", async () => {
       const updatedServer = await getServer(server._id);
       if (updatedServer) {

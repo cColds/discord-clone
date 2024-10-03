@@ -68,7 +68,8 @@ const JoinServerContent = ({
         onToggleModal();
 
         router.push(serverLink);
-        socket.emit("join-server", user.id);
+
+        socket.emit("join-server", user.id, serverToJoin.members);
       } else {
         form.setError("invite", {
           type: "custom",

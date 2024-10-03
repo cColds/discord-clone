@@ -17,10 +17,6 @@ export const useCreateMessage = () => {
     mutationFn: (v: CreateMessageVariables) =>
       sendMessage(v.sender, v.formData, v.channelId, v.type),
 
-    onMutate: (newMessage) => {
-      console.log("Mutated new message successfully!", newMessage);
-    },
-
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
     },
