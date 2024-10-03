@@ -99,7 +99,7 @@ const MessageDetails = ({
       {!isEditActive && msg.type === "user" && (
         <div className="text-text-normal overflow-hidden leading-[1.375rem]">
           <span
-            className="whitespace-pre-wrap"
+            className="whitespace-pre-wrap break-words"
             style={{ opacity: msg.pending ? 0.5 : undefined }}
           >
             {msg.message}
