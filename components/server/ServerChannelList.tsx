@@ -36,11 +36,9 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
   return (
     <li>
       <div className="py-[1px] ml-2">
-        <Link
-          href={`/channels/servers/${server._id}/${channel._id}`}
-          aria-label={`${channel.name} (${channel.type} channel)`}
+        <div
           className={cn(
-            "cursor-pointer py-1.5 px-2 rounded hover:bg-background-modifier-hover flex flex-col group",
+            "cursor-pointer rounded hover:bg-background-modifier-hover flex flex-col group",
             {
               "bg-background-modifier-selected": channelId === channel._id,
               "hover:bg-background-modifier-selected":
@@ -48,27 +46,32 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
             }
           )}
         >
-          <div className="flex justify-center items-center">
-            <div className="mr-1.5" aria-label="Text icon">
-              {channel.type === "text" ? (
-                <Hash className="text-channel-icon w-5 h-5 block shrink-0" />
-              ) : (
-                <Volume className="text-channel-icon w-5 h-5 block shrink-0" />
-              )}
-            </div>
-
-            <p
-              className={cn(
-                "text-md truncate text-channels-default leading-5 grow group-hover:text-interactive-hover",
-                {
-                  "text-white": channelId === channel._id,
-                  "group-hover:text-white": channelId === channel._id,
-                }
-              )}
-              aria-hidden="true"
+          <div className="flex items-center">
+            <Link
+              href={`/channels/servers/${server._id}/${channel._id}`}
+              aria-label={`${channel.name} (${channel.type} channel)`}
+              className={"grow cursor-pointer py-1.5 px-2 rounded flex group"}
             >
-              {channel.name}
-            </p>
+              <div className="mr-1.5" aria-label="Text icon">
+                {channel.type === "text" ? (
+                  <Hash className="text-channel-icon w-5 h-5 block shrink-0" />
+                ) : (
+                  <Volume className="text-channel-icon w-5 h-5 block shrink-0" />
+                )}
+              </div>
+              <p
+                className={cn(
+                  "text-md truncate text-channels-default leading-5 grow group-hover:text-interactive-hover",
+                  {
+                    "text-white": channelId === channel._id,
+                    "group-hover:text-white": channelId === channel._id,
+                  }
+                )}
+                aria-hidden="true"
+              >
+                {channel.name}
+              </p>
+            </Link>
 
             <div className="flex items-center justify-center shrink-0">
               <CreateInviteModal
@@ -79,7 +82,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
                 onToggleOpen={toggleInviteModal}
               >
                 <button
-                  className="ml-1 border-0 opacity-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline group-hover:opacity-100 focus-visible:opacity-100"
+                  className="ml-1 py-1.5 border-0 opacity-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline group-hover:opacity-100 focus-visible:opacity-100"
                   aria-label="Create Invite"
                   onClick={handleCreateInvite}
                 >
@@ -93,7 +96,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
 
               <ActionTooltip content="Edit Channel">
                 <button
-                  className="ml-1 border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+                  className="pr-2 py-1.5 ml-1 border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
                   aria-label="Edit Channel"
                 >
                   <Settings className="w-4 h-4 text-interactive-normal" />
@@ -101,7 +104,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
               </ActionTooltip>
             </div>
           </div>
-        </Link>
+        </div>
       </div>
     </li>
   );
