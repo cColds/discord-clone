@@ -1,8 +1,14 @@
-import { ring2 } from "ldrs";
-import "ldrs/ring2";
+import { useEffect } from "react";
 
 const Spinner = () => {
-  ring2.register();
+  useEffect(() => {
+    const getLoader = async () => {
+      const { ring2 } = await import("ldrs");
+      ring2.register();
+    };
+
+    getLoader();
+  }, []);
 
   return (
     <l-ring-2
