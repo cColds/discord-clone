@@ -36,6 +36,10 @@ export default function DmChannel({
     filters: { mutationKey: ["messages", "create-message"], status: "pending" },
     select: (mutation) => mutation.state as MessageMutation,
   });
+  const messagesMutationSuccess = useMutationState({
+    filters: { mutationKey: ["messages", "create-message"], status: "success" },
+    select: (mutation) => mutation.state as MessageMutation,
+  });
 
   useEffect(() => {
     if (scrollerRef.current) {
@@ -50,6 +54,19 @@ export default function DmChannel({
       scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
     }
   }, [messagesMutation]);
+
+  useEffect(() => {
+    const lastMessage =
+      messagesMutationSuccess[messagesMutationSuccess.length - 1];
+
+    const lastMessageFormData = lastMessage?.variables.formData;
+
+    const lastMessageContainsImage = !!lastMessageFormData?.get("file[]");
+
+    if (lastMessageContainsImage && scrollerRef.current) {
+      scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
+    }
+  }, [messagesMutationSuccess]);
 
   const toggleSidebarOpen = () => {
     setSidebarOpen(!sidebarOpen);

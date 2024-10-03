@@ -17,6 +17,10 @@ export const useCreateMessage = () => {
     mutationFn: (v: CreateMessageVariables) =>
       sendMessage(v.sender, v.formData, v.channelId, v.type),
 
+    onMutate: (newMessage) => {
+      console.log("Mutated new message successfully!", newMessage);
+    },
+
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
     },
@@ -57,6 +61,7 @@ export const useDeleteMessage = () => {
     onError: () => {
       console.error("Error deleting message");
     },
+
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
     },

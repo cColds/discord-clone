@@ -35,6 +35,10 @@ const ChannelMainChat = ({
     filters: { mutationKey: ["messages", "create-message"], status: "pending" },
     select: (mutation) => mutation.state as MessageMutation,
   });
+  const messagesMutationSuccess = useMutationState({
+    filters: { mutationKey: ["messages", "create-message"], status: "success" },
+    select: (mutation) => mutation.state as MessageMutation,
+  });
 
   const { ref, entry } = useIntersection({
     root: scrollerRef.current,
@@ -71,6 +75,19 @@ const ChannelMainChat = ({
       scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
     }
   }, [messagesMutation]); // Autoscroll on message change (might break on edit msg)
+
+  useEffect(() => {
+    const lastMessage =
+      messagesMutationSuccess[messagesMutationSuccess.length - 1];
+
+    const lastMessageFormData = lastMessage?.variables.formData;
+
+    const lastMessageContainsImage = !!lastMessageFormData?.get("file[]");
+
+    if (lastMessageContainsImage && scrollerRef.current) {
+      scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
+    }
+  }, [messagesMutationSuccess]);
 
   useEffect(() => {
     const container = scrollerRef.current;
