@@ -1,4 +1,5 @@
 import {
+  TransformationOptions,
   UploadApiErrorResponse,
   UploadApiResponse,
   v2 as cloudinary,
@@ -16,7 +17,8 @@ cloudinary.config({
 
 export const uploadToCloudinary = (
   fileUri: string,
-  fileName: string
+  fileName: string,
+  transformation?: TransformationOptions
 ): Promise<UploadResponse> => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader
@@ -26,6 +28,7 @@ export const uploadToCloudinary = (
         filename_override: fileName,
         folder: "discord-clone",
         use_filename: true,
+        transformation,
       })
       .then((result) => {
         resolve({ success: true, result });

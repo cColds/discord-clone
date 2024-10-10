@@ -20,6 +20,7 @@ import { toBase64 } from "@/utils/helpers/toBase64";
 import ProfilePreview from "./ProfilePreview";
 import { updateProfile } from "@/lib/actions/settings/updateProfile";
 import { getUser } from "@/lib/db/getUser";
+import { getTransformedPreview } from "@/utils/helpers/getTransformedPreview";
 
 type UserProfileProps = {
   user: UserType;
@@ -61,7 +62,10 @@ const UserProfile = ({ user, onClose, handleUserUpdate }: UserProfileProps) => {
 
     try {
       const result = (await toBase64(file)) as string;
-      setPreviewImage(result);
+      const transformedPreview = await getTransformedPreview(result);
+
+      setPreviewImage(transformedPreview);
+
       form.setValue("avatar", file);
     } catch (err) {
       console.error(err);

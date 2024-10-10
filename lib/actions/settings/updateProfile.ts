@@ -1,7 +1,7 @@
 "use server";
 
 import dbConnect from "@/lib/db/dbConnect";
-import { uploadFileToCloudinary } from "@/lib/db/uploadFileToCloudinary";
+import { uploadToCloudinary } from "@/lib/db/uploadToCloudinary";
 import { userProfileSchema } from "@/lib/validations/userProfile";
 import User from "@/models/User";
 import { UserType } from "@/types/user";
@@ -29,8 +29,23 @@ export const updateProfile = async (
 
   try {
     let iconUrl = "";
+
     if (avatar) {
-      iconUrl = await uploadFileToCloudinary(formData);
+      const transformation = [
+        { width: 250, height: 250, crop: "fill", gravity: "center" },
+      ];
+
+      const buffer = await avatar.arrayBuffer();
+      const base64Img = Buffer.from(buffer).toString("base64");
+      const res = await uploadToCloudinary(
+        `data:${avatar.type};base64,${base64Img}`,
+        avatar.name,
+        transformation
+      );
+
+      if (res.success && res.result) {
+        iconUrl = res.result.secure_url;
+      }
     }
 
     const updatedUser = await User.findByIdAndUpdate(
