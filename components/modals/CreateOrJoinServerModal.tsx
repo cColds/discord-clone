@@ -41,14 +41,12 @@ const CreateOrJoinServerModal = ({ children }: CreateOrJoinServerModalType) => {
             onToggleModal={toggleModalOpen}
           />
         )}
-        {
-          modalMode === "Join Server" && (
-            <JoinServerContent
-              onModalChange={handleModalChange}
-              onToggleModal={toggleModalOpen}
-            />
-          ) /* Change this to join server content */
-        }
+        {modalMode === "Join Server" && (
+          <JoinServerContent
+            onModalChange={handleModalChange}
+            onToggleModal={toggleModalOpen}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

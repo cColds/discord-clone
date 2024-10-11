@@ -37,7 +37,6 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
   const [hoveredServer, setHoveredServer] = useState("");
 
   const [lastHoveredServer, setLastHoveredServer] = useState("");
-  const [hoveredAddServer, setHoveredAddServer] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(
     getPendingRequests(user)
   );
@@ -181,18 +180,10 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
           <CreateOrJoinServerModal>
             <button
               className={cn(
-                "flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl overflow-clip bg-dark-700",
-                {
-                  "rounded-xl": hoveredAddServer,
-                  "bg-green-360": hoveredAddServer,
-                }
+                "group flex justify-center w-12 h-12 items-center rounded-[50%] transition-all duration-100 cursor-pointer hover:rounded-xl hover:bg-green-360 overflow-clip bg-dark-700"
               )}
-              onMouseOver={() => setHoveredAddServer(true)}
-              onMouseLeave={() => setHoveredAddServer(false)}
             >
-              <Plus
-                className={hoveredAddServer ? "text-white" : "text-green-360"}
-              />
+              <Plus className="text-green-360 group-hover:text-white" />
             </button>
           </CreateOrJoinServerModal>
         </div>
