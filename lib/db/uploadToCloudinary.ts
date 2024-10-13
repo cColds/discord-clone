@@ -26,7 +26,10 @@ export const uploadToCloudinary = (
         invalidate: true,
         resource_type: "auto",
         filename_override: fileName,
-        folder: "discord-clone",
+        folder:
+          process.env.NODE_ENV === "production"
+            ? "discord-clone-prod"
+            : "discord-clone",
         use_filename: true,
         transformation,
       })
