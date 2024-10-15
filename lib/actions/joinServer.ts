@@ -8,7 +8,7 @@ import { UserType } from "@/types/user";
 import User from "@/models/User";
 import mongoose from "mongoose";
 import Message from "@/models/Message";
-import { welcomeMessages } from "@/utils/constants/welcomeMessages";
+import { getRandomWelcomeMessage } from "@/utils/helpers/getRandomWelcomeMessage";
 
 export const joinServer = async (
   formData: z.infer<typeof joinServerSchema>,
@@ -36,12 +36,9 @@ export const joinServer = async (
     const session = await mongoose.startSession();
 
     await session.withTransaction(async () => {
-      const randomWelcomeMessage =
-        welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
-
       const messageDoc = new Message({
         sender: user,
-        message: randomWelcomeMessage,
+        message: getRandomWelcomeMessage(),
         channelId: server.categories[0].channels[0]._id,
         images: [],
         readBy: [],
