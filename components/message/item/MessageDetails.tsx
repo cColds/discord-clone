@@ -75,7 +75,7 @@ const MessageDetails = ({
 
           <h3 className="min-h-[1.375rem] leading-[1.375rem]">
             <UserProfileModal user={msg.sender}>
-              <button className="border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline">
+              <button className="break-all text-left border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline">
                 {msg.sender.displayName}
               </button>
             </UserProfileModal>
