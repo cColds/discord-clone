@@ -78,12 +78,18 @@ export default function MessageBox({
               toggleDropdownMenu={toggleDropdownMenu}
               onFileChange={handleFileChange}
             />
-            <div className="bg-transparent grow relative max-h-1/2 flex items-center min-h-[44px]">
+            <div className="bg-transparent grow relative max-h-1/2 flex items-center min-h-[44px] overflow-hidden">
+              {!message && (
+                <p
+                  className="text-channel-text-area-placeholder truncate absolute pointer-events-none select-none"
+                  aria-hidden="true"
+                >
+                  Message{" "}
+                  {recipient ? `@${recipient?.displayName}` : `#${channelName}`}
+                </p>
+              )}
               <TextareaAutosize
-                className={`border-0 outline-0 max-h-1/2 h-[44px] py-2.5 resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
-                placeholder={`Message ${
-                  recipient ? `@${recipient?.displayName}` : `#${channelName}`
-                }`}
+                className={`whitespace-break-spaces break-words border-0 outline-0 max-h-1/2 h-[44px] py-2.5 resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
                 value={message}
