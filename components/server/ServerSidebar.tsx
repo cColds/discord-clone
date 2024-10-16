@@ -28,7 +28,7 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
                 {server.serverName}
               </h2>
 
-              <ChevronDown className="w-[18px] h-[18px] ml-1 opacity-80" />
+              <ChevronDown className="w-[18px] h-[18px] ml-1 opacity-80 shrink-0" />
             </div>
           </header>
 
