@@ -19,10 +19,10 @@ export default function ProfilePreview({
         Preview
       </h3>
 
-      <div className="flex flex-col gap-2 bg-surface-overlay pb-1 rounded overflow-hidden relative">
+      <div className="flex flex-col gap-2 bg-surface-overlay pb-1 rounded overflow-hidden relative w-[300px]">
         <header className="pb-10">
           <ProfileBanner
-            className="min-w-[300px] min-h-[100px] z-0"
+            className="w-[300px] min-h-[100px] z-0"
             viewBox="0 0 300 105"
             previewProfile={true}
             url={user.avatar}
@@ -45,8 +45,8 @@ export default function ProfilePreview({
           </div>
         </header>
 
-        <div className="flex flex-col px-4 pb-2">
-          <h3 className="truncate text-header-primary font-bold max-h-[72px] text-xl ">
+        <div className="flex flex-col px-4 pb-2 overflow-hidden">
+          <h3 className="overflow-hidden text-ellipsis break-all text-header-primary font-bold max-h-[72px] text-xl ">
             {formState.displayName || user.username}
           </h3>
           <p className="truncate text-header-primary inline">{user.username}</p>

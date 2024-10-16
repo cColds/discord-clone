@@ -47,7 +47,7 @@ const UserAccount = ({ user, onTabClick, onClose }: UserAccountProps) => {
       className="px-10 pb-20 pt-[60px] max-w-[740px] min-w-[460px] min-h-full flex gap-10"
       role="tabpanel"
     >
-      <div>
+      <div className="max-w-full">
         <h2 className="mb-5 text-header-primary text-xl leading-6 font-semibold">
           My Account
         </h2>
