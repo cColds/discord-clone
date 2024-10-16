@@ -16,7 +16,7 @@ type ServerSidebarProps = {
 
 const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
   return (
-    <div className="flex flex-col min-h-0 min-w-[240px] flex-shrink-0 overflow-hidden bg-background-secondary">
+    <div className="flex flex-col min-h-0 w-[240px] flex-shrink-0 overflow-hidden bg-background-secondary">
       <nav
         aria-label={`${server.serverName} server`}
         className="grow flex flex-col items-stretch flex-start min-h-0"

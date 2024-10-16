@@ -50,7 +50,9 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
             <Link
               href={`/channels/servers/${server._id}/${channel._id}`}
               aria-label={`${channel.name} (${channel.type} channel)`}
-              className={"grow cursor-pointer py-1.5 px-2 rounded flex group"}
+              className={
+                "grow cursor-pointer py-1.5 px-2 rounded flex group overflow-hidden"
+              }
             >
               <div className="mr-1.5" aria-label="Text icon">
                 {channel.type === "text" ? (
@@ -61,7 +63,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
               </div>
               <p
                 className={cn(
-                  "text-md truncate text-channels-default leading-5 grow group-hover:text-interactive-hover",
+                  "text-md truncate text-channels-default leading-5 group-hover:text-interactive-hover",
                   {
                     "text-white": channelId === channel._id,
                     "group-hover:text-white": channelId === channel._id,

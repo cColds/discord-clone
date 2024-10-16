@@ -77,7 +77,7 @@ const ChannelMembersList = ({
   return (
     <aside
       className={cn(
-        "flex bg-background-secondary h-full min-w-[240px] max-w-full",
+        "flex bg-background-secondary h-full w-[240px] max-w-full",
         { hidden: membersListOpen }
       )}
     >
