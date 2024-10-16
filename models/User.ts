@@ -37,6 +37,7 @@ const UserSchema = new Schema<UserType>(
       maxlength: 32,
       required: true,
       unique: true,
+      lowercase: true,
     },
     displayName: { type: String, minlength: 2, maxLength: 32, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
