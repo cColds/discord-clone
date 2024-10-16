@@ -22,15 +22,6 @@ const MessageDetails = ({
   editedDate,
   isEditActive,
 }: MessageDetailsProps) => {
-  const transformation = "c_fill,h_80,w_80";
-
-  const defaultAvatar = getRandomProfilePic();
-
-  const transformedAvatar =
-    defaultAvatar === msg.sender.avatar
-      ? msg.sender.avatar
-      : transformCloudinaryUrl(msg.sender.avatar, transformation);
-
   const messageSplit = msg.message.split("[!!{username}!!]");
 
   return (
@@ -66,7 +57,7 @@ const MessageDetails = ({
         <>
           <UserProfileModal user={msg.sender}>
             <Image
-              src={transformedAvatar}
+              src={msg.sender.avatar}
               alt=""
               width={40}
               height={40}
