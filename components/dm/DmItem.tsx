@@ -10,13 +10,18 @@ import { Close } from "../svgs";
 import { useParams } from "next/navigation";
 
 type DmItemProps = {
-  username: string;
+  displayName: string;
   status: Status;
   avatar: string;
   id: string;
 };
 
-export default function DmItem({ id, username, status, avatar }: DmItemProps) {
+export default function DmItem({
+  id,
+  displayName,
+  status,
+  avatar,
+}: DmItemProps) {
   const [showTooltip, setShowTooltip] = useState("");
   const handleMouseOver = (e: React.MouseEvent<HTMLParagraphElement>) => {
     const el = e.currentTarget;
@@ -43,23 +48,23 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
       >
         <div className="flex justify-center items-center shrink-0">
           <div className="w-8 h-8">
-            <AvatarMask username={username} status={status} avatar={avatar} />
+            <AvatarMask
+              username={displayName}
+              status={status}
+              avatar={avatar}
+            />
           </div>
         </div>
 
         {showTooltip === id ? (
-          <ActionTooltip content={username}>
+          <ActionTooltip content={displayName}>
             <div
               className={cn("overflow-hidden", {
                 "text-white": false,
               })}
             >
-              <p
-                className="truncate"
-                data-username="username"
-                onMouseOver={handleMouseOver}
-              >
-                {username}
+              <p className="truncate" onMouseOver={handleMouseOver}>
+                {displayName}
               </p>
             </div>
           </ActionTooltip>
@@ -69,12 +74,8 @@ export default function DmItem({ id, username, status, avatar }: DmItemProps) {
               "text-white": false,
             })}
           >
-            <p
-              className="truncate"
-              data-username="username"
-              onMouseOver={handleMouseOver}
-            >
-              {username}
+            <p className="truncate" onMouseOver={handleMouseOver}>
+              {displayName}
             </p>
           </div>
         )}
