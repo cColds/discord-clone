@@ -5,6 +5,7 @@ import { uploadToCloudinary } from "@/lib/db/uploadToCloudinary";
 import { userProfileSchema } from "@/lib/validations/userProfile";
 import User from "@/models/User";
 import { UserType } from "@/types/user";
+import { getRandomProfilePic } from "@/utils/helpers/getRandomProfilePic";
 
 export const updateProfile = async (
   formData: FormData,
@@ -53,9 +54,7 @@ export const updateProfile = async (
       {
         displayName,
         avatar:
-          iconUrl ||
-          (defaultAvatar && "/images/profile-pictures/blurple.png") ||
-          user.avatar,
+          iconUrl || (defaultAvatar && getRandomProfilePic()) || user.avatar,
       },
       { new: true }
     );

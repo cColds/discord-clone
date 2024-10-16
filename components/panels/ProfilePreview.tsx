@@ -1,6 +1,7 @@
 import { UserType } from "@/types/user";
 import { ProfileBanner } from "../svgs";
 import AvatarMask from "../avatar/AvatarMask";
+import { getRandomProfilePic } from "@/utils/helpers/getRandomProfilePic";
 
 type ProfilePreviewProps = {
   user: UserType;
@@ -31,7 +32,7 @@ export default function ProfilePreview({
             <AvatarMask
               username={user.username}
               status={user.status}
-              avatar={previewImage || "/images/profile-pictures/blurple.png"}
+              avatar={previewImage || getRandomProfilePic()}
               svgWidth={92}
               svgHeight={92}
               imgWidth={80}

@@ -9,6 +9,7 @@ import Server from "@/models/Server";
 import Dm from "@/models/Dm";
 import Message from "@/models/Message";
 import { getRandomWelcomeMessage } from "@/utils/helpers/getRandomWelcomeMessage";
+import { getRandomProfilePic } from "@/utils/helpers/getRandomProfilePic";
 
 export async function register(formData: z.infer<typeof registerSchema>) {
   const validatedFields = registerSchema.safeParse(formData);
@@ -46,7 +47,7 @@ export async function register(formData: z.infer<typeof registerSchema>) {
         email,
         password: hashedPassword,
         username,
-        avatar: "/images/profile-pictures/blurple.png",
+        avatar: getRandomProfilePic(),
         displayName: displayName || username,
         servers: defaultServer ? [defaultServer._id] : [],
         social: { friends: defaultFriend ? [defaultFriend._id] : [] },

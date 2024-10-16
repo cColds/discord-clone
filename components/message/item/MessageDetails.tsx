@@ -5,6 +5,7 @@ import { MessageType } from "@/types/message";
 import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 import UserProfileModal from "@/components/modals/UserProfileModal";
 import MessageTimestamp from "./MessageTimestamp";
+import { getRandomProfilePic } from "@/utils/helpers/getRandomProfilePic";
 
 type MessageDetailsProps = {
   msg: MessageType & { pending?: boolean };
@@ -23,7 +24,7 @@ const MessageDetails = ({
 }: MessageDetailsProps) => {
   const transformation = "c_fill,h_80,w_80";
 
-  const defaultAvatar = "/images/profile-pictures/blurple.png";
+  const defaultAvatar = getRandomProfilePic();
 
   const transformedAvatar =
     defaultAvatar === msg.sender.avatar
