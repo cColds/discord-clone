@@ -6,6 +6,11 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Member } from "@/types/server";
 import { useUser } from "@/app/providers/UserProvider";
+import { createOrGetDm } from "@/lib/db/createOrGetDm";
+import { useRouter } from "next-nprogress-bar";
+import { useSocket } from "@/app/providers/SocketProvider";
+import { getUser } from "@/lib/db/getUser";
+import { useState } from "react";
 
 type UserProfileModalProps = {
   user: UserType | UserNormal | Member;
@@ -38,13 +43,33 @@ const UserProfileTabItem = ({ selected, label }: UserProfileTabItemProps) => {
 };
 
 function UserProfileModal({ user, children }: UserProfileModalProps) {
-  const userJoinDate = format(new Date(user.createdAt), "LLL d, y");
-  const userCtx = useUser();
+  const [open, setOpen] = useState(false);
 
-  const isYourAccount = user.id === userCtx.user?.id;
+  const userJoinDate = format(new Date(user.createdAt), "LLL d, y");
+  const { user: yourAccount, setUser } = useUser();
+
+  const router = useRouter();
+
+  const isYourAccount = user.id === yourAccount?.id;
+
+  const handleMessageClick = async () => {
+    const dm = await createOrGetDm(yourAccount?.id || "", user.id);
+
+    router.push(`/channels/dms/${dm._id}`);
+
+    const getUpdatedUser = await getUser(yourAccount?.id);
+    if (getUpdatedUser) setUser(getUpdatedUser);
+
+    setOpen(false);
+  };
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(open) => {
+        setOpen(open);
+      }}
+      open={open}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         removeCloseButton={true}
@@ -81,6 +106,7 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
                 className="flex items-center gap-1 border-0 ml-auto font-semibold px-4 py-0.5 text-sm bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-background-active transition duration-200 min-w-[60px] min-h-[32px] h-8"
                 aria-label="Message"
                 type="button"
+                onClick={handleMessageClick}
               >
                 {isYourAccount ? (
                   <div className="truncate flex items-center gap-1 border-0">
