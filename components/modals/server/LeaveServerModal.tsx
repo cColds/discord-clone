@@ -68,7 +68,7 @@ const LeaveServerModal = ({
             </button>
             <button
               type="button"
-              className="bg-button-danger-background hover:bg-button-danger-background-hover rounded active:bg-button-danger-background-active border-0 text-sm px-4 py-0.5 h-[38px] min-w-[96px]"
+              className="font-semibold bg-button-danger-background hover:bg-button-danger-background-hover rounded active:bg-button-danger-background-active border-0 text-sm px-4 py-0.5 h-[38px] min-w-[96px]"
               onClick={handleLeaveServerClick}
             >
               Leave Server

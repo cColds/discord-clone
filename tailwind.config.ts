@@ -36,6 +36,7 @@ module.exports = {
         "brand-500": "rgb(88, 101, 242)", // aka brand-experiment
         "brand-560": "rgb(71, 82, 196)",
         "brand-600": "rgb(60, 69, 165)",
+        "text-brand": "oklab(0.724763 0.0197112 -0.12977)",
         "channel-icon": "rgb(128, 132, 142)",
         "dark-700": "#313338",
         "background-modifier-accent": "#4e50587a",
