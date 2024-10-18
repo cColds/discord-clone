@@ -8,9 +8,9 @@ import { Member } from "@/types/server";
 import { useUser } from "@/app/providers/UserProvider";
 import { createOrGetDm } from "@/lib/db/createOrGetDm";
 import { useRouter } from "next-nprogress-bar";
-import { useSocket } from "@/app/providers/SocketProvider";
 import { getUser } from "@/lib/db/getUser";
 import { useState } from "react";
+import { useParams } from "next/navigation";
 
 type UserProfileModalProps = {
   user: UserType | UserNormal | Member;
@@ -49,18 +49,20 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
   const { user: yourAccount, setUser } = useUser();
 
   const router = useRouter();
-
+  const params = useParams();
   const isYourAccount = user.id === yourAccount?.id;
-
   const handleMessageClick = async () => {
     const dm = await createOrGetDm(yourAccount?.id || "", user.id);
+    if (params?.channelId === dm._id) {
+      setOpen(false);
+      return;
+    }
 
-    router.push(`/channels/dms/${dm._id}`);
+    const dmLink = `/channels/dms/${dm._id}`;
+    router.push(dmLink);
 
     const getUpdatedUser = await getUser(yourAccount?.id);
     if (getUpdatedUser) setUser(getUpdatedUser);
-
-    setOpen(false);
   };
 
   return (
