@@ -104,24 +104,30 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
                 />
               </div>
 
-              <button
-                className="flex items-center gap-1 border-0 ml-auto font-semibold px-4 py-0.5 text-sm bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-background-active transition duration-200 min-w-[60px] min-h-[32px] h-8"
-                aria-label="Message"
-                type="button"
-                onClick={handleMessageClick}
-              >
-                {isYourAccount ? (
+              {isYourAccount ? (
+                <button
+                  className="flex items-center gap-1 border-0 ml-auto font-semibold px-4 py-0.5 text-sm bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-background-active transition duration-200 min-w-[60px] min-h-[32px] h-8"
+                  aria-label="Message"
+                  type="button"
+                >
                   <div className="truncate flex items-center gap-1 border-0">
                     <Edit className="w-[18px] h-[18px]" />
                     Edit Profile
                   </div>
-                ) : (
+                </button>
+              ) : (
+                <button
+                  className="flex items-center gap-1 border-0 ml-auto font-semibold px-4 py-0.5 text-sm bg-button-secondary-background hover:bg-button-secondary-background-hover active:bg-button-secondary-background-active transition duration-200 min-w-[60px] min-h-[32px] h-8"
+                  aria-label="Message"
+                  type="button"
+                  onClick={handleMessageClick}
+                >
                   <div className="truncate flex items-center gap-1">
                     <Message width={18} height={18} />
                     Message
                   </div>
-                )}
-              </button>
+                </button>
+              )}
             </div>
           </header>
 
