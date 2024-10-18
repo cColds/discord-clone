@@ -3,6 +3,7 @@ import UserSettingsSidebar from "../sidebars/UserSettingsSidebar";
 import UserSettingsContent from "./UserSettingsContent";
 import { useEffect, useState } from "react";
 import { UserSettingsTabs } from "@/types/user-settings-tabs";
+import { useFocusTrap } from "@mantine/hooks";
 
 type UserSettingsProps = {
   onClose: () => void;
@@ -21,11 +22,16 @@ const UserSettings = ({ onClose }: UserSettingsProps) => {
     window.addEventListener("keydown", closeSettings);
   }, []);
 
+  const focusTrapRef = useFocusTrap();
+
   return (
     <div>
       {createPortal(
         <>
-          <div className="absolute z-50 flex bg-background-primary top-0 left-0 bottom-0 right-0 scroller">
+          <div
+            ref={focusTrapRef}
+            className="absolute z-50 flex bg-background-primary top-0 left-0 bottom-0 right-0 scroller"
+          >
             <UserSettingsSidebar
               onTabClick={handleTabClick}
               selected={selected}
