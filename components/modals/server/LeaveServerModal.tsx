@@ -48,13 +48,13 @@ const LeaveServerModal = ({
         removeCloseButton={true}
         className="rounded bg-background-primary p-0 w-[440px] max-h-[720px] min-h-[200px]"
       >
-        <DialogHeader className="p-4">
-          <DialogTitle className="text-left text-xl">
-            Leave 'Server'
+        <DialogHeader className="p-4 overflow-hidden">
+          <DialogTitle className="text-left text-xl truncate">
+            Leave '{server.serverName}'
           </DialogTitle>
           <DialogDescription className="text-text-normal text-md text-left">
-            Are you sure you want to leave <strong>server</strong>? You won't be
-            able to rejoin this server unless you are re-invited.
+            Are you sure you want to leave <strong>{server.serverName}</strong>?
+            You won't be able to rejoin this server unless you are re-invited.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-background-secondary p-4">
