@@ -7,6 +7,7 @@ export interface ServerType extends Document {
   categories: CategoryType[];
   members: Types.ObjectId[];
   invites: InviteType[];
+  owner: Types.ObjectId;
 }
 
 type ChannelType = {

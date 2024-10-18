@@ -8,6 +8,7 @@ import UserPanel from "../panels/UserPanel";
 import React from "react";
 import ServerChannelList from "./ServerChannelList";
 import ServerCategory from "./ServerCategory";
+import ServerDropdown from "./ServerDropdown";
 
 type ServerSidebarProps = {
   server: ServerType;
@@ -22,15 +23,16 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
         className="grow flex flex-col items-stretch flex-start min-h-0"
       >
         <div className="cursor-pointer">
-          <header className="hover:bg-background-modifier-hover py-3 px-4 z-30 shadow-elevation-low transition duration-100 ease-linear">
-            <div className="h-6 flex items-center justify-between text-header-primary">
-              <h2 className="truncate font-bold text-md leading-5 min-w-0">
-                {server.serverName}
-              </h2>
-
-              <ChevronDown className="w-[18px] h-[18px] ml-1 opacity-80 shrink-0" />
-            </div>
-          </header>
+          <ServerDropdown server={server} user={user}>
+            <header className="hover:bg-background-modifier-hover py-3 px-4 z-30 shadow-elevation-low transition duration-100 ease-linear">
+              <div className="h-6 flex items-center justify-between text-header-primary">
+                <h2 className="truncate font-bold text-md leading-5 min-w-0">
+                  {server.serverName}
+                </h2>
+                <ChevronDown className="w-[18px] h-[18px] ml-1 opacity-80 shrink-0" />
+              </div>
+            </header>
+          </ServerDropdown>
 
           <div className="min-w-0 grow pr-2">
             <ul className="" aria-label="Channels">

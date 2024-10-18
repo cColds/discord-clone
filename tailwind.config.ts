@@ -59,6 +59,8 @@ module.exports = {
         "info-positive-foreground": "rgb(35, 165, 89)",
         "status-danger": "rgb(242, 63, 66)",
         "button-danger-background": "rgb(218, 55, 60)",
+        "button-danger-background-hover": "rgb(161, 40, 40)",
+        "button-danger-background-active": "rgb(143, 32, 34)",
         "red-500": "rgb(164, 40, 40)",
         "background-floating": "rgb(17, 18, 20)",
         "text-input-border": "rgba(0, 0, 0, 0.298)",
