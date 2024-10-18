@@ -52,10 +52,10 @@ const CreateInviteModal = ({
 
       <DialogContent className="bg-background-primary p-0 rounded-sm w-[440px] min-h-[144px] max-h-[645px] flex flex-col gap-0">
         <DialogHeader className="flex text-left p-4">
-          <DialogTitle className="text-base leading-5 font-bold mr-[28px] text-header-primary tracking-normal">
+          <DialogTitle className="truncate text-base leading-5 font-bold mr-[28px] text-header-primary tracking-normal">
             Invite friends to {server.serverName}
           </DialogTitle>
-          <DialogDescription className="flex items-center my-1 gap-2 text-interactive-normal mt-2">
+          <DialogDescription className="truncate flex items-center my-1 gap-2 text-interactive-normal mt-2">
             <Hash className="h-5 w-5" />
 
             <span className="text-base leading-5 font-normal">
