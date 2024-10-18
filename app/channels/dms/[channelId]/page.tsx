@@ -19,8 +19,9 @@ export default async function DmPage({
   if (user == null) redirect("/login");
 
   const dm = await getDm(params.channelId);
+  const isMember = !!dm?.members.find((m) => m.id === user.id);
 
-  if (dm == null) redirect("/");
+  if (dm == null || !isMember) redirect("/");
 
   const initialMessages = await getMessages(params.channelId);
 
