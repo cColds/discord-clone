@@ -86,6 +86,13 @@ const ServerChannelClient = ({
       if (updatedServer) setServerState(updatedServer);
     });
 
+    socket.on("update-server", async () => {
+      const updatedServer = await getServer(server._id);
+      if (updatedServer) {
+        setServerState(updatedServer);
+      }
+    });
+
     socket.on("received-message", async () => {
       await queryClient.invalidateQueries({
         queryKey: ["messages"],

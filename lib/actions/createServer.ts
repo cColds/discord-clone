@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerSchema } from "@/lib/validations/createServer";
+import { createServerSchema } from "@/lib/validations/createServerSchema";
 import dbConnect from "@/lib/db/dbConnect";
 import Server from "@/models/Server";
 import { uploadFileToCloudinary } from "@/lib/db/uploadFileToCloudinary";

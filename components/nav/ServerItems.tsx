@@ -101,6 +101,14 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
       }
     });
 
+    socket.on("update-server", async () => {
+      const updatedServers = await getServers(user.id);
+
+      if (updatedServers) {
+        setServersState(updatedServers);
+      }
+    });
+
     socket.on("leave-server", async () => {
       const updatedServers = await getServers(user.id);
 

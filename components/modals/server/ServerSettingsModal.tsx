@@ -1,36 +1,57 @@
 import { UserType } from "@/types/user";
-import { UserSettingsTabs } from "@/types/user-settings-tabs";
-import CloseSettings from "@/components/CloseSettings";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
+import ServerSettingsSidebar from "@/components/sidebars/ServerSettingSidebar";
+import { ServerSettingsTabs } from "@/types/server-settings-tabs";
+import { ServerType } from "@/types/server";
+import ServerSettingsContent from "./ServerSettingsContent";
+import { useFocusTrap } from "@mantine/hooks";
 
 type ServerSettingsProps = {
+  server: ServerType;
   user: UserType;
-  onTabClick: (tabName: UserSettingsTabs) => void;
-  onClose: () => void;
+  onToggleOpen: () => void;
 };
 
-const UserSettings = ({ onClose }: ServerSettingsProps) => {
-  const [selected, setSelected] = useState<UserSettingsTabs>("My Account");
-
-  const handleTabClick = (tabName: UserSettingsTabs) => setSelected(tabName);
+const ServerSettingsModal = ({
+  server,
+  user,
+  onToggleOpen,
+}: ServerSettingsProps) => {
+  const [selected, setSelected] = useState<ServerSettingsTabs>("Overview");
 
   useEffect(() => {
     const closeSettings = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onToggleOpen();
     };
 
     window.addEventListener("keydown", closeSettings);
   }, []);
 
+  const handleTabClick = (tabName: ServerSettingsTabs) => setSelected(tabName);
+
+  const focusTrapRef = useFocusTrap();
+
   return (
     <div>
       {createPortal(
         <>
-          <div className="absolute z-50 flex bg-background-primary top-0 left-0 bottom-0 right-0 scroller">
-            <div>Sidebar</div>
+          <div
+            ref={focusTrapRef}
+            className="absolute z-50 flex bg-background-primary top-0 left-0 bottom-0 right-0 scroller"
+          >
+            <ServerSettingsSidebar
+              selected={selected}
+              onTabClick={handleTabClick}
+              server={server}
+            />
 
-            <div>Main Content</div>
+            <ServerSettingsContent
+              server={server}
+              selected={selected}
+              onClose={onToggleOpen}
+              user={user}
+            />
           </div>
         </>,
         document.body
@@ -38,6 +59,9 @@ const UserSettings = ({ onClose }: ServerSettingsProps) => {
     </div>
   );
 };
+
+export default ServerSettingsModal;
+
 // export default ServerSettings;
 
 // const ServerSettings = ({ user, onTabClick, onClose }: ServerSettingsProps) => {

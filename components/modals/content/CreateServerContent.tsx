@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createServer } from "@/lib/actions/createServer";
 import { cn } from "@/lib/utils";
-import { createServerSchema } from "@/lib/validations/createServer";
+import { createServerSchema } from "@/lib/validations/createServerSchema";
 import { toBase64 } from "@/utils/helpers/toBase64";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
