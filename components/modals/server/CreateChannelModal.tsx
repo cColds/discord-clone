@@ -28,15 +28,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 type CreateChannelModalProps = {
-  children: React.ReactNode;
   category: ServerCategory;
   serverId: string;
+  open: boolean;
+  toggleOpen: (open: boolean) => void;
 };
 
 const CreateChannelModal = ({
   category,
   serverId,
-  children,
+  open,
+  toggleOpen,
 }: CreateChannelModalProps) => {
   const form = useForm<z.infer<typeof createChannelSchema>>({
     resolver: zodResolver(createChannelSchema),
@@ -46,8 +48,6 @@ const CreateChannelModal = ({
   const [selectedChannelType, setSelectedChannelType] = useState<
     "text" | "voice"
   >("text");
-
-  const [open, setOpen] = useState(false);
 
   const { socket } = useSocket();
   const { channelId } = useParams();
@@ -60,20 +60,13 @@ const CreateChannelModal = ({
   const onSubmit = async (data: z.infer<typeof createChannelSchema>) => {
     await createChannel(data, serverId, category._id);
 
-    setOpen(false);
+    toggleOpen(false);
 
     socket.emit("create-channel", channelId);
   };
 
   return (
-    <Dialog
-      onOpenChange={(open) => {
-        setOpen(open);
-      }}
-      open={open}
-    >
-      <DialogTrigger asChild>{children}</DialogTrigger>
-
+    <Dialog onOpenChange={toggleOpen} open={open}>
       <DialogContent className="bg-background-primary p-0 rounded-sm w-[460px] flex flex-col gap-0">
         <DialogHeader className="flex text-left p-4">
           <DialogTitle className="text-header-primary text-xl leading-6 font-medium">
@@ -86,7 +79,10 @@ const CreateChannelModal = ({
 
         <div className="pl-4 pr-2 max-h-[680px] overflow-x-hidden overflow-y-auto">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} id="createChannelForm">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              id="create-channel-form"
+            >
               <h2 className="text-header-secondary mb-2 text-xs font-bold uppercase tracking-wide">
                 Channel Type
               </h2>
@@ -137,7 +133,7 @@ const CreateChannelModal = ({
         </div>
         <div className="bg-modal-footer p-4 flex justify-end">
           <button
-            onClick={() => setOpen(false)}
+            onClick={() => toggleOpen(false)}
             className="min-h-[38px] h-[38px] min-w-[96px] flex items-center justify-center border-0 text-sm leading-4 py-0.5 px-4 rounded truncate"
           >
             Cancel
@@ -146,7 +142,7 @@ const CreateChannelModal = ({
             disabled={!form.formState.isValid}
             className="min-h-[38px] h-[38px] min-w-[96px] flex items-center justify-center border-0 text-sm leading-4 py-0.5 px-4 rounded truncate bg-brand-500 disabled:cursor-not-allowed disabled:opacity-50"
             type="submit"
-            form="createChannelForm"
+            form="create-channel-form"
           >
             Create Channel
           </button>
