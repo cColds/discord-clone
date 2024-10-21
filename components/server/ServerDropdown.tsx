@@ -68,13 +68,15 @@ const ServerDropdown = ({ children, server, user }: ServerDropdownProps) => {
             Server Settings
             <Settings className="w-[18px] h-[18px]" />
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => toggleLeaveServerModal(true)}
-            className="flex justify-between text-status-danger focus:bg-status-danger active:bg-status-danger/80 hover:bg-status-danger hover:text-white active:text-white"
-          >
-            Leave Server
-            <Leave className="w-[18px] h-[18px]" />
-          </DropdownMenuItem>
+          {user.id !== server.owner && (
+            <DropdownMenuItem
+              onClick={() => toggleLeaveServerModal(true)}
+              className="flex justify-between text-status-danger focus:bg-status-danger active:bg-status-danger/80 hover:bg-status-danger hover:text-white active:text-white"
+            >
+              Leave Server
+              <Leave className="w-[18px] h-[18px]" />
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <LeaveServerModal

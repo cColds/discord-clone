@@ -11,10 +11,8 @@ export const leaveServer = async (userId: string, serverId: string) => {
   const server = await Server.findById(serverId);
   const userObjectId = new Types.ObjectId(userId);
 
-  if ((server?.members.length || 0) > 1 && userObjectId.equals(server?.owner)) {
-    console.error(
-      "Can't leave server if you are owner and there's another person in the server"
-    );
+  if (userObjectId.equals(server?.owner)) {
+    console.error("Owners can't leave the server. Delete it instead.");
     return;
   }
 
@@ -29,10 +27,6 @@ export const leaveServer = async (userId: string, serverId: string) => {
   await User.findByIdAndUpdate(userId, {
     $pull: { servers: serverId },
   });
-
-  if (updatedServer?.members.length === 0) {
-    await updatedServer.deleteOne();
-  }
 
   return JSON.parse(JSON.stringify(updatedServer)) as typeof updatedServer;
 };

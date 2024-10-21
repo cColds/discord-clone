@@ -32,9 +32,7 @@ const LeaveServerModal = ({
     const serverDoc = await leaveServer(user.id, server._id);
 
     if (!serverDoc) {
-      alert(
-        "Error leaving server. Most likely because you are owner and there are other members in the server."
-      );
+      console.error("Error leaving server");
       return;
     }
 
