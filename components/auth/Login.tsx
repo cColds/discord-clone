@@ -22,7 +22,6 @@ import { useForm } from "react-hook-form";
 
 export default function Login() {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -43,7 +42,7 @@ export default function Login() {
         return;
       }
 
-      router.push("/");
+      window.location.replace("/");
     });
   };
 
