@@ -50,11 +50,12 @@ const LeaveServerModal = ({
       >
         <DialogHeader className="p-4 overflow-hidden">
           <DialogTitle className="text-left text-xl truncate">
-            Leave '{server.serverName}'
+            Leave &apos;{server.serverName}&apos;
           </DialogTitle>
           <DialogDescription className="text-text-normal text-md text-left">
             Are you sure you want to leave <strong>{server.serverName}</strong>?
-            You won't be able to rejoin this server unless you are re-invited.
+            You won&apos;t be able to rejoin this server unless you are
+            re-invited.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-background-secondary p-4">

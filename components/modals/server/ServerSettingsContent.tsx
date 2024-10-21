@@ -21,8 +21,10 @@ const ServerSettingsContent = ({
     <div className="bg-background-primary flex-grow basis-[800px] h-full scroller">
       <div className="overflow-x-hidden overflow-y-scroll flex h-full">
         <div className="px-10 pt-14 pb-20">
-          {selected === "Overview" && (
+          {selected === "Overview" ? (
             <ServerSettingsOverview server={server} user={user} />
+          ) : (
+            <p>Haven&apos;t implemented yet</p>
           )}
         </div>
 
