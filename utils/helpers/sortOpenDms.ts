@@ -1,4 +1,4 @@
-import { UserDms, UserType } from "@/types/user";
+import { UserDms } from "@/types/user";
 
 export const sortOpenDms = (dms: UserDms["dms"]) => {
   const dmsOpen = dms.filter((dm) => dm.open);

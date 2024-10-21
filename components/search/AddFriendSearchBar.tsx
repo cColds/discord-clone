@@ -20,13 +20,14 @@ export default function AddFriendSearchBar() {
 
   const form = useForm<z.infer<typeof addFriendSchema>>({
     resolver: zodResolver(addFriendSchema),
-    defaultValues: { friendUsername: "" },
+    defaultValues: { recipientUsername: "" },
   });
 
   const onSubmit = async (data: z.infer<typeof addFriendSchema>) => {
     startTransition(async () => {
       const validUsernameLength =
-        data.friendUsername.length >= 2 && data.friendUsername.length <= 37;
+        data.recipientUsername.length >= 2 &&
+        data.recipientUsername.length <= 37;
 
       if (!validUsernameLength) {
         const errOpts = {
@@ -34,7 +35,7 @@ export default function AddFriendSearchBar() {
           message:
             "Hm, didn't work. Double check that the username is correct.",
         };
-        form.setError("friendUsername", errOpts);
+        form.setError("recipientUsername", errOpts);
 
         return;
       }
@@ -46,7 +47,7 @@ export default function AddFriendSearchBar() {
         const response = await addFriend(data, senderId);
 
         if (!response?.success) {
-          form.setError("friendUsername", {
+          form.setError("recipientUsername", {
             type: "manual",
             message: response?.message || "Unknown Error",
           });
@@ -54,9 +55,9 @@ export default function AddFriendSearchBar() {
         }
 
         form.reset();
-        setSuccess(data.friendUsername);
+        setSuccess(data.recipientUsername);
 
-        const recipientId = await getUserId(data.friendUsername);
+        const recipientId = await getUserId(data.recipientUsername);
         socket.emit("send-friend-request", {
           senderId,
           recipientId,
@@ -67,7 +68,7 @@ export default function AddFriendSearchBar() {
     });
   };
 
-  const invalidFriendUsername = form.formState.errors.friendUsername;
+  const error = form.formState.errors.recipientUsername;
 
   return (
     <Form {...form}>
@@ -80,8 +81,8 @@ export default function AddFriendSearchBar() {
         className={cn(
           "bg-background-tertiary rounded-md mt-4 px-3 h-12 flex items-center border-[1px] border-text-input-border focus-within:border-text-link",
           {
-            "border-status-danger": invalidFriendUsername,
-            "focus-within:border-status-danger": invalidFriendUsername,
+            "border-status-danger": error,
+            "focus-within:border-status-danger": error,
             "focus-within:border-green-360": success,
             "border-green-360": success,
           }
@@ -89,7 +90,7 @@ export default function AddFriendSearchBar() {
       >
         <FormField
           control={form.control}
-          name="friendUsername"
+          name="recipientUsername"
           render={({ field }) => (
             <FormItem className="flex items-center py-[1px] grow">
               <FormControl>
@@ -97,10 +98,11 @@ export default function AddFriendSearchBar() {
                   type="text"
                   {...field}
                   maxLength={37}
-                  className="bg-transparent h-[30px] w-full border-0 mr-4 py-2 tracking-[.04em]"
+                  className="disabled:opacity-50 disabled:cursor-not-allowed bg-transparent h-[30px] w-full border-0 mr-4 py-2 tracking-[.04em]"
                   aria-label="You can add friends with their Discord username."
                   placeholder="You can add friends with their Discord username."
                   autoComplete="off"
+                  disabled={isPending}
                 />
               </FormControl>
             </FormItem>
@@ -114,10 +116,8 @@ export default function AddFriendSearchBar() {
           Send Friend Request
         </button>
       </form>
-      {invalidFriendUsername && (
-        <p className="text-text-danger mt-2 text-sm">
-          {invalidFriendUsername.message}
-        </p>
+      {error && (
+        <p className="text-text-danger mt-2 text-sm">{error.message}</p>
       )}
 
       {success && (
