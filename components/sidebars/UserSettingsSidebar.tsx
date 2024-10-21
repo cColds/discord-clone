@@ -45,9 +45,9 @@ const UserSettingsSidebar = ({
 
           <li className="list-none w-full">
             <button
-              aria-label={"Log Out"}
+              aria-label="Log Out"
               className={cn(
-                "flex justify-between items-centertext-left w-full py-1.5 px-2.5 mb-0.5 rounded text-md leading-5 truncate list-none text-interactive-normal cursor-pointer hover:text-interactive-hover hover:bg-background-modifier-hover"
+                "flex justify-between items-center text-left w-full py-1.5 px-2.5 mb-0.5 rounded text-md leading-5 truncate list-none text-interactive-normal cursor-pointer hover:text-interactive-hover hover:bg-background-modifier-hover"
               )}
               onClick={() => setLogOutModalOpen(true)}
             >
