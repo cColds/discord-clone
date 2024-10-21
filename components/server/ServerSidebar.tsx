@@ -69,7 +69,7 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
                     <ServerCategory
                       category={category}
                       key={category._id}
-                      serverId={server._id}
+                      server={server}
                     />
                     {category.channels.map((channel) => {
                       return (

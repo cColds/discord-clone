@@ -37,7 +37,10 @@ const LeaveServerModal = ({
     }
 
     router.push("/");
-    socket.emit("leave-server", user.id);
+    socket.emit(
+      "update-server",
+      server.members.map((m) => m.id)
+    );
   };
 
   return (

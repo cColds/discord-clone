@@ -62,24 +62,3 @@ const ServerSettingsModal = ({
 };
 
 export default ServerSettingsModal;
-
-// export default ServerSettings;
-
-// const ServerSettings = ({ user, onTabClick, onClose }: ServerSettingsProps) => {
-//   return (
-//     <div
-//       className="px-10 pb-20 pt-[60px] max-w-[740px] min-w-[460px] min-h-full flex gap-10"
-//       role="tabpanel"
-//     >
-//       <div className="max-w-full">
-//         <h2 className="mb-5 text-header-primary text-xl leading-6 font-semibold">
-//           Server Overview
-//         </h2>
-//         <div className="bg-background-tertiary rounded overflow-hidden relative"></div>
-//       </div>
-//       <div className="mr-10 w-[60px] shrink-0">
-//         <CloseSettings onClose={onClose} />
-//       </div>
-//     </div>
-//   );
-// };

@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createChannel } from "@/lib/actions/createChannel";
 import { createChannelSchema } from "@/lib/validations/createChannel";
-import { ServerCategory } from "@/types/server";
+import { ServerCategory, ServerType } from "@/types/server";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -29,14 +29,14 @@ import { z } from "zod";
 
 type CreateChannelModalProps = {
   category: ServerCategory;
-  serverId: string;
+  server: ServerType;
   open: boolean;
   toggleOpen: (open: boolean) => void;
 };
 
 const CreateChannelModal = ({
   category,
-  serverId,
+  server,
   open,
   toggleOpen,
 }: CreateChannelModalProps) => {
@@ -50,7 +50,6 @@ const CreateChannelModal = ({
   >("text");
 
   const { socket } = useSocket();
-  const { channelId } = useParams();
 
   const handleRadioItemClick = (updatedChannelType: "text" | "voice") => {
     setSelectedChannelType(updatedChannelType);
@@ -58,11 +57,14 @@ const CreateChannelModal = ({
   };
 
   const onSubmit = async (data: z.infer<typeof createChannelSchema>) => {
-    await createChannel(data, serverId, category._id);
+    await createChannel(data, server._id, category._id);
 
     toggleOpen(false);
 
-    socket.emit("create-channel", channelId);
+    socket.emit(
+      "update-server",
+      server.members.map((m) => m.id)
+    );
   };
 
   return (

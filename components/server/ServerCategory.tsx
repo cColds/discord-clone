@@ -1,16 +1,19 @@
 import { ChevronDown } from "lucide-react";
 import { DMPlus } from "@/components/svgs";
-import { ServerCategory as ServerCategoryType } from "@/types/server";
+import {
+  ServerCategory as ServerCategoryType,
+  ServerType,
+} from "@/types/server";
 import CreateChannelModal from "@/components/modals/server/CreateChannelModal";
 import { useState } from "react";
 import ActionTooltip from "@/components/tooltip/ActionTooltip";
 
 type ServerCategoryProps = {
   category: ServerCategoryType;
-  serverId: string;
+  server: ServerType;
 };
 
-const ServerCategory = ({ category, serverId }: ServerCategoryProps) => {
+const ServerCategory = ({ category, server }: ServerCategoryProps) => {
   const [createChannelModalOpen, setCreateChannelModalOpen] = useState(false);
 
   return (
@@ -40,7 +43,7 @@ const ServerCategory = ({ category, serverId }: ServerCategoryProps) => {
           </ActionTooltip>
           <CreateChannelModal
             category={category}
-            serverId={serverId}
+            server={server}
             toggleOpen={setCreateChannelModalOpen}
             open={createChannelModalOpen}
           />
