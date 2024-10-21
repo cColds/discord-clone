@@ -76,7 +76,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("update-friend-list", async () => {
+    socket.on("update-user", async () => {
       const updatedUser = await getUser(user.id);
 
       if (updatedUser !== null) {
@@ -85,32 +85,8 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
       }
     });
 
-    socket.on("join-server", async () => {
-      const updatedServers = await getServers(user.id);
-
-      if (updatedServers) {
-        setServersState(updatedServers);
-      }
-    });
-
-    socket.on("create-server", async () => {
-      const updatedServers = await getServers(user.id);
-
-      if (updatedServers) {
-        setServersState(updatedServers);
-      }
-    });
-
     socket.on("update-server", async () => {
       const updatedServers = await getServers(user.id);
-      if (updatedServers) {
-        setServersState(updatedServers);
-      }
-    });
-
-    socket.on("leave-server", async () => {
-      const updatedServers = await getServers(user.id);
-
       if (updatedServers) {
         setServersState(updatedServers);
       }

@@ -26,34 +26,13 @@ export default function HomeClient() {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("update-friend-list", async () => {
-      const updatedUser = await getUser(user.id);
-
-      if (updatedUser !== null) {
-        setUser(updatedUser);
-      }
-    });
-
     socket.on("update-online-status", (isOnline: boolean) => {
       setUser({ ...user, online: isOnline });
     });
-
-    socket.on("update-friends-online-status", async (isOnline: boolean) => {
+    socket.on("update-user", async () => {
       const updatedUser = await getUser(user.id);
 
-      if (updatedUser) {
-        setUser(updatedUser);
-      } else {
-        console.error("failed to update user");
-      }
-    });
-
-    socket.on("update-dms-list", async () => {
-      const updatedUser = await getUser(user.id);
-
-      if (updatedUser) {
-        setUser(updatedUser);
-      }
+      if (updatedUser) setUser(updatedUser);
     });
 
     return () => socket.disconnect();

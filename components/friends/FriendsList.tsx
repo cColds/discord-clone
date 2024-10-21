@@ -12,7 +12,7 @@ import FriendsListSearchBar from "../search/FriendsListSearchBar";
 
 type FriendsListProps = {
   social: SocialPopulated["social"];
-  tab: FriendTab; // TODO: i think i somehow added invisible and offline status to the friend tab
+  tab: FriendTab;
   userId: string;
   onTabClick: (tabType: FriendTab) => void;
 };

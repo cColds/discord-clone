@@ -66,7 +66,7 @@ const ServerChannelClient = ({
 
     socket.emit("join-channel", channelId);
 
-    socket.on("update-friend-list", async () => {
+    socket.on("update-user", async () => {
       const updatedUser = await getUser(user.id);
 
       if (updatedUser !== null) {
@@ -76,16 +76,6 @@ const ServerChannelClient = ({
 
     socket.on("update-online-status", (isOnline: boolean) => {
       setUser({ ...user, online: isOnline });
-    });
-
-    socket.on("update-friends-online-status", async (isOnline: boolean) => {
-      const updatedUser = await getUser(user.id);
-      const updatedServer = await getServer(server._id);
-
-      if (updatedUser) {
-        setUser(updatedUser);
-      }
-      if (updatedServer) setServerState(updatedServer);
     });
 
     socket.on("update-server", async () => {
@@ -110,13 +100,6 @@ const ServerChannelClient = ({
       const updatedServer = await getServer(server._id);
 
       if (updatedServer) setServerState(updatedServer);
-    });
-
-    socket.on("create-channel", async () => {
-      const updatedServer = await getServer(server._id);
-      if (updatedServer) {
-        setServerState(updatedServer);
-      }
     });
 
     return () => socket.disconnect();

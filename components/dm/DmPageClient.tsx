@@ -63,10 +63,10 @@ export default function DmPageClient({
 
     socket.emit("join-channel", channelId);
 
-    socket.on("update-friend-list", async () => {
+    socket.on("update-user", async () => {
       const updatedUser = await getUser(user.id);
 
-      if (updatedUser !== null) {
+      if (updatedUser) {
         setUser(updatedUser);
       }
     });
@@ -75,26 +75,8 @@ export default function DmPageClient({
       setUser({ ...user, online: isOnline });
     });
 
-    socket.on("update-friends-online-status", async (isOnline: boolean) => {
-      const updatedUser = await getUser(user.id);
-
-      if (updatedUser) {
-        setUser(updatedUser);
-      } else {
-        console.error("failed to update user");
-      }
-    });
-
     socket.on("received-message", async () => {
       await queryClient.invalidateQueries({ queryKey: ["messages"] });
-    });
-
-    socket.on("update-dms-list", async () => {
-      const updatedUser = await getUser(user.id);
-
-      if (updatedUser) {
-        setUser(updatedUser);
-      }
     });
 
     return () => socket.disconnect();
