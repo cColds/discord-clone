@@ -3,7 +3,7 @@
 import { useSocket } from "@/app/providers/SocketProvider";
 import { Unblock } from "@/components/svgs";
 import ActionButton from "@/components/tooltip/ActionButton";
-import { unblockUser } from "@/lib/db/social/blocked/unblockUser";
+import { unblockUser } from "@/lib/actions/social/unblockUser";
 import { useSession } from "next-auth/react";
 
 const BlockedActions = ({ recipientId }: { recipientId: string }) => {

@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { unfriendUser } from "@/lib/db/social/friends/unfriendUser";
+import { unfriendUser } from "@/lib/actions/social/unfriendUser";
 import { useSession } from "next-auth/react";
 import { useSocket } from "@/app/providers/SocketProvider";
 

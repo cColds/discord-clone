@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { addFriendSchema } from "@/lib/validations/addFriend";
-import { addFriend } from "@/lib/actions/addFriend";
+import { addFriend } from "@/lib/actions/social/addFriend";
 import { useState, useTransition } from "react";
 import { useSession } from "next-auth/react";
 import { useSocket } from "@/app/providers/SocketProvider";

@@ -2,26 +2,31 @@
 
 import mongoose from "mongoose";
 import User from "@/models/User";
-import dbConnect from "../../dbConnect";
+import dbConnect from "@/lib/db/dbConnect";
 
-export const cancelPendingRequest = async (
-  userId: string,
-  friendId: string
-) => {
+export const unfriendUser = async (senderId: string, recipientId: string) => {
+  if (!senderId) return;
+
   await dbConnect();
   const mongooseSession = await mongoose.startSession();
 
   try {
     await mongooseSession.withTransaction(async () => {
-      await Promise.all([
+      return await Promise.all([
         User.findByIdAndUpdate(
-          friendId,
-          { $pull: { "social.pending": { user: userId } } },
+          recipientId,
+          {
+            $pull: { "social.friends": senderId },
+          },
           { session: mongooseSession }
         ),
         User.findByIdAndUpdate(
-          userId,
-          { $pull: { "social.pending": { user: friendId } } },
+          senderId,
+          {
+            $pull: {
+              "social.friends": recipientId,
+            },
+          },
           { session: mongooseSession }
         ),
       ]);

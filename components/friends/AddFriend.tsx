@@ -1,5 +1,5 @@
-import AddFriendSearchBar from "../search/AddFriendSearchBar";
-import { Arrow, Explore } from "../svgs";
+import AddFriendSearchBar from "@/components/search/AddFriendSearchBar";
+import { Arrow, Explore } from "@/components/svgs";
 
 export default function AddFriend() {
   return (

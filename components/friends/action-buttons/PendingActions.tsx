@@ -3,8 +3,8 @@
 import { useSession } from "next-auth/react";
 import ActionButton from "@/components/tooltip/ActionButton";
 import { Accept, Cancel } from "@/components/svgs";
-import { cancelPendingRequest } from "@/lib/db/social/pending/cancelPendingRequest";
-import { acceptPendingRequest } from "@/lib/db/social/pending/acceptPendingRequest";
+import { cancelPendingRequest } from "@/lib/actions/social/cancelPendingRequest";
+import { acceptPendingRequest } from "@/lib/actions/social/acceptPendingRequest";
 import { useSocket } from "@/app/providers/SocketProvider";
 
 const PendingActions = ({
