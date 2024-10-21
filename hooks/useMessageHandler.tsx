@@ -103,14 +103,14 @@ const useMessageHandler = ({
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.currentTarget.value !== "") {
+  const handleChange = (value: string, emoji?: string) => {
+    if (value !== "") {
       socket.emit("typing-indicator", channelId, {
         userId: sender.id,
         displayName: sender.displayName,
       });
     }
-    setMessage(e.currentTarget.value);
+    setMessage(emoji ? value + emoji : value);
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -91,12 +91,14 @@ export default function MessageBox({
               <TextareaAutosize
                 className={`whitespace-break-spaces break-words border-0 outline-0 max-h-1/2 h-[44px] py-2.5 resize-none w-full bg-channel-text-area overflow-x-hidden overflow-y-auto placeholder:text-channel-text-area-placeholder`}
                 onKeyDown={handleKeyDown}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e.currentTarget.value)}
                 value={message}
                 ref={inputRef}
               />
             </div>
-            <EmojiPicker />
+            <EmojiPicker
+              onChange={(emoji: string) => handleChange(message, emoji)}
+            />
           </div>
           <TypingIndicator usersTyping={usersTyping} />
         </div>

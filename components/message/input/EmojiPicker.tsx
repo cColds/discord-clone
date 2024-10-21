@@ -1,21 +1,41 @@
-import Image from "next/image";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { Smile } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-const EmojiPicker = () => {
+type EmojiPickerProps = {
+  onChange: (emoji: string) => void;
+};
+const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
   return (
-    <div className="flex">
-      <div className="flex items-center h-11 w-10">
-        <button className="p-1 mx-1 border-0" type="button">
-          <Image
-            src="/images/emojis/slightly_smiling_face.png"
-            alt=""
-            width={24}
-            height={24}
-            className="select-none"
-            draggable={false}
+    <Popover>
+      <div className="flex">
+        <div className="flex justify-center items-center h-11 mr-2">
+          <PopoverTrigger asChild>
+            <button
+              className="flex items-center justify-center group p-1.5 border-0 transition duration-200 hover:bg-background-interactive-hover"
+              type="button"
+            >
+              <Smile className="group-hover:text-yellow-400" />
+            </button>
+          </PopoverTrigger>
+        </div>
+        <PopoverContent
+          side="right"
+          sideOffset={40}
+          className="border-0 shadow-none mb-16 p-0"
+        >
+          <Picker
+            data={data}
+            onEmojiSelect={(emoji: any) => onChange(emoji.native)}
           />
-        </button>
+        </PopoverContent>
       </div>
-    </div>
+    </Popover>
   );
 };
 
