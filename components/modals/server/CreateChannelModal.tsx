@@ -87,7 +87,6 @@ const CreateChannelModal = ({
         <div className="pl-4 pr-2 max-h-[680px] overflow-x-hidden overflow-y-auto">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} id="createChannelForm">
-              {" "}
               <h2 className="text-header-secondary mb-2 text-xs font-bold uppercase tracking-wide">
                 Channel Type
               </h2>

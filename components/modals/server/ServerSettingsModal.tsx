@@ -44,6 +44,7 @@ const ServerSettingsModal = ({
               selected={selected}
               onTabClick={handleTabClick}
               server={server}
+              user={user}
             />
 
             <ServerSettingsContent

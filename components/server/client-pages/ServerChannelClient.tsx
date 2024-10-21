@@ -14,6 +14,7 @@ import { getMessages } from "@/lib/db/getMessages";
 import { getServer } from "@/lib/db/getServer";
 import { readMessages } from "@/lib/db/readMessages";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next-nprogress-bar";
 
 type ServerChannelClientProps = {
   server: ServerType;
@@ -32,6 +33,7 @@ const ServerChannelClient = ({
   if (!user) redirect("/");
 
   const { socket } = useSocket();
+  const router = useRouter();
 
   const queryClient = useQueryClient();
 
@@ -90,6 +92,8 @@ const ServerChannelClient = ({
       const updatedServer = await getServer(server._id);
       if (updatedServer) {
         setServerState(updatedServer);
+      } else {
+        router.push("/");
       }
     });
 

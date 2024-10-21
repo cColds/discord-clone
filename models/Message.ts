@@ -31,10 +31,10 @@ const MessageSchema = new Schema<MessageType>(
   { timestamps: true }
 );
 
-MessageSchema.index({ channelId: 1 }); // Improve performance for queries filtering by channelId
-MessageSchema.index({ sender: 1 }); // Index for queries filtering by sender
-MessageSchema.index({ "timestamps.createdAt": 1 }); // Index for sorting by creation time
-MessageSchema.index({ readBy: 1 }, { background: true }); // Multikey index for the readBy array
+MessageSchema.index({ channelId: 1 });
+MessageSchema.index({ sender: 1 });
+MessageSchema.index({ "timestamps.createdAt": 1 });
+MessageSchema.index({ readBy: 1 }, { background: true });
 
 const Message = model<MessageType>(
   "Message",
