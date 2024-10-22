@@ -3,6 +3,7 @@ import { ServerSettingsTabs } from "@/types/server-settings-tabs";
 import ServerSettingsOverview from "./ServerSettingsOverview";
 import { ServerType } from "@/types/server";
 import { UserType } from "@/types/user";
+import ServerSettingsMembers from "./ServerSettingsMembers";
 
 type ServerSettingsContentProps = {
   selected: ServerSettingsTabs;
@@ -24,7 +25,7 @@ const ServerSettingsContent = ({
           {selected === "Overview" ? (
             <ServerSettingsOverview server={server} user={user} />
           ) : (
-            <p>Haven&apos;t implemented yet</p>
+            <ServerSettingsMembers server={server} />
           )}
         </div>
 

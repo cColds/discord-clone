@@ -52,3 +52,5 @@ export type Member = {
   online: boolean;
   createdAt: string;
 };
+
+export type MemberTableType = { owner: string; members: Member[] };
