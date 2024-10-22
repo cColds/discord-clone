@@ -6,13 +6,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 type EmojiPickerProps = {
   onChange: (emoji: string) => void;
 };
 const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <div className="flex">
         <div className="flex justify-center items-center h-11 mr-2">
           <PopoverTrigger asChild>
@@ -31,7 +34,10 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
         >
           <Picker
             data={data}
-            onEmojiSelect={(emoji: any) => onChange(emoji.native)}
+            onEmojiSelect={(emoji: any) => {
+              onChange(emoji.native);
+              setOpen(false);
+            }}
           />
         </PopoverContent>
       </div>
