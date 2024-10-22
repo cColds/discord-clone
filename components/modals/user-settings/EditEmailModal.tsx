@@ -7,7 +7,9 @@ import { z } from "zod";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -78,13 +80,13 @@ export default function EditEmailModal({ children }: EditEmailModalProps) {
             draggable={false}
           />
 
-          <h1 className="font-bold text-center text-header-primary text-2xl">
+          <DialogTitle className="font-bold text-center text-header-primary text-2xl">
             Enter an email address
-          </h1>
+          </DialogTitle>
 
-          <p className="text-header-secondary mt-2 text-md leading-5 text-center">
+          <DialogDescription className="text-header-secondary mt-2 text-md leading-5 text-center">
             Enter a new email address and your existing password.
-          </p>
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

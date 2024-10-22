@@ -1,13 +1,19 @@
-import { UserNormal, UserType } from "@/types/user";
-import AvatarMask from "../avatar/AvatarMask";
-import { Edit, Message, ProfileBanner } from "../svgs";
-import { Dialog, DialogContent } from "../ui/dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { Member } from "@/types/server";
-import { useUser } from "@/app/providers/UserProvider";
-import { createOrGetDm } from "@/lib/db/createOrGetDm";
 import { useRouter } from "next-nprogress-bar";
+import { useUser } from "@/app/providers/UserProvider";
+import { UserNormal, UserType } from "@/types/user";
+import AvatarMask from "@/components/avatar/AvatarMask";
+import { Edit, Message, ProfileBanner } from "@/components/svgs";
+import { Member } from "@/types/server";
+import { createOrGetDm } from "@/lib/db/createOrGetDm";
 import { getUser } from "@/lib/db/getUser";
 import { useParams } from "next/navigation";
 
@@ -74,6 +80,12 @@ function UserProfileModal({
         className="p-0 gap-0 bg-transparent border-0 w-[600px] h-[780px] max-w-none bg-background-secondary-alt rounded-lg overflow-hidden"
       >
         <div className="bg-surface-overlay h-full overflow-hidden flex flex-col">
+          <DialogTitle>
+            <VisuallyHidden.Root>User Profile</VisuallyHidden.Root>
+          </DialogTitle>
+          <DialogDescription>
+            <VisuallyHidden.Root></VisuallyHidden.Root>
+          </DialogDescription>
           <header>
             <ProfileBanner
               viewBox="0 0 600 210"

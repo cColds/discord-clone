@@ -1,13 +1,15 @@
-import { UploadNewImage } from "@/components/svgs/UploadNewImage";
+import { ChangeEvent, useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-import { ChangeEvent, useState } from "react";
+import { UploadNewImage } from "@/components/svgs/UploadNewImage";
 
 type EditAvatarModalProps = {
   onAvatarChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -29,6 +31,9 @@ export default function EditAvatarModal({
           <DialogTitle className="text-left mb-2 text-xl text-header-primary">
             Select an Image
           </DialogTitle>
+          <DialogDescription>
+            <VisuallyHidden.Root></VisuallyHidden.Root>
+          </DialogDescription>
         </DialogHeader>
 
         <div className="px-4 pb-4 overflow-hidden">

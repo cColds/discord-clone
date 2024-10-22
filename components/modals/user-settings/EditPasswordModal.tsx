@@ -3,7 +3,9 @@ import PrimaryButton from "@/components/buttons/PrimaryButton";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -61,13 +63,13 @@ export default function EditPasswordModal({
 
       <DialogContent className="bg-background-primary p-0 rounded-sm w-[440px] max-h-[580px] flex flex-col gap-0">
         <DialogHeader className="py-6 px-4 flex flex-col items-center relative">
-          <h1 className="font-bold text-center text-header-primary text-2xl">
+          <DialogTitle className="font-bold text-center text-header-primary text-2xl">
             Update your password
-          </h1>
+          </DialogTitle>
 
-          <p className="text-header-secondary mt-2 text-md leading-5 text-center">
+          <DialogDescription className="text-header-secondary mt-2 text-md leading-5 text-center">
             Enter your current password and a new password.
-          </p>
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
