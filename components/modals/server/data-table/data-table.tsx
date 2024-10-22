@@ -49,7 +49,7 @@ type ColumnProps = {
   serverOwnerId: string;
   onKick: (userId: string) => void;
   onTransferOwnership: (userId: string) => void;
-  onOpenProfile: (open: boolean) => void;
+  onOpenProfile: (member: Member) => void;
 };
 
 const columns = ({
@@ -154,7 +154,7 @@ const columns = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-            <DropdownMenuItem onClick={() => onOpenProfile(true)}>
+            <DropdownMenuItem onClick={() => onOpenProfile(row.original)}>
               Profile
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -210,10 +210,14 @@ export function DataTable({
   const [rowSelection, setRowSelection] = React.useState({}); // todo: change state to members to kick ppl
   const [profileModalOpen, setProfileModalOpen] = React.useState(false);
 
-  const handleToggleProfileModal = (open: boolean) => setProfileModalOpen(open);
   const [userProfileData, setUserProfileData] = React.useState<Member | null>(
     null
   );
+
+  const handleOpenProfileModal = (member: Member) => {
+    setProfileModalOpen(true);
+    setUserProfileData(member);
+  };
 
   const handleKick = async (userId: string) => {
     const server = await kickMember({
@@ -246,7 +250,7 @@ export function DataTable({
       serverOwnerId: serverMembersData.owner,
       onKick: handleKick,
       onTransferOwnership: handleTransferOwnership,
-      onOpenProfile: handleToggleProfileModal,
+      onOpenProfile: handleOpenProfileModal,
     }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -305,8 +309,7 @@ export function DataTable({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => {
-                    handleToggleProfileModal(true);
-                    setUserProfileData(row.original);
+                    handleOpenProfileModal(row.original);
                   }}
                   className="cursor-pointer"
                 >
@@ -360,7 +363,7 @@ export function DataTable({
       {userProfileData && (
         <UserProfileModal
           open={profileModalOpen}
-          onToggleModal={handleToggleProfileModal}
+          onToggleModal={(open: boolean) => setProfileModalOpen(open)}
           user={userProfileData}
         />
       )}
