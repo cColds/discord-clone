@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  CaretSortIcon,
-  ChevronDownIcon,
-  DotsHorizontalIcon,
-} from "@radix-ui/react-icons";
+import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -46,12 +42,14 @@ import Image from "next/image";
 import { kickMember } from "@/lib/actions/kickMember";
 import { useSocket } from "@/app/providers/SocketProvider";
 import { transferOwnership } from "@/lib/actions/transferOwnership";
+import UserProfileModal from "@/components/modals/UserProfileModal";
 
 type ColumnProps = {
   user: UserType | null;
   serverOwnerId: string;
   onKick: (userId: string) => void;
   onTransferOwnership: (userId: string) => void;
+  onOpenProfile: (open: boolean) => void;
 };
 
 const columns = ({
@@ -59,6 +57,7 @@ const columns = ({
   serverOwnerId,
   onKick,
   onTransferOwnership,
+  onOpenProfile,
 }: ColumnProps): ColumnDef<Member>[] => [
   {
     id: "select",
@@ -75,6 +74,7 @@ const columns = ({
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
+        onClick={(e) => e.stopPropagation()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
       />
@@ -153,11 +153,9 @@ const columns = ({
               <DotsHorizontalIcon className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(member.id)}
-            >
-              Copy User ID
+          <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+            <DropdownMenuItem onClick={() => onOpenProfile(true)}>
+              Profile
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -165,7 +163,9 @@ const columns = ({
                 member.id === serverOwnerId || user?.id !== serverOwnerId
               }
               className="text-status-danger focus:bg-status-danger active:bg-status-danger/80 hover:bg-status-danger hover:text-white active:text-white"
-              onClick={() => onKick(member.id)}
+              onClick={() => {
+                onKick(member.id);
+              }}
             >
               Kick {member.username}
             </DropdownMenuItem>
@@ -173,7 +173,9 @@ const columns = ({
               disabled={
                 member.id === serverOwnerId || user?.id !== serverOwnerId
               }
-              onClick={() => onTransferOwnership(member.id)}
+              onClick={() => {
+                onTransferOwnership(member.id);
+              }}
               className="text-status-danger focus:bg-status-danger active:bg-status-danger/80 hover:bg-status-danger hover:text-white active:text-white"
             >
               Transfer Ownership
@@ -206,6 +208,12 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({}); // todo: change state to members to kick ppl
+  const [profileModalOpen, setProfileModalOpen] = React.useState(false);
+
+  const handleToggleProfileModal = (open: boolean) => setProfileModalOpen(open);
+  const [userProfileData, setUserProfileData] = React.useState<Member | null>(
+    null
+  );
 
   const handleKick = async (userId: string) => {
     const server = await kickMember({
@@ -238,6 +246,7 @@ export function DataTable({
       serverOwnerId: serverMembersData.owner,
       onKick: handleKick,
       onTransferOwnership: handleTransferOwnership,
+      onOpenProfile: handleToggleProfileModal,
     }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -295,6 +304,11 @@ export function DataTable({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => {
+                    handleToggleProfileModal(true);
+                    setUserProfileData(row.original);
+                  }}
+                  className="cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -343,6 +357,13 @@ export function DataTable({
           </Button>
         </div>
       </div>
+      {userProfileData && (
+        <UserProfileModal
+          open={profileModalOpen}
+          onToggleModal={handleToggleProfileModal}
+          user={userProfileData}
+        />
+      )}
     </div>
   );
 }
