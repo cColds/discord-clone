@@ -7,7 +7,7 @@ type EditMessageBoxType = {
   editedMessage: string | null;
   toggleEditMessageBox: (messageId: string | null) => void;
   onEditMessage: () => void;
-  onMessageChange: (message: string) => void;
+  onMessageChange: (message: string, emoji?: string) => void;
 };
 
 const EditMessageBox = ({
@@ -61,7 +61,11 @@ const EditMessageBox = ({
             }}
           ></TextareaAutosize>
 
-          <EmojiPicker />
+          <EmojiPicker
+            onChange={(emoji: string) =>
+              onMessageChange(editedMessage || message, emoji)
+            }
+          />
         </div>
       </div>
 

@@ -3,7 +3,7 @@
 import EditMessageBox from "@/components/message/input/EditMessageBox";
 import MessageActions from "@/components/tooltip/MessageActions";
 import DateDivider from "@/components/message/item/DateDivider";
-import { MessageImage, MessageType } from "@/types/message";
+import { MessageType } from "@/types/message";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useSocket } from "@/app/providers/SocketProvider";
@@ -53,7 +53,11 @@ export default function MessageItem({
     setEditedMessage(null);
   };
 
-  const handleMessageChange = (message: string) => setEditedMessage(message);
+  const handleMessageChange = (message: string, emoji?: string) => {
+    const newMessage = emoji ? message + emoji : message;
+
+    setEditedMessage(newMessage);
+  };
 
   const handleEditMessage = async () => {
     if (!editedMessage || !editMessageId) {
