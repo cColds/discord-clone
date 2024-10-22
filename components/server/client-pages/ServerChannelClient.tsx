@@ -79,7 +79,7 @@ const ServerChannelClient = ({
     });
 
     socket.on("update-server", async () => {
-      const updatedServer = await getServer(server._id);
+      const updatedServer = await getServer(server._id, user.id);
 
       if (updatedServer) {
         setServerState(updatedServer);
@@ -98,7 +98,7 @@ const ServerChannelClient = ({
       await queryClient.invalidateQueries({
         queryKey: ["messages"],
       });
-      const updatedServer = await getServer(server._id);
+      const updatedServer = await getServer(server._id, user.id);
 
       if (updatedServer) setServerState(updatedServer);
     });

@@ -163,6 +163,7 @@ export default function ServerItems({ user, servers }: ServerItemsType) {
                 server={server}
                 key={server._id}
                 options={{ progress, path }}
+                userId={user.id}
               />
             );
           })}

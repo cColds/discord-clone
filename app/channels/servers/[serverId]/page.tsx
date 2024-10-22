@@ -10,10 +10,10 @@ export default async function ServerPage({
 }: {
   params: { serverId: string };
 }) {
-  const server = await getServer(params.serverId);
   const session = await getServerSession(authConfig);
 
   const user = await getUser(session?.user.id);
+  const server = await getServer(params.serverId, user?.id || "");
 
   const isMember = !!server?.members.find((m) => m.id === user?.id);
   if (!server || !isMember) redirect("/");

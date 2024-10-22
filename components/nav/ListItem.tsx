@@ -15,6 +15,7 @@ type ListItemProps = {
   url: string;
   acronym: string;
   options: FramerMotionOptions;
+  userId: string;
 };
 
 export default function ListItem({
@@ -25,6 +26,7 @@ export default function ListItem({
   url,
   acronym,
   options,
+  userId,
 }: ListItemProps) {
   const isHovered = hoveredServer === server._id;
 
@@ -33,7 +35,7 @@ export default function ListItem({
   const handleServerClick = async () => {
     NProgress.start(); // manually start it before fetching server to avoid delay
 
-    const targetServer = await getServer(server._id);
+    const targetServer = await getServer(server._id, userId);
 
     const topLevelChannelLink = targetServer?.categories[0].channels[0]._id;
 

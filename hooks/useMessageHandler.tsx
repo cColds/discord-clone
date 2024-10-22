@@ -67,7 +67,7 @@ const useMessageHandler = ({
       await createMessageMutation.mutateAsync(messageParams);
 
       const serverOrDm = serverId
-        ? await getServer(serverId)
+        ? await getServer(serverId, sender.id)
         : await getDm(channelId);
       const memberIds =
         serverOrDm?.members
