@@ -44,19 +44,21 @@ import { UserType } from "@/types/user";
 import ActionTooltip from "@/components/tooltip/ActionTooltip";
 import Image from "next/image";
 import { kickMember } from "@/lib/actions/kickMember";
-import { useRouter } from "next/navigation";
 import { useSocket } from "@/app/providers/SocketProvider";
+import { transferOwnership } from "@/lib/actions/transferOwnership";
 
 type ColumnProps = {
   user: UserType | null;
   serverOwnerId: string;
   onKick: (userId: string) => void;
+  onTransferOwnership: (userId: string) => void;
 };
 
 const columns = ({
   user,
   serverOwnerId,
   onKick,
+  onTransferOwnership,
 }: ColumnProps): ColumnDef<Member>[] => [
   {
     id: "select",
@@ -171,6 +173,7 @@ const columns = ({
               disabled={
                 member.id === serverOwnerId || user?.id !== serverOwnerId
               }
+              onClick={() => onTransferOwnership(member.id)}
               className="text-status-danger focus:bg-status-danger active:bg-status-danger/80 hover:bg-status-danger hover:text-white active:text-white"
             >
               Transfer Ownership
@@ -216,12 +219,25 @@ export function DataTable({
     socket.emit("update-server", server.members);
   };
 
+  const handleTransferOwnership = async (userId: string) => {
+    const server = await transferOwnership({
+      serverId,
+      senderId: user?.id || "",
+      recipientId: userId,
+    });
+
+    if (!server) return;
+    onUpdateMember();
+    socket.emit("update-server", server.members);
+  };
+
   const table = useReactTable({
     data: serverMembersData.members,
     columns: columns({
       user,
       serverOwnerId: serverMembersData.owner,
       onKick: handleKick,
+      onTransferOwnership: handleTransferOwnership,
     }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
