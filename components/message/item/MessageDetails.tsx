@@ -2,10 +2,9 @@ import Image from "next/image";
 import ActionTooltip from "../../tooltip/ActionTooltip";
 import { format } from "date-fns";
 import { MessageType } from "@/types/message";
-import { transformCloudinaryUrl } from "@/utils/helpers/transformCloudinaryUrl";
 import UserProfileModal from "@/components/modals/UserProfileModal";
 import MessageTimestamp from "./MessageTimestamp";
-import { getRandomProfilePic } from "@/utils/helpers/getRandomProfilePic";
+import { useState } from "react";
 
 type MessageDetailsProps = {
   msg: MessageType & { pending?: boolean };
@@ -22,6 +21,8 @@ const MessageDetails = ({
   editedDate,
   isEditActive,
 }: MessageDetailsProps) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleToggleModal = (open: boolean) => setModalOpen(open);
   const messageSplit = msg.message.split("[!!{username}!!]");
 
   return (
@@ -40,11 +41,12 @@ const MessageDetails = ({
           </div>
           <span className="text-channels-default text-md">
             {messageSplit[0]}
-            <UserProfileModal user={msg.sender}>
-              <button className="border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline leading-[1.375rem] text-header-primary overflow-hidden cursor-pointer hover:underline">
-                {msg.sender.displayName}
-              </button>
-            </UserProfileModal>
+            <button
+              onClick={() => handleToggleModal(true)}
+              className="border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline leading-[1.375rem] text-header-primary overflow-hidden cursor-pointer hover:underline"
+            >
+              {msg.sender.displayName}
+            </button>
             {messageSplit[1]}
           </span>
 
@@ -55,22 +57,22 @@ const MessageDetails = ({
         </div>
       ) : !shouldMergeMessages ? (
         <>
-          <UserProfileModal user={msg.sender}>
-            <Image
-              src={msg.sender.avatar}
-              alt=""
-              width={40}
-              height={40}
-              className="rounded-full overflow-hidden cursor-pointer mt-0.5 select-none absolute left-4"
-            />
-          </UserProfileModal>
+          <Image
+            onClick={() => handleToggleModal(true)}
+            src={msg.sender.avatar}
+            alt=""
+            width={40}
+            height={40}
+            className="rounded-full overflow-hidden cursor-pointer mt-0.5 select-none absolute left-4"
+          />
 
           <h3 className="min-h-[1.375rem] leading-[1.375rem]">
-            <UserProfileModal user={msg.sender}>
-              <button className="break-all text-left border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline">
-                {msg.sender.displayName}
-              </button>
-            </UserProfileModal>
+            <button
+              onClick={() => handleToggleModal(true)}
+              className="break-all text-left border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline leading-[1.375rem] text-header-primary overflow-hidden mr-[0.25rem] cursor-pointer hover:underline"
+            >
+              {msg.sender.displayName}
+            </button>
 
             <MessageTimestamp
               dateTime={msg.createdAt}
@@ -110,6 +112,12 @@ const MessageDetails = ({
           )}
         </div>
       )}
+
+      <UserProfileModal
+        user={msg.sender}
+        open={modalOpen}
+        onToggleModal={handleToggleModal}
+      />
     </div>
   );
 };

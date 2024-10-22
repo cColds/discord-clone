@@ -1,7 +1,7 @@
 import { UserNormal, UserType } from "@/types/user";
 import AvatarMask from "../avatar/AvatarMask";
 import { Edit, Message, ProfileBanner } from "../svgs";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent } from "../ui/dialog";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Member } from "@/types/server";
@@ -9,12 +9,12 @@ import { useUser } from "@/app/providers/UserProvider";
 import { createOrGetDm } from "@/lib/db/createOrGetDm";
 import { useRouter } from "next-nprogress-bar";
 import { getUser } from "@/lib/db/getUser";
-import { useState } from "react";
 import { useParams } from "next/navigation";
 
 type UserProfileModalProps = {
   user: UserType | UserNormal | Member;
-  children: React.ReactNode;
+  open: boolean;
+  onToggleModal: (open: boolean) => void;
 };
 
 type UserProfileTabItemProps = {
@@ -42,9 +42,11 @@ const UserProfileTabItem = ({ selected, label }: UserProfileTabItemProps) => {
   );
 };
 
-function UserProfileModal({ user, children }: UserProfileModalProps) {
-  const [open, setOpen] = useState(false);
-
+function UserProfileModal({
+  user,
+  open,
+  onToggleModal,
+}: UserProfileModalProps) {
   const userJoinDate = format(new Date(user.createdAt), "LLL d, y");
   const { user: yourAccount, setUser } = useUser();
 
@@ -54,7 +56,7 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
   const handleMessageClick = async () => {
     const dm = await createOrGetDm(yourAccount?.id || "", user.id);
     if (params?.channelId === dm._id) {
-      setOpen(false);
+      onToggleModal(false);
       return;
     }
 
@@ -66,13 +68,7 @@ function UserProfileModal({ user, children }: UserProfileModalProps) {
   };
 
   return (
-    <Dialog
-      onOpenChange={(open) => {
-        setOpen(open);
-      }}
-      open={open}
-    >
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog onOpenChange={onToggleModal} open={open}>
       <DialogContent
         removeCloseButton={true}
         className="p-0 gap-0 bg-transparent border-0 w-[600px] h-[780px] max-w-none bg-background-secondary-alt rounded-lg overflow-hidden"

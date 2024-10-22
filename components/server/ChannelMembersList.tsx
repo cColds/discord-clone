@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import UserProfileModal from "../modals/UserProfileModal";
 import { Crown } from "../svgs/Crown";
 import ActionTooltip from "../tooltip/ActionTooltip";
+import { useState } from "react";
 
 type ChannelMembersListProps = {
   members: Member[];
@@ -18,6 +19,9 @@ type MemberItemProps = {
 };
 
 const MemberItem = ({ member, type, ownerId }: MemberItemProps) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleToggleModal = (open: boolean) => setModalOpen(open);
+
   return (
     <div
       className={cn(
@@ -26,37 +30,44 @@ const MemberItem = ({ member, type, ownerId }: MemberItemProps) => {
       )}
       role="listitem"
     >
-      <UserProfileModal user={member}>
-        <button className="flex items-center border-0 rounded h-[42px] px-2 py-[1px] hover:bg-background-modifier-hover w-full transition-none">
-          <div className="flex justify-center items-center shrink-0 w-8 h-8 mr-3">
-            <div
-              className="w-8 h-8 rounded-[50%]"
-              aria-label={`${member.username}, ${member.status}`}
-              role="img"
-            >
-              <AvatarMask
-                avatar={member.avatar}
-                username={member.displayName}
-                status={member.status}
-                removeMask={type === "Offline"}
-              />
-            </div>
+      <button
+        onClick={() => handleToggleModal(true)}
+        className="flex items-center border-0 rounded h-[42px] px-2 py-[1px] hover:bg-background-modifier-hover w-full transition-none"
+      >
+        <div className="flex justify-center items-center shrink-0 w-8 h-8 mr-3">
+          <div
+            className="w-8 h-8 rounded-[50%]"
+            aria-label={`${member.username}, ${member.status}`}
+            role="img"
+          >
+            <AvatarMask
+              avatar={member.avatar}
+              username={member.displayName}
+              status={member.status}
+              removeMask={type === "Offline"}
+            />
           </div>
+        </div>
 
-          <div className="grow overflow-hidden">
-            <div className="flex items-center">
-              <p className="truncate">{member.displayName}</p>
-              {member.id === ownerId && (
-                <ActionTooltip content="Server Owner">
-                  <div>
-                    <Crown className="ml-1 shrink-0 w-[14px] h-[14px] text-warning" />
-                  </div>
-                </ActionTooltip>
-              )}
-            </div>
+        <div className="grow overflow-hidden">
+          <div className="flex items-center">
+            <p className="truncate">{member.displayName}</p>
+            {member.id === ownerId && (
+              <ActionTooltip content="Server Owner">
+                <div>
+                  <Crown className="ml-1 shrink-0 w-[14px] h-[14px] text-warning" />
+                </div>
+              </ActionTooltip>
+            )}
           </div>
-        </button>
-      </UserProfileModal>
+        </div>
+      </button>
+
+      <UserProfileModal
+        open={modalOpen}
+        user={member}
+        onToggleModal={handleToggleModal}
+      />
     </div>
   );
 };
