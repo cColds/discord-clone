@@ -80,6 +80,7 @@ const ServerChannelClient = ({
 
     socket.on("update-server", async () => {
       const updatedServer = await getServer(server._id);
+
       if (updatedServer) {
         setServerState(updatedServer);
       } else {

@@ -15,16 +15,24 @@ export default function ServerSettingsMembers({
     useState<null | MemberTableType>(null);
 
   useEffect(() => {
-    getMembers(server._id).then((data) => {
-      console.log(data);
-      setServerMembersData(data);
-    });
+    (async () => {
+      const members = await getMembers(server._id);
+      setServerMembersData(members);
+    })();
   }, []);
+
+  const handleUpdateMember = async () => {
+    const updatedMembers = await getMembers(server._id);
+
+    setServerMembersData(updatedMembers);
+  };
 
   return (
     <div className="container mx-auto py-10">
       <DataTable
         serverMembersData={serverMembersData || { owner: "", members: [] }}
+        serverId={server._id}
+        onUpdateMember={handleUpdateMember}
       />
     </div>
   );

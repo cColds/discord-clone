@@ -23,7 +23,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
@@ -44,11 +43,21 @@ import { useUser } from "@/app/providers/UserProvider";
 import { UserType } from "@/types/user";
 import ActionTooltip from "@/components/tooltip/ActionTooltip";
 import Image from "next/image";
+import { kickMember } from "@/lib/actions/kickMember";
+import { useRouter } from "next/navigation";
+import { useSocket } from "@/app/providers/SocketProvider";
 
-const columns = (
-  user: UserType | null,
-  serverOwnerId: string
-): ColumnDef<Member>[] => [
+type ColumnProps = {
+  user: UserType | null;
+  serverOwnerId: string;
+  onKick: (userId: string) => void;
+};
+
+const columns = ({
+  user,
+  serverOwnerId,
+  onKick,
+}: ColumnProps): ColumnDef<Member>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -154,6 +163,7 @@ const columns = (
                 member.id === serverOwnerId || user?.id !== serverOwnerId
               }
               className="text-status-danger focus:bg-status-danger active:bg-status-danger/80 hover:bg-status-danger hover:text-white active:text-white"
+              onClick={() => onKick(member.id)}
             >
               Kick {member.username}
             </DropdownMenuItem>
@@ -174,10 +184,17 @@ const columns = (
 
 type DataTable = {
   serverMembersData: MemberTableType;
+  serverId: string;
+  onUpdateMember: () => void;
 };
 
-export function DataTable({ serverMembersData }: DataTable) {
+export function DataTable({
+  serverMembersData,
+  serverId,
+  onUpdateMember,
+}: DataTable) {
   const { user } = useUser();
+  const { socket } = useSocket();
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -187,9 +204,25 @@ export function DataTable({ serverMembersData }: DataTable) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({}); // todo: change state to members to kick ppl
 
+  const handleKick = async (userId: string) => {
+    const server = await kickMember({
+      serverId,
+      senderId: user?.id || "",
+      recipientId: userId,
+    });
+
+    if (!server) return;
+    onUpdateMember();
+    socket.emit("update-server", server.members);
+  };
+
   const table = useReactTable({
     data: serverMembersData.members,
-    columns: columns(user, serverMembersData.owner),
+    columns: columns({
+      user,
+      serverOwnerId: serverMembersData.owner,
+      onKick: handleKick,
+    }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
