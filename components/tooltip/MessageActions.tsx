@@ -48,11 +48,8 @@ const MessageActions = ({
       >
         <div className="grid grid-flow-col bg-background-primary shadow-elevation-low rounded h-8 select-none duration-100 relative">
           {isYourMessage ? (
-            <MessageActionButton
-              content="Delete Message"
-              onClick={onDeleteMessage}
-            >
-              <Trash className="w-5 h-5" />
+            <MessageActionButton content="Delete" onClick={onDeleteMessage}>
+              <Trash className="w-5 h-5 text-status-danger" />
             </MessageActionButton>
           ) : (
             <MessageActionButton content="Add Reaction">
