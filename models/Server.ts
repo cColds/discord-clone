@@ -20,6 +20,7 @@ type ChannelType = {
 type CategoryType = {
   categoryName: string;
   channels: ChannelType[];
+  _id: string;
 };
 
 type InviteType = {

@@ -2,14 +2,15 @@
 
 import { ServerType, TextOrVoiceChannel } from "@/types/server";
 import Link from "next/link";
-import { CreateInvite, Hash, Volume, Settings } from "../svgs";
-import ActionTooltip from "../tooltip/ActionTooltip";
+import { CreateInvite, Hash, Volume, Settings } from "@/components/svgs";
+import ActionTooltip from "@/components/tooltip/ActionTooltip";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import CreateInviteModal from "../modals/server/CreateInviteModal";
+import CreateInviteModal from "@/components/modals/server/CreateInviteModal";
 import { createInvite } from "@/lib/db/createInvite";
 import { useState, MouseEvent } from "react";
 import { UserType } from "@/types/user";
+import EditChannelModal from "../modals/server/EditChannelModal";
 
 type ServerChannelListProps = {
   channel: TextOrVoiceChannel;
@@ -24,7 +25,7 @@ const ServerChannelList = ({
 }: ServerChannelListProps) => {
   const [invite, setInvite] = useState("");
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
-
+  const [editChannelModalOpen, setEditChannelModalOpen] = useState(false);
   const { channelId } = useParams();
 
   const handleCreateInvite = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -38,6 +39,9 @@ const ServerChannelList = ({
   };
 
   const toggleInviteModal = () => setInviteModalOpen(!inviteModalOpen);
+
+  const toggleEditChannelModal = () =>
+    setEditChannelModalOpen(!editChannelModalOpen);
 
   return (
     <li>
@@ -107,6 +111,7 @@ const ServerChannelList = ({
                   <button
                     className="py-1.5 ml-1 border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
                     aria-label="Edit Channel"
+                    onClick={toggleEditChannelModal}
                   >
                     <Settings className="w-4 h-4 text-interactive-normal" />
                   </button>
@@ -116,6 +121,13 @@ const ServerChannelList = ({
           </div>
         </div>
       </div>
+      <EditChannelModal
+        open={editChannelModalOpen}
+        onToggleModal={toggleEditChannelModal}
+        channel={channel}
+        server={server}
+        user={user}
+      />
     </li>
   );
 };

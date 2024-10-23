@@ -21,7 +21,6 @@ import { deleteServerSchema } from "@/lib/validations/deleteServerSchema";
 import { ServerType } from "@/types/server";
 import { UserType } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next-nprogress-bar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

@@ -3,7 +3,6 @@ import RadioItem from "@/components/RadioItem";
 import { Hash, Volume } from "@/components/svgs";
 import {
   Dialog,
-  DialogTrigger,
   DialogHeader,
   DialogContent,
   DialogTitle,
@@ -22,7 +21,6 @@ import { createChannel } from "@/lib/actions/createChannel";
 import { createChannelSchema } from "@/lib/validations/createChannel";
 import { ServerCategory, ServerType } from "@/types/server";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
