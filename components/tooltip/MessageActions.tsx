@@ -15,7 +15,7 @@ const MessageActionButton = ({
   return (
     <ActionTooltip content={content}>
       <button
-        className="flex items-center justify-center min-w-[24px] min-h-[24px] h-6 p-1 text-interactive-normal hover:text-interactive-hover hover:bg-background-modifier-hover cursor-pointer box-content"
+        className="flex items-center justify-center min-w-[24px] p-1 text-interactive-normal hover:text-interactive-hover hover:bg-background-modifier-hover cursor-pointer box-content"
         aria-label={content}
         onClick={onClick}
       >
@@ -46,7 +46,7 @@ const MessageActions = ({
         className="-top-4 absolute right-0 pl-3.5 pr-8 opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 focus-within:opacity-100"
         role="group"
       >
-        <div className="grid grid-flow-col bg-background-primary shadow-elevation-low h-8 select-none duration-100 relative">
+        <div className="grid grid-flow-col bg-background-primary shadow-elevation-low rounded h-8 select-none duration-100 relative">
           {isYourMessage ? (
             <MessageActionButton
               content="Delete Message"
