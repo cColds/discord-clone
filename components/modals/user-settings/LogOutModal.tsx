@@ -1,8 +1,10 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { signOut } from "next-auth/react";
 
@@ -29,11 +31,13 @@ export default function LogOutModal({ open, toggleModal }: LogOutModalProps) {
         className="rounded bg-background-primary p-0 w-[440px] max-h-[720px] min-h-[200px]"
       >
         <DialogHeader className="p-4 overflow-hidden text-left">
-          <h1 className="font-bold text-header-primary text-2xl">Log Out</h1>
+          <DialogTitle className="font-bold text-header-primary text-2xl">
+            Log Out
+          </DialogTitle>
 
-          <p className="text-header-secondary mt-2 text-md leading-5">
+          <DialogDescription className="text-header-secondary mt-2 text-md leading-5">
             Are you sure you want to logout?
-          </p>
+          </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-background-secondary p-4">
           <div className="flex justify-end gap-4">

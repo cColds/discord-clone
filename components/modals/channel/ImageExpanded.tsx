@@ -1,8 +1,15 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { MessageImage } from "@/types/message";
 import Image from "next/image";
 import React, { useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 interface MessageImageWithIndex extends MessageImage {
   index: number;
@@ -52,6 +59,12 @@ const ImageExpanded = ({
         removeCloseButton={true}
         className="p-0 gap-0 bg-transparent border-0 w-auto max-w-full"
       >
+        <DialogTitle>
+          <VisuallyHidden.Root></VisuallyHidden.Root>
+        </DialogTitle>
+        <DialogDescription>
+          <VisuallyHidden.Root></VisuallyHidden.Root>
+        </DialogDescription>
         <div className="relative">
           <Image
             src={selectedImage.url}

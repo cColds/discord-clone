@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { MemberTableType, ServerType } from "@/types/server";
 import { getMembers } from "@/lib/db/getMembers";
-import { DataTable } from "./data-table/data-table";
+import { DataTable } from "@/components/server/data-table/data-table";
 
 type ServerSettingsMembersProps = {
   server: ServerType;
