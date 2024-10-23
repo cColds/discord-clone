@@ -58,15 +58,24 @@ const CreateChannelModal = ({
     await createChannel(data, server._id, category._id);
 
     toggleOpen(false);
-
     socket.emit(
       "update-server",
       server.members.map((m) => m.id)
     );
+
+    form.reset();
+    setSelectedChannelType("text");
   };
 
   return (
-    <Dialog onOpenChange={toggleOpen} open={open}>
+    <Dialog
+      onOpenChange={(open: boolean) => {
+        toggleOpen(open);
+        form.reset();
+        setSelectedChannelType("text");
+      }}
+      open={open}
+    >
       <DialogContent className="bg-background-primary p-0 rounded-sm w-[460px] flex flex-col gap-0">
         <DialogHeader className="flex text-left p-4">
           <DialogTitle className="text-header-primary text-xl leading-6 font-medium">
@@ -145,7 +154,11 @@ const CreateChannelModal = ({
         </div>
         <div className="bg-modal-footer p-4 flex justify-end">
           <button
-            onClick={() => toggleOpen(false)}
+            onClick={() => {
+              toggleOpen(false);
+              form.reset();
+              setSelectedChannelType("text");
+            }}
             className="min-h-[38px] h-[38px] min-w-[96px] flex items-center justify-center border-0 text-sm leading-4 py-0.5 px-4 rounded truncate"
           >
             Cancel
