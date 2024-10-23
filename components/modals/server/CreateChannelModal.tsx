@@ -121,6 +121,18 @@ const CreateChannelModal = ({
                           placeholder="new-channel"
                           className="placeholder:text-zinc-500 pl-7"
                           maxLength={100}
+                          onChange={(e) => {
+                            const valueWithHyphens = e.target.value
+                              .replace(/[ -]+/g, "-")
+                              .replace(
+                                /[~`!@#$%^&*()+=\[\]{}|\\:;'",.<>?/]/g,
+                                ""
+                              )
+                              .replace(/^[ -]+/, "") // remove leading hyphen
+                              .toLowerCase();
+
+                            field.onChange(valueWithHyphens);
+                          }}
                         />
                       </div>
                     </FormControl>
