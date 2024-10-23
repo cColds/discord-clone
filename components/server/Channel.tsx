@@ -53,6 +53,7 @@ const Channel = ({
               fetchNextPage={fetchNextPage}
               isFetchingNextPage={isFetchingNextPage}
               hasNextPage={hasNextPage}
+              ownerId={ownerId}
             />
             <MessageBox
               sender={user}

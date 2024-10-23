@@ -59,6 +59,7 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
                     channel={channel}
                     server={server}
                     key={channel._id}
+                    user={user}
                   />
                 );
               })}
@@ -77,6 +78,7 @@ const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
                           channel={channel}
                           server={server}
                           key={channel._id}
+                          user={user}
                         />
                       );
                     })}

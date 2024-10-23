@@ -9,13 +9,19 @@ import { useParams } from "next/navigation";
 import CreateInviteModal from "../modals/server/CreateInviteModal";
 import { createInvite } from "@/lib/db/createInvite";
 import { useState, MouseEvent } from "react";
+import { UserType } from "@/types/user";
 
 type ServerChannelListProps = {
   channel: TextOrVoiceChannel;
   server: ServerType;
+  user: UserType;
 };
 
-const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
+const ServerChannelList = ({
+  channel,
+  server,
+  user,
+}: ServerChannelListProps) => {
   const [invite, setInvite] = useState("");
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
@@ -75,7 +81,7 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
               </p>
             </Link>
 
-            <div className="flex items-center justify-center shrink-0">
+            <div className="flex items-center justify-center shrink-0 pr-2">
               <CreateInviteModal
                 server={server}
                 channel={channel}
@@ -96,14 +102,16 @@ const ServerChannelList = ({ channel, server }: ServerChannelListProps) => {
                 </button>
               </CreateInviteModal>
 
-              <ActionTooltip content="Edit Channel">
-                <button
-                  className="pr-2 py-1.5 ml-1 border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
-                  aria-label="Edit Channel"
-                >
-                  <Settings className="w-4 h-4 text-interactive-normal" />
-                </button>
-              </ActionTooltip>
+              {user.id === server.owner && (
+                <ActionTooltip content="Edit Channel">
+                  <button
+                    className="py-1.5 ml-1 border-0 focus-visible:outline-2 focus-visible:outline-light-blue-outline opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+                    aria-label="Edit Channel"
+                  >
+                    <Settings className="w-4 h-4 text-interactive-normal" />
+                  </button>
+                </ActionTooltip>
+              )}
             </div>
           </div>
         </div>

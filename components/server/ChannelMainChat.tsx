@@ -18,6 +18,7 @@ type ChannelMainChatProps = {
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
   fetchNextPage: FetchNextPageType;
+  ownerId: string;
 };
 
 const ChannelMainChat = ({
@@ -27,6 +28,7 @@ const ChannelMainChat = ({
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
+  ownerId,
 }: ChannelMainChatProps) => {
   const [isReadyToShow, setIsReadyToShow] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -126,15 +128,17 @@ const ChannelMainChat = ({
             This is the start of the #{channel.name} channel.
           </p>
 
-          <div className="mt-2">
-            <button className="border-0 text-text-link mr-2 p-1.5 rounded flex-nowrap flex items-center hover:bg-background-modifier-hover">
-              <div className="mr-1.5">
-                <EditPen />
-              </div>
+          {user.id === ownerId && (
+            <div className="mt-2">
+              <button className="border-0 text-text-link mr-2 p-1.5 rounded flex-nowrap flex items-center hover:bg-background-modifier-hover">
+                <div className="mr-1.5">
+                  <EditPen />
+                </div>
 
-              <p className="text-md leading-5">Edit Channel</p>
-            </button>
-          </div>
+                <p className="text-md leading-5">Edit Channel</p>
+              </button>
+            </div>
+          )}
         </div>
 
         <div ref={ref} id="container-intersection" />
