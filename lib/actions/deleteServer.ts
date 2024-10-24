@@ -42,7 +42,7 @@ export const deleteServer = async ({
 
   await Promise.all([
     server.deleteOne(),
-    await Message.find({ channelId: { $in: channelIds } }),
+    Message.deleteMany({ channelId: { $in: channelIds } }),
     User.updateMany({ $pull: { servers: serverId } }),
   ]);
 };
