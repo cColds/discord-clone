@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { ServerType, TextOrVoiceChannel } from "@/types/server";
-import { Hash, Volume } from "@/components/svgs";
+import { Hash, Trash, Volume } from "@/components/svgs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,10 +22,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { editChannel } from "@/lib/actions/editChannel";
 import { UserType } from "@/types/user";
 import { useSocket } from "@/app/providers/SocketProvider";
+import DeleteChannelModal from "./DeleteChannelModal";
 
 type EditChannelModalProps = {
   open: boolean;
@@ -48,6 +49,10 @@ const EditChannelModal = ({
   });
   const [isPending, startTransition] = useTransition();
   const { socket } = useSocket();
+  const [deleteChannelModalOpen, setDeleteChannelModalOpen] = useState(false);
+
+  const toggleDeleteChannelModalOpen = () =>
+    setDeleteChannelModalOpen(!deleteChannelModalOpen);
 
   const onSubmit = (data: z.infer<typeof editChannelSchema>) => {
     startTransition(async () => {
@@ -140,6 +145,15 @@ const EditChannelModal = ({
         <DialogFooter className="bg-background-secondary p-4">
           <div className="flex justify-end gap-4">
             <button
+              className="flex justify-between items-center gap-2 hover:bg-background-modifier-hover text-interactive-normal mr-auto self-start font-semibold rounded text-sm px-2 py-1 h-8"
+              type="button"
+              disabled={isPending}
+              onClick={toggleDeleteChannelModalOpen}
+            >
+              Delete Channel
+              <Trash className="w-4 h-4" />
+            </button>
+            <button
               type="button"
               className="hover:underline text-sm"
               onClick={() => {
@@ -159,6 +173,14 @@ const EditChannelModal = ({
               Save Changes
             </button>
           </div>
+          <DeleteChannelModal
+            channel={channel}
+            server={server}
+            onToggleModal={toggleDeleteChannelModalOpen}
+            open={deleteChannelModalOpen}
+            user={user}
+            onToggleEditChannelModal={onToggleModal}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

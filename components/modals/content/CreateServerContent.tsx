@@ -68,7 +68,7 @@ const CreateServerContent = ({
       onToggleModal();
 
       if (server) {
-        const topLevelChannelLink = server.categories[0].channels[0]._id;
+        const topLevelChannelLink = server.categories[0].channels[0]?._id || "";
 
         const serverLink =
           `/channels/servers/${server._id}/` + topLevelChannelLink;
