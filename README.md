@@ -4,7 +4,14 @@
 
 Full-stack app made with NextJS, TailwindCSS, Typescript, React, Socket.io and MongoDB.
 
+NOTE: The app is hosted on the free tier plan on Render, so cold starts may take up to a minute.
+
 ## [Live Demo](https://discord-clone-qxoz.onrender.com/)
+
+## Preview
+
+![Home Preview](/public/images/previews/home-preview.png)
+![Server Preview](/public/images/previews/server-preview.png)
 
 ## Features
 
